@@ -8,4 +8,6 @@
     <string name="register">Đăng ký</string>
     <string name="login">Đăng nhập</string>
     <string name="or">hoặc</string>
+    <string name="phone_nubmer">Số điện thoại</string>
+    <string name="password">Mật khẩu</string>
 </resources>
