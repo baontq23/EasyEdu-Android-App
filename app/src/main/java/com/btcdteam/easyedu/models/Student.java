@@ -1,5 +1,7 @@
 package com.btcdteam.easyedu.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.UUID;
 
 public class Student {
@@ -7,6 +9,7 @@ public class Student {
     private String name;
     private String gender;
     private String dob;
+    @SerializedName("parent_id")
     private String parentId;
 
     public Student(String name, String gender, String dob, String parentId) {
@@ -18,7 +21,7 @@ public class Student {
     }
 
     public Student() {
-
+        this.id = UUID.randomUUID().toString();
     }
 
     public String getId() {

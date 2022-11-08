@@ -8,10 +8,7 @@ public class Parent {
     public Parent(String name, String phone) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
-        this.email = "No email";
         this.password = "123456";
-        this.dob = "";
-        this.fcmToken = "";
         this.phone = phone;
     }
 
@@ -77,5 +74,10 @@ public class Parent {
 
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
