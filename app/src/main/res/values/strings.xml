@@ -10,4 +10,7 @@
     <string name="or">hoặc</string>
     <string name="phone_nubmer">Số điện thoại</string>
     <string name="password">Mật khẩu</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="repassword">Xác nhận mật khẩu</string>
+    <string name="submit">Xác nhận</string>
 </resources>
