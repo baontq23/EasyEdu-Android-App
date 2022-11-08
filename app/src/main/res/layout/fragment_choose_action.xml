@@ -7,43 +7,36 @@
     android:background="@color/bg_primary"
     tools:context=".fragments.auth.ChooseActionFragment">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+    <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:background="@color/white"
-        app:cardCornerRadius="40dp">
+        android:background="@drawable/background_corner_bottom_left_right"
+        android:elevation="10dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="15dp">
 
-        <LinearLayout
-            android:id="@+id/header"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="10dp"
-            android:orientation="vertical"
-            android:paddingBottom="8dp">
+            android:layout_height="250dp"
+            android:padding="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/role_2" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:padding="16dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/role_2" />
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/logo_no_background" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/logo_no_background" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/cardView"
+        android:layout_below="@id/header"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:paddingHorizontal="16dp">
