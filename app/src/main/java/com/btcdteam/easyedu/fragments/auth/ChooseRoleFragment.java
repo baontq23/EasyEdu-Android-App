@@ -12,13 +12,14 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.btcdteam.easyedu.R;
 import com.google.android.material.button.MaterialButton;
 
 
 public class ChooseRoleFragment extends Fragment {
-    private MaterialButton btnChooseRoleTeacher, btnChooseRoleParent;
+    private Button btnChooseRoleTeacher, btnChooseRoleParent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
