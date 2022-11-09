@@ -49,6 +49,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ed_register_phone_number"
             style="@style/EditText"
+            android:inputType="number|phone"
             android:hint="@string/phone_nubmer" />
     </com.google.android.material.textfield.TextInputLayout>
 
