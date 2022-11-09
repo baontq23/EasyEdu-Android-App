@@ -17,7 +17,7 @@ import com.btcdteam.easyedu.R;
 
 
 public class ChooseActionFragment extends Fragment {
-    Button btnChooseActionRegister, btnChooseActionLogin;
+    Button btnChooseActionRegister, btnChooseActionLogin, btnChooseActionLoginGoogle;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -31,6 +31,7 @@ public class ChooseActionFragment extends Fragment {
 
         btnChooseActionLogin = view.findViewById(R.id.btn_choose_action_login);
         btnChooseActionRegister = view.findViewById(R.id.btn_choose_action_register);
+        btnChooseActionLoginGoogle = view.findViewById(R.id.btn_choose_action_login_google);
 
         btnChooseActionLogin.setOnClickListener(v -> {
             Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_chooseActionFragment_to_loginFragment);
@@ -38,6 +39,10 @@ public class ChooseActionFragment extends Fragment {
 
         btnChooseActionRegister.setOnClickListener(v -> {
             Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_chooseActionFragment_to_registerFragment);
+        });
+
+        btnChooseActionLoginGoogle.setOnClickListener(v -> {
+
         });
     }
 }
