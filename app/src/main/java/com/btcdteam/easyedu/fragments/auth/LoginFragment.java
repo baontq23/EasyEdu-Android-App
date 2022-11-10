@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.btcdteam.easyedu.R;
+import com.btcdteam.easyedu.activity.TeacherActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -59,7 +60,8 @@ public class LoginFragment extends Fragment {
         btnLoginGoogle = view.findViewById(R.id.btn_login_login_google);
 
         btnLogin.setOnClickListener(v -> {
-
+            getActivity().startActivity(new Intent(getActivity(), TeacherActivity.class));
+            getActivity().finish();
         });
 
         btnLoginGoogle.setOnClickListener(v -> {
