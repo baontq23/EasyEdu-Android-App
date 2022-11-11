@@ -37,15 +37,10 @@ public class ViewClassFragment extends Fragment {
         btnInfor = view.findViewById(R.id.img_item_class_info);
         RecyclerView rcv = view.findViewById(R.id.rcv_item_class);
 
-        List<String> list = new ArrayList<>();
-        list.add("a");
-        list.add("a");
-        list.add("a");
-        list.add("a");
-        list.add("a");
+
 
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        TestAdapter adapter = new TestAdapter(list, new TestAdapter.IonClick() {
+        TestAdapter adapter = new TestAdapter(new TestAdapter.IonClick() {
             @Override
             public void onClick() {
                 Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment);

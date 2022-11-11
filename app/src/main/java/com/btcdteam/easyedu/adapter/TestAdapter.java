@@ -10,21 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
 
-import java.util.List;
-
 public class TestAdapter extends RecyclerView.Adapter<TestAdapter.TestHolder> {
-    List<String> list;
     IonClick ionClick;
 
-    public TestAdapter(List<String> list, IonClick ionClick) {
-        this.list = list;
+    public TestAdapter( IonClick ionClick) {
         this.ionClick = ionClick;
     }
 
-    public void setData(List<String> list){
-        this.list = list;
-        notifyDataSetChanged();
-    }
 
     public interface IonClick{
         void onClick();
@@ -46,7 +38,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.TestHolder> {
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return 10;
     }
 
     public class TestHolder extends RecyclerView.ViewHolder {
