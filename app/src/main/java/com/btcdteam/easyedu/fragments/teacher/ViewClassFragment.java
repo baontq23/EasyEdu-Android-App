@@ -16,12 +16,11 @@ import android.widget.ImageView;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.TestAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ViewClassFragment extends Fragment {
-    ImageView btnInfor;
+    ImageView btnInfo;
+    FloatingActionButton fabAddClass;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,11 +33,19 @@ public class ViewClassFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnInfor = view.findViewById(R.id.img_item_class_info);
+        btnInfo = view.findViewById(R.id.img_item_class_info);
         RecyclerView rcv = view.findViewById(R.id.rcv_item_class);
+        fabAddClass = view.findViewById(R.id.fab_add_class);
 
+        fabAddClass.setOnClickListener(v -> {
+            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_createClassFragment);
+        });
 
+        btnInfo.setOnClickListener(v -> {
 
+        });
+
+        //test layout
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         TestAdapter adapter = new TestAdapter(new TestAdapter.IonClick() {
             @Override
@@ -48,9 +55,5 @@ public class ViewClassFragment extends Fragment {
         });
         rcv.setLayoutManager(manager);
         rcv.setAdapter(adapter);
-
-        btnInfor.setOnClickListener(v -> {
-
-        });
     }
 }

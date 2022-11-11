@@ -60,6 +60,16 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="ToolbarButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:padding">5dp</item>
+        <item name="android:textColor">@color/blue_primary</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="backgroundTint">@color/bg_btn_toolbar</item>
+        <item name="cornerRadius">40dp</item>
+        <item name="rippleColor">@color/blue_primary</item>
+    </style>
+
     <!-- Style Edit Text-->
     <style name="EditText" parent="ThemeOverlay.Material3.TextInputEditText">
         <item name="android:layout_width">match_parent</item>

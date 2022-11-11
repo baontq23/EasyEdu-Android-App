@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_viewClassFragment_to_classInfoFragment"
             app:destination="@id/classInfoFragment" />
+        <action
+            android:id="@+id/action_viewClassFragment_to_createClassFragment"
+            app:destination="@id/createClassFragment" />
     </fragment>
     <fragment
         android:id="@+id/classInfoFragment"
         android:name="com.btcdteam.easyedu.fragments.teacher.ClassInfoFragment"
         android:label="fragment_class_info"
         tools:layout="@layout/fragment_class_info" />
+    <fragment
+        android:id="@+id/createClassFragment"
+        android:name="com.btcdteam.easyedu.fragments.teacher.CreateClassFragment"
+        android:label="fragment_create_class"
+        tools:layout="@layout/fragment_create_class" />
 </navigation>
