@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="40dp"
+    android:elevation="20dp"
+    android:layout_margin="8dp"
+    android:id="@+id/item_class">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/left"
+            android:padding="24dp"
+            android:layout_weight="4">
+
+            <TextView
+                android:id="@+id/tv_item_class_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Ten lop 1"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_alignParentTop="true"/>
+
+            <TextView
+                android:id="@+id/tv_item_class_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Noi dung mo ta"
+                android:layout_marginVertical="8dp"
+                android:layout_below="@+id/tv_item_class_name"/>
+
+            <TextView
+                android:id="@+id/tv_item_class_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="Hoc sinh: "
+                android:layout_alignParentBottom="true"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/img_item_class_template"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_weight="6"
+            android:src="@drawable/bg_item_class"
+            android:layout_gravity="bottom"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
