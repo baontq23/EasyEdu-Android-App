@@ -23,9 +23,6 @@ import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Teacher;
 import com.btcdteam.easyedu.network.APIService;
 import com.btcdteam.easyedu.utils.ProgressBarDialog;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -40,17 +37,14 @@ import retrofit2.Response;
 
 public class LoginFragment extends Fragment {
     private static final String TAG = "LoginFragment";
-    TextInputEditText edLoginPhoneNumber, edLoginPassword;
-    Button btnLogin;
-    private GoogleSignInClient mGoogleSignInClient;
-    String role;
+    private TextInputEditText edLoginPhoneNumber, edLoginPassword;
+    private Button btnLogin;
+    private String role;
     private ProgressBarDialog progressBarDialog;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         // Inflate the layout for this fragment
         progressBarDialog = new ProgressBarDialog(requireActivity());
         return inflater.inflate(R.layout.fragment_login, container, false);
@@ -63,7 +57,6 @@ public class LoginFragment extends Fragment {
         edLoginPhoneNumber = view.findViewById(R.id.ed_login_phone_number);
         edLoginPassword = view.findViewById(R.id.ed_login_password);
         btnLogin = view.findViewById(R.id.btn_login_login);
-
 
         btnLogin.setOnClickListener(v -> {
             String phone = edLoginPhoneNumber.getText().toString();
