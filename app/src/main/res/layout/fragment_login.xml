@@ -65,22 +65,10 @@
         <Button
             android:id="@+id/btn_login_login"
             style="@style/NormalButton"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="48dp"
             android:text="@string/login" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="8dp"
-            android:text="@string/or"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/btn_login_login_google"
-            style="@style/GoogleButton"
-            android:text="@string/login_with_google" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
