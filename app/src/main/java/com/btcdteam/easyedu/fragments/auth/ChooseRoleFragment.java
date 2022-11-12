@@ -34,14 +34,12 @@ public class ChooseRoleFragment extends Fragment {
         btnChooseRoleTeacher = view.findViewById(R.id.btn_choose_role_teacher);
         btnChooseRoleParent = view.findViewById(R.id.btn_choose_role_parent);
         btnChooseRoleTeacher.setOnClickListener(view1 -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("role", "teacher");
-            Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_chooseRoleFragment_to_chooseActionFragment, bundle);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_chooseRoleFragment_to_chooseActionFragment);
         });
         btnChooseRoleParent.setOnClickListener(view1 -> {
             Bundle bundle = new Bundle();
             bundle.putString("role", "parent");
-            Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_chooseRoleFragment_to_chooseActionFragment, bundle);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_chooseRoleFragment_to_loginFragment2, bundle);
         });
 
     }
