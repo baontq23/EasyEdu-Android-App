@@ -55,9 +55,9 @@
             android:id="@+id/img_item_class_template"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:layout_gravity="bottom"
             android:layout_weight="6"
-            android:src="@drawable/bg_item_class"
-            android:layout_gravity="bottom"/>
+            android:src="@drawable/bg_item_class" />
 
     </LinearLayout>
 
