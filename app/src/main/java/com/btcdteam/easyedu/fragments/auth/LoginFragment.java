@@ -209,7 +209,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void sharedPreferencesTeacher(String role, int id, String name, String email, String phone, String dob) {
-        SharedPreferences.Editor edt = requireActivity().getSharedPreferences("SESSION_TEACHER", Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor edt = requireActivity().getSharedPreferences("SESSION", Context.MODE_PRIVATE).edit();
         edt.clear();
         edt.putString("session_role", role);
         edt.putInt("session_id", id);
@@ -221,7 +221,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void sharedPreferencesParent(String role, String id, String name, String email, String phone, String dob, String fcm_token) {
-        SharedPreferences.Editor edt = requireActivity().getSharedPreferences("SESSION_PARENT", Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor edt = requireActivity().getSharedPreferences("SESSION", Context.MODE_PRIVATE).edit();
         edt.clear();
         edt.putString("session_role", role);
         edt.putString("session_id", id);
