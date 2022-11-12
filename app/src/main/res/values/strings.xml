@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="teacher">Giáo viên</string>
     <string name="parent">Phụ huynh</string>
-    <string name="login_with_google">Đăng nhập bằng google</string>
+    <string name="login_with_google">Đăng nhập bằng Google</string>
     <string name="register">Đăng ký</string>
     <string name="login">Đăng nhập</string>
     <string name="or">hoặc</string>
@@ -13,4 +13,10 @@
     <string name="full_name">Họ và tên</string>
     <string name="repassword">Xác nhận mật khẩu</string>
     <string name="submit">Xác nhận</string>
+    <string name="notification">Thông báo</string>
+    <string name="close">Đóng</string>
+    <string name="permission_noti_1">Ứng dụng chưa được cấp quyền, các chức năng có thể sẽ không hoạt động bình thường</string>
+    <string name="grant">Cấp quyền</string>
+    <string name="permission_request">Vui lòng cấp quyền truy cập bộ nhớ để tiếp tục</string>
+    <string name="go_to">Đi đến</string>
 </resources>
