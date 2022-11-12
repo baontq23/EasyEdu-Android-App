@@ -34,7 +34,9 @@ public class ChooseActionFragment extends Fragment {
         btnChooseActionLoginGoogle = view.findViewById(R.id.btn_choose_action_login_google);
 
         btnChooseActionLogin.setOnClickListener(v -> {
-            Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_chooseActionFragment_to_loginFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString("role", "teacher");
+            Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_chooseActionFragment_to_loginFragment,bundle);
         });
 
         btnChooseActionRegister.setOnClickListener(v -> {
