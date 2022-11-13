@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.ClassroomAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
+import com.btcdteam.easyedu.interfaces.IonClick;
 import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.network.APIService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -81,7 +82,7 @@ public class ViewClassFragment extends Fragment {
                     Type type = new TypeToken<List<Classroom>>(){}.getType();
                     list = new Gson().fromJson(response.body().getAsJsonArray("data").toString(),type);
                     LinearLayoutManager manager = new LinearLayoutManager(getContext());
-                    ClassroomAdapter adapter = new ClassroomAdapter(list, new ClassroomAdapter.IonClick() {
+                    ClassroomAdapter adapter = new ClassroomAdapter(list, new IonClick() {
                         @Override
                         public void onClick() {
                             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment);

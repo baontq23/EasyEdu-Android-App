@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
+import com.btcdteam.easyedu.interfaces.IonClick;
 import com.btcdteam.easyedu.models.Classroom;
 
 import java.util.List;
@@ -21,10 +22,6 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.Clas
     public ClassroomAdapter(List<Classroom> list, IonClick ionClick) {
         this.list = list;
         this.ionClick = ionClick;
-    }
-
-    public interface IonClick{
-        void onClick();
     }
 
     @NonNull
