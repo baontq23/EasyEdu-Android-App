@@ -1,5 +1,6 @@
 package com.btcdteam.easyedu.network;
 
+import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.models.Teacher;
 import com.google.gson.JsonObject;
 
@@ -24,5 +25,8 @@ public interface APIService {
 
     @GET("parent/login/{email}")
     Call<JsonObject> parentLoginWithEmail(@Path("email") String email);
+
+    @POST("classroom")
+    Call<JsonObject> createClassroom(@Body Classroom classroom);
 
 }
