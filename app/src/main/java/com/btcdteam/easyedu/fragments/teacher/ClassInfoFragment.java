@@ -70,6 +70,8 @@ public class ClassInfoFragment extends Fragment {
         icSetting = view.findViewById(R.id.ic_toolbar_setting);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
         setSearchToolbar(view);
         setMenuItemSelected();
 
@@ -193,7 +195,7 @@ public class ClassInfoFragment extends Fragment {
         // set hint and the text colors
 
         EditText txtSearch = ((EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text));
-        txtSearch.setHint("Search..");
+        txtSearch.setHint("Tìm kiếm...");
         txtSearch.setHintTextColor(Color.DKGRAY);
         txtSearch.setTextColor(getResources().getColor(R.color.blue_primary));
 
