@@ -29,4 +29,7 @@ public interface APIService {
     @POST("classroom")
     Call<JsonObject> createClassroom(@Body Classroom classroom);
 
+    @GET("classroom/teacherId/{teacherId}")
+    Call<JsonObject> getListClassroom(@Path("teacherId") int teacherId);
+
 }
