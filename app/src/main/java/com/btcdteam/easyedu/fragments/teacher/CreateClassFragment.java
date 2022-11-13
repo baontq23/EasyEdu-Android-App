@@ -114,7 +114,6 @@ public class CreateClassFragment extends Fragment {
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     progressBarDialog.dismiss();
                     if(response.code() == 201) {
-
                         Toast.makeText(requireContext(), "Tạo lớp học thành công!", Toast.LENGTH_SHORT).show();
                     } else if(response.code() == 400) {
                         Toast.makeText(requireContext(), "Thông tin không hợp lệ!", Toast.LENGTH_SHORT).show();
