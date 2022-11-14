@@ -43,7 +43,8 @@
                 android:layout_height="46dp"
                 android:padding="12dp"
                 android:src="@drawable/ic_action_setting"
-                android:layout_gravity="end"/>
+                android:layout_gravity="end"
+                android:background="?android:selectableItemBackgroundBorderless"/>
 
         </LinearLayout>
 

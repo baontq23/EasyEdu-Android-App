@@ -17,12 +17,13 @@ import com.btcdteam.easyedu.adapter.StudentAdapter;
 import com.btcdteam.easyedu.interfaces.IonClick;
 import com.btcdteam.easyedu.models.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentFragment extends Fragment {
     RecyclerView rcv;
     StudentAdapter adapter;
-    List<Student> list;
+    List<Student> list = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,12 +36,25 @@ public class StudentFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        IonClick headerOnclick = () -> {
 
+        //data test
+        list.add(new Student("fdsaf fad", "nam", "24/3/2002", "1"));
+        list.add(new Student("sa fad", "nam", "24/3/2002", "1"));
+        list.add(new Student("ds fad", "nam", "24/3/2002", "1"));
+        list.add(new Student("hj fad", "nam", "24/3/2002", "1"));
+
+        IonClick headerOnclick = new IonClick() {
+            @Override
+            public void onClick(Object object) {
+
+            }
         };
 
-        IonClick itemStudentOnclick = () -> {
+        IonClick itemStudentOnclick = new IonClick() {
+            @Override
+            public void onClick(Object object) {
 
+            }
         };
 
         rcv = view.findViewById(R.id.rcv_student);
