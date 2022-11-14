@@ -38,7 +38,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.Clas
         holder.tvClassDescription.setText(classroom.getDescription());
         holder.tvQuantity.setText("Học sinh: " + classroom.getCount());
         holder.itemClass.setOnClickListener(v -> {
-            ionClick.onClick();
+            ionClick.onClick(classroom);
         });
     }
 

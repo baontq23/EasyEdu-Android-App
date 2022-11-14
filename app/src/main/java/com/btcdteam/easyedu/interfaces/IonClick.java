@@ -1,5 +1,5 @@
 package com.btcdteam.easyedu.interfaces;
 
 public interface IonClick {
-    void onClick();
+    void onClick(Object object);
 }

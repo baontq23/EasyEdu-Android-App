@@ -84,7 +84,7 @@ public class ViewClassFragment extends Fragment {
                     LinearLayoutManager manager = new LinearLayoutManager(getContext());
                     ClassroomAdapter adapter = new ClassroomAdapter(list, new IonClick() {
                         @Override
-                        public void onClick() {
+                        public void onClick(Object object) {
                             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment);
                         }
                     });
