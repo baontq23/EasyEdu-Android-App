@@ -106,7 +106,9 @@ public class RegisterFragment extends Fragment {
         });
 
         btnRegisterBack.setOnClickListener(v -> {
-            Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_registerFragment_to_chooseActionFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString("role","teacher");
+            Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_registerFragment_to_chooseActionFragment,bundle);
         });
     }
 }
