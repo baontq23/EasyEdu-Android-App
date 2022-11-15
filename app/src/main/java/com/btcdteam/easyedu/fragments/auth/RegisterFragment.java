@@ -90,8 +90,10 @@ public class RegisterFragment extends Fragment {
                         return;
                     }
                     if (response.code() == 201) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("role","teacher");
                         Toast.makeText(getContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
-                        Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_registerFragment_to_chooseActionFragment);
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_auth).navigate(R.id.action_registerFragment_to_chooseActionFragment,bundle);
                     }
                 }
 
