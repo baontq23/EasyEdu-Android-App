@@ -58,8 +58,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Nguyen Van A"
-                        android:maxLines="1"
-                        android:ellipsize="end"
                         android:textSize="18sp"
                         android:textColor="@color/blue_primary"
                         android:layout_weight="1"/>
@@ -84,8 +82,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="dd/MM/yyyy"
-                        android:maxLines="1"
-                        android:ellipsize="end"
                         android:textSize="18sp"
                         android:textColor="@color/blue_primary"
                         android:layout_weight="1"/>
@@ -111,8 +107,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Nam"
-                        android:maxLines="1"
-                        android:ellipsize="end"
                         android:textSize="18sp"
                         android:textColor="@color/blue_primary"
                         android:layout_weight="1"/>

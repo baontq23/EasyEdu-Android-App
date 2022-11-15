@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="Phụ Huynh"
                 android:textSize="36sp"
+                android:layout_marginTop="16dp"
                 android:textColor="@color/black"/>
 
             <View
@@ -46,6 +47,10 @@
                 android:layout_height="1dp"
                 android:background="@color/black"
                 android:layout_marginBottom="16dp"/>
+
+            <include layout="@layout/parent_detail"/>
+
+            <include layout="@layout/ed_parent_detail"/>
 
         </LinearLayout>
 
