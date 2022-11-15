@@ -71,7 +71,7 @@ public class ClassInfoFragment extends Fragment {
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
         setSearchToolbar(view);
         setMenuItemSelected();
 

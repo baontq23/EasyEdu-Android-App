@@ -21,10 +21,19 @@
         android:id="@+id/classInfoFragment"
         android:name="com.btcdteam.easyedu.fragments.teacher.ClassInfoFragment"
         android:label="fragment_class_info"
-        tools:layout="@layout/fragment_class_info" />
+        tools:layout="@layout/fragment_class_info" >
+        <action
+            android:id="@+id/action_classInfoFragment_to_studentDetailsFragment"
+            app:destination="@id/studentDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/createClassFragment"
         android:name="com.btcdteam.easyedu.fragments.teacher.CreateClassFragment"
         android:label="fragment_create_class"
         tools:layout="@layout/fragment_create_class" />
+    <fragment
+        android:id="@+id/studentDetailsFragment"
+        android:name="com.btcdteam.easyedu.fragments.teacher.StudentDetailsFragment"
+        android:label="fragment_student_details"
+        tools:layout="@layout/fragment_student_details" />
 </navigation>
