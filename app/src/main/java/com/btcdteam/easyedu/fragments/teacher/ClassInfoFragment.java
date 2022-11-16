@@ -27,9 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -56,7 +54,7 @@ public class ClassInfoFragment extends Fragment {
     private View bgStudent, bgParent;
     private FrameLayout layoutStudent, layoutParent;
     private ViewPager2 viewPager2;
-    Toolbar toolbar, searchToolbar, toolbar02;
+    Toolbar toolbar, searchToolbar;
     Menu search_menu;
     MenuItem item_search;
     ImageView icSearch, icSetting;
@@ -84,12 +82,11 @@ public class ClassInfoFragment extends Fragment {
         viewPager2 = view.findViewById(R.id.view_pager);
 
         toolbar = view.findViewById(R.id.toolbar);
-//        toolbar02 = view.findViewById(R.id.toolbar02);
         icSearch = view.findViewById(R.id.ic_toolbar_search);
         icSetting = view.findViewById(R.id.ic_toolbar_setting);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
         setSearchToolbar(view);
         setMenuItemSelected();
@@ -113,7 +110,7 @@ public class ClassInfoFragment extends Fragment {
     private void setViewPager() {
         scaleDownAnimation.setDuration(200);
         scaleUpAnimation.setDuration(200);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(requireActivity());
         viewPager2.setAdapter(adapter);
 
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -178,7 +175,7 @@ public class ClassInfoFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable("Array", (Serializable) list);
         intent.putExtras(bundle);
-        LocalBroadcastManager.getInstance(requireActivity()).sendBroadcast(intent);
+        requireActivity().sendBroadcast(intent);
     }
 
     private void setSearchToolbar(@NonNull View view) {
@@ -196,14 +193,14 @@ public class ClassInfoFragment extends Fragment {
 
             item_search = search_menu.findItem(R.id.action_filter_search);
 
-            MenuItemCompat.setOnActionExpandListener(item_search, new MenuItemCompat.OnActionExpandListener() {
+            item_search.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                 @Override
                 public boolean onMenuItemActionCollapse(MenuItem item) {
                     // Do something when collapsed
                     circleReveal(R.id.searchtoolbar, 1, true, false);
                     Intent intent = new Intent("SEARCH");
                     intent.putExtra("search", "");
-                    LocalBroadcastManager.getInstance(requireActivity()).sendBroadcast(intent);
+                    requireActivity().sendBroadcast(intent);
                     return true;
                 }
 
@@ -240,7 +237,7 @@ public class ClassInfoFragment extends Fragment {
         EditText txtSearch = ((EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text));
         txtSearch.setHint("Tìm kiếm...");
         txtSearch.setHintTextColor(Color.DKGRAY);
-        txtSearch.setTextColor(getResources().getColor(R.color.blue_primary));
+        txtSearch.setTextColor(getResources().getColor(R.color.blue_primary, requireActivity().getTheme()));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -248,7 +245,7 @@ public class ClassInfoFragment extends Fragment {
                 callSearch(query);
                 Intent intent = new Intent("SEARCH");
                 intent.putExtra("search", query);
-                LocalBroadcastManager.getInstance(requireActivity()).sendBroadcast(intent);
+                requireActivity().sendBroadcast(intent);
                 return true;
             }
 

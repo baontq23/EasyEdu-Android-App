@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.StudentAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
-import com.btcdteam.easyedu.models.Student;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
 import com.google.gson.Gson;
@@ -44,7 +42,6 @@ import retrofit2.Response;
 public class StudentFragment extends Fragment implements StudentAdapter.StudentItemListener {
     RecyclerView rcv;
     StudentAdapter adapter;
-    List<Student> list = new ArrayList<>();
     List<StudentDetail> studentDetailList = new ArrayList<>();
     List<StudentDetail> studentDetailLis01 = new ArrayList<>();
     SearchView searchView;
@@ -54,9 +51,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            if (bundle.getSerializable("Array") == null) {
-
-            } else {
+            if (bundle.getSerializable("Array") != null) {
                 studentDetailList = (List<StudentDetail>) bundle.getSerializable("Array");
                 adapter = new StudentAdapter(studentDetailList, StudentFragment.this);
                 LinearLayoutManager manager = new GridLayoutManager(getContext(), 1);
@@ -88,10 +83,22 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        requireContext().registerReceiver(receiver, new IntentFilter("ACTION"));
+        requireContext().registerReceiver(receiverName, new IntentFilter("SEARCH"));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        requireActivity().unregisterReceiver(receiver);
+        requireActivity().unregisterReceiver(receiverName);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, new IntentFilter("ACTION"));
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiverName, new IntentFilter("SEARCH"));
         rcv = view.findViewById(R.id.rcv_student);
         searchView = view.findViewById(R.id.reSearchView);
         getListStudent();
@@ -177,11 +184,12 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     @Override
     public void onOptionClick(int position, StudentDetail student) {
         BottomMenu.show(new String[]{"Cập nhật", "Xóa"})
-                .setMessage(student.getName())
+                .setMessage("Học sinh: " + student.getName())
                 .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
                     @Override
                     public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
-                        if (index == 1) {
+                        if (index == 0) return true;
+                        else if (index == 1) {
                             deleteStudent(position, student.getStudentId());
                         }
                         return false;

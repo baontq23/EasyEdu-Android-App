@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -26,10 +27,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    allprojects {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:deprecation"
+        }
+    }
 }
 
 dependencies {
     implementation files('libs/poishadow-all.jar')
+    implementation 'com.google.firebase:firebase-messaging:23.1.0'
     def dialogx_version = "0.0.46"
     def nav_version = "2.5.3"
 
@@ -45,5 +52,4 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
 }
