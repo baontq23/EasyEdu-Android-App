@@ -46,6 +46,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     List<StudentDetail> studentDetailLis01 = new ArrayList<>();
     SearchView searchView;
     String text = null;
+    View view;
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -79,7 +80,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_student, container, false);
+        return view = inflater.inflate(R.layout.fragment_student, container, false);
     }
 
     @Override

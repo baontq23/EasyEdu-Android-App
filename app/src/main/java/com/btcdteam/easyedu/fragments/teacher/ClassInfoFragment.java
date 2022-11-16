@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,7 +58,7 @@ public class ClassInfoFragment extends Fragment {
     MenuItem item_search;
     ImageView icSearch, icSetting;
     List<StudentDetail> studentDetailLis01, studentDetailLis02, studentDetailList;
-
+    int check = 0;
     ScaleAnimation scaleUpAnimation = new ScaleAnimation(0f, 1.0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
     ScaleAnimation scaleDownAnimation = new ScaleAnimation(1f, 0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
 
@@ -145,29 +144,21 @@ public class ClassInfoFragment extends Fragment {
             item_search.expandActionView();
         });
 
-        registerForContextMenu(icSetting);
-    }
+        icSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (check == 0) {
+                    icSetting.setImageResource(R.drawable.semeter02);
+                    broadCast(studentDetailLis02);
+                    check = 1;
+                } else {
+                    icSetting.setImageResource(R.drawable.semeter01);
+                    broadCast(studentDetailLis01);
+                    check = 0;
+                }
+            }
+        });
 
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        requireActivity().getMenuInflater().inflate(R.menu.menu_class_student, menu);
-        super.onCreateContextMenu(menu, v, menuInfo);
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId() == R.id.xoalop) {
-            deleteClassRoom();
-        }
-        if (item.getItemId() == R.id.doiKi) {
-            broadCast(studentDetailLis01);
-        }
-        if (item.getItemId() == R.id.doiKi2) {
-            broadCast(studentDetailLis02);
-        }
-
-        return super.onContextItemSelected(item);
     }
 
     void broadCast(List<StudentDetail> list) {
