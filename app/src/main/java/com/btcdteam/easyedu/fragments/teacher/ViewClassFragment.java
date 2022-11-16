@@ -2,6 +2,7 @@ package com.btcdteam.easyedu.fragments.teacher;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.ClassroomAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
-import com.btcdteam.easyedu.interfaces.IonClick;
 import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.network.APIService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +28,8 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialogx.dialogs.BottomMenu;
+import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ViewClassFragment extends Fragment {
+public class ViewClassFragment extends Fragment implements ClassroomAdapter.ClassRoomItemListener {
     private ImageView btnInfo;
     private FloatingActionButton fabAddClass;
     private RecyclerView rcv;
@@ -84,13 +86,7 @@ public class ViewClassFragment extends Fragment {
                     }.getType();
                     list = new Gson().fromJson(response.body().getAsJsonArray("data").toString(), type);
                     LinearLayoutManager manager = new LinearLayoutManager(getContext());
-                    ClassroomAdapter adapter = new ClassroomAdapter(list, new IonClick() {
-                        @Override
-                        public void onClick(Object object) {
-                            saveClassroomId(((Classroom) object).getId(), ((Classroom) object).getName());
-                            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment);
-                        }
-                    });
+                    ClassroomAdapter adapter = new ClassroomAdapter(list, ViewClassFragment.this);
                     rcv.setLayoutManager(manager);
                     rcv.setAdapter(adapter);
                 } else {
@@ -113,5 +109,47 @@ public class ViewClassFragment extends Fragment {
         editor.putInt("classroomId", classroomId);
         editor.putString("classroomName", classroomName);
         editor.apply();
+    }
+
+    @Override
+    public void onItemLongClick(int position, Classroom classroom) {
+        BottomMenu.show(new String[]{"Cập nhật lớp", "Xóa lớp"})
+                .setMessage(classroom.getName())
+                .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
+                    @Override
+                    public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
+                        if (index == 1) {
+                            deleteClassRoom();
+                        }
+                        return false;
+                    }
+                });
+    }
+
+    @Override
+    public void onItemClick(int position, Classroom classroom) {
+        saveClassroomId(classroom.getId(), classroom.getName());
+        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment);
+    }
+
+    private void deleteClassRoom() {
+        SharedPreferences preferences = requireContext().getSharedPreferences("CLASSROOM_ID", Context.MODE_PRIVATE);
+        int classroomId = preferences.getInt("classroomId", 0);
+        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteClassRoomById(classroomId);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.code() == 204) {
+                    Toast.makeText(requireContext(), "Xóa lớp thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Không tìm thấy thông tin lớp", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

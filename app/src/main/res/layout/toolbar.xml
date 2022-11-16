@@ -16,9 +16,10 @@
         android:id="@+id/ic_toolbar_setting"
         android:layout_width="46dp"
         android:layout_height="46dp"
-        android:src="@drawable/ic_action_setting"
-        android:padding="12dp"
-        android:layout_gravity="end"/>
+        android:src="@drawable/semeter01"
+        android:padding="7dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="end" />
 
     <ImageView
         android:id="@+id/ic_toolbar_search"

@@ -10,18 +10,24 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
-import com.btcdteam.easyedu.interfaces.IonClick;
 import com.btcdteam.easyedu.models.Classroom;
 
 import java.util.List;
 
 public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.ClassroomVH> {
     private List<Classroom> list;
-    private IonClick ionClick;
+    private ClassRoomItemListener listener;
 
-    public ClassroomAdapter(List<Classroom> list, IonClick ionClick) {
+    public interface ClassRoomItemListener {
+        void onItemLongClick(int position, Classroom classroom);
+
+        void onItemClick(int position, Classroom classroom);
+
+    }
+
+    public ClassroomAdapter(List<Classroom> list, ClassRoomItemListener listene) {
         this.list = list;
-        this.ionClick = ionClick;
+        this.listener = listene;
     }
 
     @NonNull
@@ -37,14 +43,20 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.Clas
         holder.tvClassName.setText(classroom.getName());
         holder.tvClassDescription.setText(classroom.getDescription());
         holder.tvQuantity.setText("Học sinh: " + classroom.getCount());
+
+        holder.itemClass.setOnLongClickListener(v -> {
+            listener.onItemLongClick(position, classroom);
+            return false;
+        });
+
         holder.itemClass.setOnClickListener(v -> {
-            ionClick.onClick(classroom);
+            listener.onItemClick(position, classroom);
         });
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list == null ? 0 : list.size();
     }
 
     public class ClassroomVH extends RecyclerView.ViewHolder {
