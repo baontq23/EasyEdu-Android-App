@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -32,4 +33,18 @@ public interface APIService {
     @GET("classroom/teacherId/{teacherId}")
     Call<JsonObject> getListClassroom(@Path("teacherId") int teacherId);
 
+    @GET("classuser/{idClass}")
+    Call<JsonObject> getListStudentByIdClassRoom(@Path("idClass") int classId);
+
+    @GET("parent/{idClassroom}")
+    Call<JsonObject> getListParentByIdClassRoom(@Path("idClassroom") int classroomId);
+
+    @DELETE("student/{id}")
+    Call<JsonObject> deleteStudentById(@Path("id") String id);
+
+    @DELETE("classroom/{id}")
+    Call<JsonObject> deleteClassRoomById(@Path("id") int id);
+
+    @GET("classuser/getinfo/{id}/{idClass}")
+    Call<JsonObject> getInfoParentAndStudent(@Path("id") String id, @Path("idClass") int idClass);
 }
