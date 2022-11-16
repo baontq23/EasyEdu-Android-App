@@ -57,7 +57,6 @@
                         android:id="@+id/tv_student_detail_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Nguyen Van A"
                         android:textSize="18sp"
                         android:textColor="@color/blue_primary"
                         android:layout_weight="1"/>
@@ -81,7 +80,6 @@
                         android:id="@+id/tv_student_detail_dob"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="dd/MM/yyyy"
                         android:textSize="18sp"
                         android:textColor="@color/blue_primary"
                         android:layout_weight="1"/>
@@ -106,7 +104,6 @@
                         android:id="@+id/tv_student_detail_gender"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Nam"
                         android:textSize="18sp"
                         android:textColor="@color/blue_primary"
                         android:layout_weight="1"/>
@@ -291,6 +288,8 @@
                 android:layout_marginVertical="16dp">
 
                 <TextView
+                    android:id="@+id/Tvtotal"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -306,6 +305,7 @@
                     android:background="@drawable/bg_score"
                     android:paddingVertical="11dp"
                     android:text="9.7"
+                    android:visibility="gone"
                     android:textAlignment="center"
                     android:textColor="@color/blue_primary"
                     android:textSize="12sp" />
