@@ -24,6 +24,7 @@ import com.btcdteam.easyedu.interfaces.IonClick;
 import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.network.APIService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -37,10 +38,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ViewClassFragment extends Fragment {
-    ImageView btnInfo;
-    FloatingActionButton fabAddClass;
-    RecyclerView rcv;
-    List<Classroom> list;
+    private ImageView btnInfo;
+    private FloatingActionButton fabAddClass;
+    private RecyclerView rcv;
+    private List<Classroom> list;
+    private LinearProgressIndicator lpiClass;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +54,7 @@ public class ViewClassFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        lpiClass = view.findViewById(R.id.lpi_class);
         btnInfo = view.findViewById(R.id.img_item_class_info);
         rcv = view.findViewById(R.id.rcv_item_class);
         fabAddClass = view.findViewById(R.id.fab_add_class);
@@ -70,21 +72,21 @@ public class ViewClassFragment extends Fragment {
     }
 
 
-    
     private void getList() {
         SharedPreferences shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListClassroom(shared.getInt("session_id", 0));
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if(response.code() == 200) {
-                    Type type = new TypeToken<List<Classroom>>(){}.getType();
-                    list = new Gson().fromJson(response.body().getAsJsonArray("data").toString(),type);
+                lpiClass.hide();
+                if (response.code() == 200) {
+                    Type type = new TypeToken<List<Classroom>>() {
+                    }.getType();
+                    list = new Gson().fromJson(response.body().getAsJsonArray("data").toString(), type);
                     LinearLayoutManager manager = new LinearLayoutManager(getContext());
                     ClassroomAdapter adapter = new ClassroomAdapter(list, new IonClick() {
                         @Override
                         public void onClick(Object object) {
-                            Classroom classroom = (Classroom) object;
                             saveClassroomId(((Classroom) object).getId(), ((Classroom) object).getName());
                             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment);
                         }
@@ -99,6 +101,7 @@ public class ViewClassFragment extends Fragment {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
+                lpiClass.hide();
                 Toast.makeText(getContext(), "Không thể kết nối với máy chủ!", Toast.LENGTH_SHORT).show();
             }
         });
