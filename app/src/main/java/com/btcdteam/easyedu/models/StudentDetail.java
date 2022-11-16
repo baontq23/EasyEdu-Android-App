@@ -1,18 +1,21 @@
 package com.btcdteam.easyedu.models;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class StudentDetail {
+import java.io.Serializable;
+
+public class StudentDetail implements Serializable {
     private int id;
     @SerializedName("classroom_id")
     private int classroomId;
     @SerializedName("student_id")
     private String studentId;
-    @Expose
+    @SerializedName("student_name")
     private String name;
+    @SerializedName("student_dob")
+    private String dob;
     @SerializedName("regular_score_1")
-    private float regularScore1 ;
+    private float regularScore1;
     @SerializedName("regular_score_2")
     private float regularScore2;
     @SerializedName("regular_score_3")
@@ -22,6 +25,17 @@ public class StudentDetail {
     @SerializedName("final_score")
     private float finalScore;
     private int semester;
+    @SerializedName("parent_name")
+    private String parentName;
+    @SerializedName("parent_email")
+    private String parentEmail;
+    @SerializedName("parent_dob")
+    private String parentDob;
+    @SerializedName("parent_phone")
+    private String parentPhone;
+    @SerializedName("student_gender")
+    private String studentGender;
+
 
     public StudentDetail(int id, int classroomId, String studentId, String name, int semester) {
         this.id = id;
@@ -113,5 +127,53 @@ public class StudentDetail {
 
     public void setSemester(int semester) {
         this.semester = semester;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    public String getParentEmail() {
+        return parentEmail;
+    }
+
+    public void setParentEmail(String parentEmail) {
+        this.parentEmail = parentEmail;
+    }
+
+    public String getParentDob() {
+        return parentDob;
+    }
+
+    public void setParentDob(String parentDob) {
+        this.parentDob = parentDob;
+    }
+
+    public String getParentPhone() {
+        return parentPhone;
+    }
+
+    public void setParentPhone(String parentPhone) {
+        this.parentPhone = parentPhone;
+    }
+
+    public String getStudentGender() {
+        return studentGender;
+    }
+
+    public void setStudentGender(String studentGender) {
+        this.studentGender = studentGender;
     }
 }

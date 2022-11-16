@@ -3,6 +3,8 @@ package com.btcdteam.easyedu.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,92 +13,77 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
-import com.btcdteam.easyedu.interfaces.IonClick;
-import com.btcdteam.easyedu.models.Student;
+import com.btcdteam.easyedu.models.StudentDetail;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
-    private static int TYPE_HEADER = 0;
-    private static int TYPE_ITEM = 1;
-    private IonClick ionClickItem;
-    private IonClick ionClickHeader;
-    private List<Student> list;
+    private List<StudentDetail> list;
+    private List<StudentDetail> listold;
+    private StudentItemListener listener;
 
-    public StudentAdapter(List<Student> list, IonClick onClickItem, IonClick onClickHeader) {
-        this.ionClickItem = onClickItem;
-        this.ionClickHeader = onClickHeader;
+
+    public interface StudentItemListener {
+        void onItemClick(int position, StudentDetail student);
+
+        void onOptionClick(int position, StudentDetail student);
+    }
+
+    public StudentAdapter(List<StudentDetail> list, StudentItemListener listener) {
+        this.listener = listener;
         this.list = list;
-        this.list.add(0, new Student("Học Sinh", null, null, null));
+        this.listold = list;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (TYPE_HEADER == viewType){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_recycleview, parent, false);
-            return new HeaderVH(view);
-        }else if (TYPE_ITEM == viewType){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_student, parent, false);
-            return new StudentVH(view);
-        }
-        return null;
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_student, parent, false);
+        return new StudentVH(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Student student = list.get(position);
+        StudentDetail student = list.get(position);
+        StudentVH studentVH = (StudentVH) holder;
+        ((StudentVH) holder).tvRegularScore1.setText(String.valueOf(student.getRegularScore1()));
+        ((StudentVH) holder).tvStudentName.setText(student.getName());
+        ((StudentVH) holder).tvFinalScore.setText(String.valueOf(student.getFinalScore()));
+        ((StudentVH) holder).tvRegularScore1.setText(String.valueOf(student.getRegularScore1()));
+        ((StudentVH) holder).tvRegularScore2.setText(String.valueOf(student.getRegularScore2()));
+        ((StudentVH) holder).tvRegularScore3.setText(String.valueOf(student.getRegularScore3()));
+        ((StudentVH) holder).tvMidtermScore.setText(String.valueOf(student.getMidtermScore()));
 
-        if(TYPE_HEADER == holder.getItemViewType()){
-            HeaderVH headerVH = (HeaderVH) holder;
+        studentVH.itemStudent.setOnClickListener(v -> {
+            listener.onItemClick(position, student);
+        });
 
-            headerVH.tvTitle.setText(student.getName());
-            headerVH.btnAdd.setOnClickListener(v -> {
-                ionClickHeader.onClick(student);
-            });
-        }else if(TYPE_ITEM == holder.getItemViewType()){
-            StudentVH studentVH = (StudentVH) holder;
-
-            studentVH.tvStudentName.setText(student.getName());
-            studentVH.itemStudent.setOnClickListener(v -> {
-                ionClickItem.onClick(student);
-            });
-        }
+        studentVH.option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onOptionClick(position, student);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        if (list != null){
+        if (list != null) {
             return list.size();
-        }else{
+        } else {
             return 0;
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position == 0){
-            return TYPE_HEADER;
-        }else{
-            return TYPE_ITEM;
-        }
-    }
-
-    public class HeaderVH extends RecyclerView.ViewHolder {
-        ImageView btnAdd;
-        TextView tvTitle;
-        public HeaderVH(@NonNull View itemView) {
-            super(itemView);
-            btnAdd = itemView.findViewById(R.id.img_header_add);
-            tvTitle = itemView.findViewById(R.id.tv_header_title);
-        }
-    }
 
     public class StudentVH extends RecyclerView.ViewHolder {
         TextView tvStudentName, tvRegularScore1, tvRegularScore2, tvRegularScore3, tvMidtermScore, tvFinalScore;
         CardView itemStudent;
+        ImageView option;
+
         public StudentVH(@NonNull View itemView) {
             super(itemView);
             tvStudentName = itemView.findViewById(R.id.tv_student_name);
@@ -106,6 +93,38 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tvMidtermScore = itemView.findViewById(R.id.tv_midterm_score);
             tvFinalScore = itemView.findViewById(R.id.tv_final_score);
             itemStudent = itemView.findViewById(R.id.item_student);
+            option = itemView.findViewById(R.id.option);
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                if (strSearch.isEmpty()) {
+                    list = listold;
+                } else {
+                    ArrayList<StudentDetail> Mmusic = new ArrayList<>();
+                    for (StudentDetail o : listold) {
+                        if (o.getName().toLowerCase().contains(strSearch.toLowerCase())) {
+                            Mmusic.add(o);
+                        }
+                    }
+                    list = Mmusic;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = list;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                list = (ArrayList<StudentDetail>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

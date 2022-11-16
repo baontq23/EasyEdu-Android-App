@@ -4,6 +4,11 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,12 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.ClassroomAdapter;
@@ -85,6 +84,8 @@ public class ViewClassFragment extends Fragment {
                     ClassroomAdapter adapter = new ClassroomAdapter(list, new IonClick() {
                         @Override
                         public void onClick(Object object) {
+                            Classroom classroom = (Classroom) object;
+                            saveClassroomId(((Classroom) object).getId(), ((Classroom) object).getName());
                             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment);
                         }
                     });
@@ -101,5 +102,13 @@ public class ViewClassFragment extends Fragment {
                 Toast.makeText(getContext(), "Không thể kết nối với máy chủ!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void saveClassroomId(int classroomId, String classroomName) {
+        SharedPreferences.Editor editor = requireContext().getSharedPreferences("CLASSROOM_ID", MODE_PRIVATE).edit();
+        editor.clear();
+        editor.putInt("classroomId", classroomId);
+        editor.putString("classroomName", classroomName);
+        editor.apply();
     }
 }

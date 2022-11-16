@@ -21,10 +21,13 @@
         android:id="@+id/classInfoFragment"
         android:name="com.btcdteam.easyedu.fragments.teacher.ClassInfoFragment"
         android:label="fragment_class_info"
-        tools:layout="@layout/fragment_class_info" >
+        tools:layout="@layout/fragment_class_info">
         <action
             android:id="@+id/action_classInfoFragment_to_studentDetailsFragment"
             app:destination="@id/studentDetailsFragment" />
+        <action
+            android:id="@+id/action_classInfoFragment_to_viewClassFragment"
+            app:destination="@id/viewClassFragment" />
     </fragment>
     <fragment
         android:id="@+id/createClassFragment"

@@ -39,6 +39,7 @@
                 android:ellipsize="end"/>
 
             <ImageView
+                android:id="@+id/option"
                 android:layout_width="46dp"
                 android:layout_height="46dp"
                 android:padding="12dp"
