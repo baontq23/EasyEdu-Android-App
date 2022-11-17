@@ -67,9 +67,6 @@ public class ParentFragment extends Fragment implements ParentAdapter.ParentItem
                     list = new Gson().fromJson(response.body().getAsJsonArray("data"), type);
                     adapter = new ParentAdapter(list, ParentFragment.this);
                     rcv.setAdapter(adapter);
-
-                } else {
-                    Toast.makeText(requireContext(), "Không có phụ huynh", Toast.LENGTH_SHORT).show();
                 }
             }
 
