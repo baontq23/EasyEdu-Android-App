@@ -2,6 +2,7 @@ package com.btcdteam.easyedu.fragments.teacher;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -62,7 +63,9 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
         fabAddClass = view.findViewById(R.id.fab_add_class);
 
         fabAddClass.setOnClickListener(v -> {
-            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_createClassFragment);
+            Bundle bundle = new Bundle();
+            bundle.putInt("type", 0);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_createClassFragment, bundle);
         });
 
         btnInfo.setOnClickListener(v -> {
@@ -118,7 +121,9 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
                 .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
                     @Override
                     public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
-                        if (index == 1) {
+                        if (index == 0) {
+                            updateClassRoom(classroom);
+                        } else {
                             deleteClassRoom(classroom.getId(), position);
                         }
                         return false;
@@ -152,5 +157,14 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
                 Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void updateClassRoom(Classroom classroom) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", 1);
+        bundle.putInt("classroomId", classroom.getId());
+        bundle.putString("classroomName", classroom.getName());
+        bundle.putString("classroomDescription", classroom.getDescription());
+        bundle.putString("classroomSubject", classroom.getSubject());
+        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_createClassFragment, bundle);
     }
 }

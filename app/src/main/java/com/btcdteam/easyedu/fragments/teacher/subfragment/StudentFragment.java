@@ -49,7 +49,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     private SearchView searchView;
     private String text = null;
     private TextView tvStatusList;
-    View view;
+    private SharedPreferences preferences;
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -83,7 +83,8 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return view = inflater.inflate(R.layout.fragment_student, container, false);
+        preferences = requireContext().getSharedPreferences("CLASSROOM_ID", Context.MODE_PRIVATE);
+        return inflater.inflate(R.layout.fragment_student, container, false);
     }
 
     @Override
@@ -126,9 +127,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     }
 
     private void getListStudent() {
-        SharedPreferences preferences = requireContext().getSharedPreferences("CLASSROOM_ID", Context.MODE_PRIVATE);
         int classroomId = preferences.getInt("classroomId", 0);
-
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
             @Override
