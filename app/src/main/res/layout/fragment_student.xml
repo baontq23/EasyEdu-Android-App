@@ -32,15 +32,4 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingVertical="?android:actionBarSize" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="64dp"
-        app:backgroundTint="@color/blue_primary"
-        android:src="@drawable/ic_round_add_24"
-        app:tint="@color/white"/>
-
 </FrameLayout>

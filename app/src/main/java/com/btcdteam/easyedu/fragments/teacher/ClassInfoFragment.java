@@ -35,9 +35,12 @@ import com.btcdteam.easyedu.adapter.ViewPagerAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialogx.dialogs.BottomMenu;
+import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -53,14 +56,15 @@ public class ClassInfoFragment extends Fragment {
     private View bgStudent, bgParent;
     private FrameLayout layoutStudent, layoutParent;
     private ViewPager2 viewPager2;
-    Toolbar toolbar, searchToolbar;
-    Menu search_menu;
-    MenuItem item_search;
-    ImageView icSearch, icSetting;
-    List<StudentDetail> studentDetailLis01, studentDetailLis02, studentDetailList;
-    int check = 0;
-    ScaleAnimation scaleUpAnimation = new ScaleAnimation(0f, 1.0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
-    ScaleAnimation scaleDownAnimation = new ScaleAnimation(1f, 0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
+    private Toolbar toolbar, searchToolbar;
+    private Menu search_menu;
+    private MenuItem item_search;
+    private ImageView icSearch, icSetting;
+    private FloatingActionButton fabAddStudent;
+    private List<StudentDetail> studentDetailLis01, studentDetailLis02, studentDetailList;
+    private int check = 0;
+    private ScaleAnimation scaleUpAnimation = new ScaleAnimation(0f, 1.0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
+    private ScaleAnimation scaleDownAnimation = new ScaleAnimation(1f, 0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +87,7 @@ public class ClassInfoFragment extends Fragment {
         toolbar = view.findViewById(R.id.toolbar);
         icSearch = view.findViewById(R.id.ic_toolbar_search);
         icSetting = view.findViewById(R.id.ic_toolbar_setting);
+        fabAddStudent = view.findViewById(R.id.fab_student_add);
 
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -94,6 +99,28 @@ public class ClassInfoFragment extends Fragment {
         toolbar.setTitle(name);
         setViewPager();
         setBottomNav();
+
+        fabAddStudent.setOnClickListener(v -> {
+            BottomMenu.show(new String[]{"Thêm thủ công", "Thêm file .xls"})
+                    .setMessage("Lựa chọn")
+                    .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
+                        @Override
+                        public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
+                            switch (index){
+                                case 0:
+                                    //thêm thủ công
+                                    return true;
+                                case 1:
+                                    //thêm từ file
+                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2);
+                                    BottomMenu.cleanAll();
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                    });
+        });
     }
 
     private void setBottomNav() {
