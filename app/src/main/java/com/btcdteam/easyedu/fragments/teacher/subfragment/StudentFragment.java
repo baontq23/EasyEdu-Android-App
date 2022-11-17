@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,12 +41,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class StudentFragment extends Fragment implements StudentAdapter.StudentItemListener {
-    RecyclerView rcv;
-    StudentAdapter adapter;
-    List<StudentDetail> studentDetailList = new ArrayList<>();
-    List<StudentDetail> studentDetailLis01 = new ArrayList<>();
-    SearchView searchView;
-    String text = null;
+    private RecyclerView rcv;
+    private StudentAdapter adapter;
+    private List<StudentDetail> studentDetailList = new ArrayList<>();
+    private List<StudentDetail> studentDetailLis01 = new ArrayList<>();
+    private SearchView searchView;
+    private String text = null;
+    private TextView tvStatusList;
     View view;
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -58,8 +60,8 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                 LinearLayoutManager manager = new GridLayoutManager(getContext(), 1);
                 rcv.setLayoutManager(manager);
                 rcv.setAdapter(adapter);
+                checkListStatus();
             }
-
         }
     };
 
@@ -102,17 +104,20 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
         super.onViewCreated(view, savedInstanceState);
         rcv = view.findViewById(R.id.rcv_student);
         searchView = view.findViewById(R.id.reSearchView);
+        tvStatusList = view.findViewById(R.id.tv_status_list);
         getListStudent();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
+                if (adapter != null)
+                    adapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter("");
+                if (adapter != null)
+                    adapter.getFilter().filter("");
                 return false;
             }
         });
@@ -142,9 +147,8 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                     LinearLayoutManager manager = new GridLayoutManager(getContext(), 1);
                     rcv.setLayoutManager(manager);
                     rcv.setAdapter(adapter);
-                } else {
-                    Toast.makeText(requireContext(), "Vui lòng thêm học sinh", Toast.LENGTH_SHORT).show();
                 }
+                checkListStatus();
             }
 
             @Override
@@ -173,13 +177,25 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                 } else {
                     Toast.makeText(requireContext(), "Không tìm thấy thông tin học sinh", Toast.LENGTH_SHORT).show();
                 }
+                checkListStatus();
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+                checkListStatus();
             }
         });
+    }
+
+    private void checkListStatus() {
+        if (adapter != null) {
+            if (adapter.getItemCount() > 0) {
+                tvStatusList.setVisibility(View.GONE);
+            } else {
+                tvStatusList.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override

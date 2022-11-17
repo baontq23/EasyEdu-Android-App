@@ -30,6 +30,10 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.Clas
         this.listener = listene;
     }
 
+    public void setList(List<Classroom> list) {
+        this.list = list;
+    }
+
     @NonNull
     @Override
     public ClassroomVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,7 +50,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.Clas
 
         holder.itemClass.setOnLongClickListener(v -> {
             listener.onItemLongClick(position, classroom);
-            return false;
+            return true;
         });
 
         holder.itemClass.setOnClickListener(v -> {

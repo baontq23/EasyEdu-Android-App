@@ -318,10 +318,6 @@ public class ClassInfoFragment extends Fragment {
                             studentDetailLis02.add(o);
                         }
                     }
-
-
-                } else {
-                    Toast.makeText(requireContext(), "Lớp học chưa có học sinh", Toast.LENGTH_SHORT).show();
                 }
             }
 
