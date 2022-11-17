@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg_primary"
     tools:context=".fragments.teacher.subfragment.StudentFragment">
 
@@ -22,4 +23,15 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingVertical="?android:actionBarSize" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="64dp"
+        app:backgroundTint="@color/blue_primary"
+        android:src="@drawable/ic_round_add_24"
+        app:tint="@color/white"/>
+
 </FrameLayout>
