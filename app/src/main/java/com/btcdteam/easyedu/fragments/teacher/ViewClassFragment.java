@@ -2,7 +2,6 @@ package com.btcdteam.easyedu.fragments.teacher;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -45,6 +44,7 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
     private RecyclerView rcv;
     private List<Classroom> list;
     private LinearProgressIndicator lpiClass;
+    private ClassroomAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,7 +86,7 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
                     }.getType();
                     list = new Gson().fromJson(response.body().getAsJsonArray("data").toString(), type);
                     LinearLayoutManager manager = new LinearLayoutManager(getContext());
-                    ClassroomAdapter adapter = new ClassroomAdapter(list, ViewClassFragment.this);
+                    adapter = new ClassroomAdapter(list, ViewClassFragment.this);
                     rcv.setLayoutManager(manager);
                     rcv.setAdapter(adapter);
                 } else {
@@ -119,7 +119,7 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
                     @Override
                     public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
                         if (index == 1) {
-                            deleteClassRoom();
+                            deleteClassRoom(classroom.getId(), position);
                         }
                         return false;
                     }
@@ -132,15 +132,16 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
         Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment);
     }
 
-    private void deleteClassRoom() {
-        SharedPreferences preferences = requireContext().getSharedPreferences("CLASSROOM_ID", Context.MODE_PRIVATE);
-        int classroomId = preferences.getInt("classroomId", 0);
-        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteClassRoomById(classroomId);
+    private void deleteClassRoom(int id, int position) {
+        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteClassRoomById(id);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.code() == 204) {
                     Toast.makeText(requireContext(), "Xóa lớp thành công", Toast.LENGTH_SHORT).show();
+                    list.remove(position);
+                    adapter.setList(list);
+                    adapter.notifyItemRemoved(position);
                 } else {
                     Toast.makeText(requireContext(), "Không tìm thấy thông tin lớp", Toast.LENGTH_SHORT).show();
                 }

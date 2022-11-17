@@ -30,6 +30,10 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.Clas
         this.listener = listene;
     }
 
+    public void setList(List<Classroom> list) {
+        this.list = list;
+    }
+
     @NonNull
     @Override
     public ClassroomVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
