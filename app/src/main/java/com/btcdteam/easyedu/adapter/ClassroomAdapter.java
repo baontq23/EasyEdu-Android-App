@@ -46,7 +46,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.Clas
 
         holder.itemClass.setOnLongClickListener(v -> {
             listener.onItemLongClick(position, classroom);
-            return false;
+            return true;
         });
 
         holder.itemClass.setOnClickListener(v -> {
