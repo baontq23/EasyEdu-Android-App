@@ -37,6 +37,7 @@ public class CreateClassFragment extends Fragment {
     Button btnCreateClass;
     ImageView btnBack;
     ProgressBarDialog progressBarDialog;
+    int type = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +60,19 @@ public class CreateClassFragment extends Fragment {
 
         btnCreateClass = view.findViewById(R.id.btn_create_class_create);
         btnBack = view.findViewById(R.id.img_create_class_back);
+
+        type = getArguments().getInt("type");
+        if(type == 1) {
+            btnCreateClass.setText("Cập nhật");
+            edClassName.setText(getArguments().getString("classroomName"));
+            edDescription.setText(getArguments().getString("classroomDescription"));
+            edSubject.setText(getArguments().getString("classroomSubject"));
+        } else {
+            btnCreateClass.setText("Tạo");
+            edClassName.setText("");
+            edDescription.setText("");
+            edSubject.setText("");
+        }
 
         edClassName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -103,32 +117,66 @@ public class CreateClassFragment extends Fragment {
         btnCreateClass.setOnClickListener(v -> {
             progressBarDialog.setMessage("Loading").show();
             SharedPreferences shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
-            Classroom classroom = new Classroom();
-            classroom.setName(edClassName.getText().toString().trim());
-            classroom.setSubject(edSubject.getText().toString().trim());
-            classroom.setDescription(edDescription.getText().toString().trim());
-            classroom.setTeacherId(shared.getInt("session_id", 0));
-            Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).createClassroom(classroom);
-            call.enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    progressBarDialog.dismiss();
-                    if(response.code() == 201) {
-                        Toast.makeText(requireContext(), "Tạo lớp học thành công!", Toast.LENGTH_SHORT).show();
-                    } else if(response.code() == 400) {
-                        Toast.makeText(requireContext(), "Thông tin không hợp lệ!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(requireContext(), "Tạo lớp học thất bại!", Toast.LENGTH_SHORT).show();
+            if(type == 0) {
+                Classroom classroom = new Classroom();
+                classroom.setName(edClassName.getText().toString().trim());
+                classroom.setSubject(edSubject.getText().toString().trim());
+                classroom.setDescription(edDescription.getText().toString().trim());
+                classroom.setTeacherId(shared.getInt("session_id", 0));
+                Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).createClassroom(classroom);
+                call.enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        progressBarDialog.dismiss();
+                        if(response.code() == 201) {
+                            Toast.makeText(requireContext(), "Tạo lớp học thành công!", Toast.LENGTH_SHORT).show();
+                            requireActivity().onBackPressed();
+                        } else if(response.code() == 400) {
+                            Toast.makeText(requireContext(), "Thông tin không hợp lệ!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(requireContext(), "Tạo lớp học thất bại!", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    progressBarDialog.dismiss();
-                    Toast.makeText(requireContext(), "Không thể kết nối tới máy chủ!", Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBarDialog.dismiss();
+                        Toast.makeText(requireContext(), "Không thể kết nối tới máy chủ!", Toast.LENGTH_SHORT).show();
+                        t.printStackTrace();
+                    }
+                });
+            } else {
+                Classroom classroom = new Classroom();
+                classroom.setId(getArguments().getInt("classroomId"));
+                classroom.setName(edClassName.getText().toString().trim());
+                classroom.setSubject(edSubject.getText().toString().trim());
+                classroom.setDescription(edDescription.getText().toString().trim());
+                classroom.setTeacherId(shared.getInt("session_id", 0));
+                Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).updateClassRoomById(classroom);
+                call.enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        progressBarDialog.dismiss();
+                        if(response.code() == 204) {
+                            Toast.makeText(requireContext(), "Cập nhật lớp học thành công!", Toast.LENGTH_SHORT).show();
+                            requireActivity().onBackPressed();
+                        } else if(response.code() == 400) {
+                            Toast.makeText(requireContext(), "Thông tin không hợp lệ!", Toast.LENGTH_SHORT).show();
+                        } else if(response.code() == 404){
+                            Toast.makeText(requireContext(), "Lớp không tồn tại!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(requireContext(), "Cập nhật lớp học thất bại!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBarDialog.dismiss();
+                        Toast.makeText(requireContext(), "Không thể kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+                        t.printStackTrace();
+                    }
+                });
+            }
         });
 
         btnBack.setOnClickListener(v -> {

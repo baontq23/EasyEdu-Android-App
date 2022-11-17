@@ -354,26 +354,4 @@ public class ClassInfoFragment extends Fragment {
             }
         });
     }
-
-    private void deleteClassRoom() {
-        SharedPreferences preferences = requireContext().getSharedPreferences("CLASSROOM_ID", Context.MODE_PRIVATE);
-        int classroomId = preferences.getInt("classroomId", 0);
-        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteClassRoomById(classroomId);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.code() == 204) {
-                    Toast.makeText(requireContext(), "Xóa lớp thành công", Toast.LENGTH_SHORT).show();
-                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_viewClassFragment);
-                } else {
-                    Toast.makeText(requireContext(), "Không tìm thấy thông tin lớp", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }
