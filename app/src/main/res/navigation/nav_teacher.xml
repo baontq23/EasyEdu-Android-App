@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_classInfoFragment_to_addFileXlsFragment2"
             app:destination="@id/addFileXlsFragment2" />
+        <action
+            android:id="@+id/action_classInfoFragment_to_editStudentFragment"
+            app:destination="@id/editStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/createClassFragment"
@@ -41,10 +44,19 @@
         android:id="@+id/studentDetailsFragment"
         android:name="com.btcdteam.easyedu.fragments.teacher.StudentDetailsFragment"
         android:label="fragment_student_details"
-        tools:layout="@layout/fragment_student_details" />
+        tools:layout="@layout/fragment_student_details" >
+        <action
+            android:id="@+id/action_studentDetailsFragment_to_editStudentFragment"
+            app:destination="@id/editStudentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addFileXlsFragment2"
         android:name="com.btcdteam.easyedu.fragments.teacher.AddFileXlsFragment"
         android:label="fragment_add_file_xls"
         tools:layout="@layout/fragment_add_file_xls" />
+    <fragment
+        android:id="@+id/editStudentFragment"
+        android:name="com.btcdteam.easyedu.fragments.teacher.EditStudentFragment"
+        android:label="fragment_edit_student"
+        tools:layout="@layout/fragment_edit_student" />
 </navigation>
