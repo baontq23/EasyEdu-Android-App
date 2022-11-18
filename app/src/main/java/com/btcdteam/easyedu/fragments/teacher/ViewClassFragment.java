@@ -2,10 +2,8 @@ package com.btcdteam.easyedu.fragments.teacher;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -157,7 +155,12 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
     @Override
     public void onItemClick(int position, Classroom classroom) {
         saveClassroomId(classroom.getId(), classroom.getName());
-        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment);
+        Bundle bundle = new Bundle();
+        bundle.putInt("classroom_id", classroom.getId());
+        bundle.putString("classroom_name", classroom.getName());
+        bundle.putString("classroom_description", classroom.getDescription());
+        bundle.putString("classroom_subject", classroom.getSubject());
+        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_classInfoFragment, bundle);
     }
 
     private void deleteClassRoom(int id, int position) {
