@@ -5,10 +5,13 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -69,13 +72,33 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
         });
 
         btnInfo.setOnClickListener(v -> {
-
+            showPopupMenu(btnInfo);
         });
 
         list = new ArrayList<>();
         getList();
     }
 
+    private void showPopupMenu(View v){
+        PopupMenu popupMenu = new PopupMenu(getContext(), v);
+        popupMenu.inflate(R.menu.menu_class_student);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.xoalop:
+                        return true;
+                    case R.id.doiKi:
+                        return true;
+                    case R.id.doiKi2:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
+    }
 
     private void getList() {
         SharedPreferences shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
