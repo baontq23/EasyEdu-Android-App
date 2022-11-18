@@ -15,6 +15,7 @@
         <TableRow>
 
             <TextView
+                android:id="@+id/tv_preview_student_count"
                 android:layout_column="1"
                 android:padding="8dp"
                 android:text="Học sinh"
@@ -24,6 +25,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_preview_parent_count"
                 android:layout_column="2"
                 android:padding="8dp"
                 android:text="Phụ huynh"
