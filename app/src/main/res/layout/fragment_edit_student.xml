@@ -258,6 +258,57 @@
 
             </LinearLayout>
 
+            <View android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_marginVertical="16dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <EditText
+                    android:id="@+id/ed_parent_phone_number"
+                    style="@style/EditText"
+                    android:layout_weight="3"
+                    android:hint="Số điện thoại phụ huynh"
+                    android:inputType="number|phone"/>
+
+                <Button
+                    android:id="@+id/btn_parent_search_phone_number"
+                    style="@style/NormalButton"
+                    android:layout_weight="7"
+                    android:textSize="16sp"
+                    android:text="Tìm SĐT"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
+
+
+
+            <EditText
+                android:id="@+id/ed_parent_name"
+                style="@style/EditText"
+                android:hint="Họ và tên phụ huynh"
+                android:layout_marginVertical="16dp"
+                android:enabled="false"/>
+
+            <EditText
+                android:id="@+id/ed_parent_dob"
+                style="@style/EditText"
+                android:hint="Ngày sinh phụ huynh"
+                android:enabled="false"/>
+
+            <EditText
+                android:id="@+id/ed_parent_email"
+                style="@style/EditText"
+                android:hint="Email phụ huynh"
+                android:inputType="textEmailAddress"
+                android:enabled="false"
+                android:layout_marginVertical="16dp"/>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

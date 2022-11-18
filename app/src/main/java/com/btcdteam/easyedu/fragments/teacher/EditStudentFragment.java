@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,11 +23,12 @@ import com.btcdteam.easyedu.R;
 public class EditStudentFragment extends Fragment implements TextWatcher {
     EditText edStudentName, edStudentDOB,
             edRegularScore1Term1, edRegularScore2Term1, edRegularScore3Term1, edMidtermScoreTerm1, edFinalScoreTerm1,
-            edRegularScore1Term2, edRegularScore2Term2, edRegularScore3Term2, edMidtermScoreTerm2, edFinalScoreTerm2;
+            edRegularScore1Term2, edRegularScore2Term2, edRegularScore3Term2, edMidtermScoreTerm2, edFinalScoreTerm2,
+            edParentPhoneNumber, edParentName, edParentDOB, edParentEmail;
     Spinner spStudentGender;
-    String[] items = new String[]{"Nam", "Nữ", "Khác"};
+    String[] items = new String[]{"Nam", "Nữ"};
     ImageView btnBack;
-    Button btnSave;
+    Button btnSave, btnSearch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +43,7 @@ public class EditStudentFragment extends Fragment implements TextWatcher {
         //điều hướng
         btnBack = view.findViewById(R.id.img_edit_student_back);
         btnSave = view.findViewById(R.id.btn_edit_student_save);
+        btnSearch = view.findViewById(R.id.btn_parent_search_phone_number);
         // tên, ngày sinh
         edStudentName = view.findViewById(R.id.ed_student_name);
         edStudentDOB = view.findViewById(R.id.ed_student_dob);
@@ -58,11 +61,18 @@ public class EditStudentFragment extends Fragment implements TextWatcher {
         edFinalScoreTerm2 = view.findViewById(R.id.ed_final_term_2);
         //giới tính
         spStudentGender = view.findViewById(R.id.sp_student_gender);
+        //Phụ huynh
+        edParentPhoneNumber = view.findViewById(R.id.ed_parent_phone_number);
+        edParentName = view.findViewById(R.id.ed_parent_name);
+        edParentDOB = view.findViewById(R.id.ed_parent_dob);
+        edParentEmail = view.findViewById(R.id.ed_parent_email);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
         spStudentGender.setAdapter(adapter);
 
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
+        // set ban phim khong che Edittext
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         //check null
         edStudentName.addTextChangedListener(this);
@@ -70,6 +80,11 @@ public class EditStudentFragment extends Fragment implements TextWatcher {
 
         btnSave.setOnClickListener(v -> {
             //lưu học sinh
+        });
+
+        btnSearch.setOnClickListener(v -> {
+            // Tìm số điện thoại phụ huynh,
+            // không tìm thấy thì set enable các edt bị disable thành true để người dùng nhập
         });
     }
 
