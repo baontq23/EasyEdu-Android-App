@@ -1,5 +1,7 @@
 package com.btcdteam.easyedu.fragments.teacher;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.apis.ServerAPI;
@@ -55,9 +58,10 @@ public class StudentDetailsFragment extends Fragment {
 
     private EditText edSendFeedBack;
     private Switch swTerm;
+    private int postion;
     Button btnDeleteStudent;
     List<StudentDetail> studentDetails, studentDetails1, studentDetails2;
-    String studentId;
+    String studentId, studentName;
     int classId;
 
     @Override
@@ -78,6 +82,8 @@ public class StudentDetailsFragment extends Fragment {
         studentDetails2 = new ArrayList<>();
         studentId = getArguments().getString("studentId");
         classId = getArguments().getInt("classRoomId");
+        studentName = getArguments().getString("studentName");
+
         //student
         tvStudentName = view.findViewById(R.id.tv_student_detail_name);
         tvStudentDateOfBirth = view.findViewById(R.id.tv_student_detail_dob);
@@ -111,23 +117,36 @@ public class StudentDetailsFragment extends Fragment {
         });
 
         btnDeleteStudent.setOnClickListener(v -> {
-            Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteStudentById(studentId);
-            call.enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    if (response.code() == 204) {
-                        Toast.makeText(requireContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
-                        requireActivity().onBackPressed();
-                    } else {
-                        Toast.makeText(requireContext(), "Không tìm thấy thông tin học sinh", Toast.LENGTH_SHORT).show();
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
-                }
-            });
+            new AlertDialog.Builder(requireActivity()).setMessage("Bạn có muốn xóa học sinh: " + studentName + " không ?")
+                    .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteStudentById(studentId);
+                            call.enqueue(new Callback<JsonObject>() {
+                                @Override
+                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                    if (response.code() == 204) {
+                                        Toast.makeText(requireContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+                                        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_studentDetailsFragment_to_classInfoFragment2);
+                                    } else {
+                                        Toast.makeText(requireContext(), "Không tìm thấy thông tin học sinh", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<JsonObject> call, Throwable t) {
+                                    Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }).show();
         });
 
         swTerm.setOnCheckedChangeListener((buttonView, isChecked) -> {

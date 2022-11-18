@@ -91,7 +91,9 @@ public class ClassInfoFragment extends Fragment {
 
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
+        toolbar.setNavigationOnClickListener(v ->
+                Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_viewClassFragment)
+        );
         setSearchToolbar(view);
         setMenuItemSelected();
         SharedPreferences preferences = requireContext().getSharedPreferences("CLASSROOM_ID", Context.MODE_PRIVATE);
@@ -106,7 +108,7 @@ public class ClassInfoFragment extends Fragment {
                     .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
                         @Override
                         public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
-                            switch (index){
+                            switch (index) {
                                 case 0:
                                     //thêm thủ công
                                     Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment);
