@@ -16,9 +16,6 @@
         <action
             android:id="@+id/action_viewClassFragment_to_createClassFragment"
             app:destination="@id/createClassFragment" />
-        <action
-            android:id="@+id/action_viewClassFragment_to_editStudentFragment"
-            app:destination="@id/editStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/classInfoFragment"
@@ -34,6 +31,9 @@
         <action
             android:id="@+id/action_classInfoFragment_to_addFileXlsFragment2"
             app:destination="@id/addFileXlsFragment2" />
+        <action
+            android:id="@+id/action_classInfoFragment_to_editStudentFragment"
+            app:destination="@id/editStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/createClassFragment"

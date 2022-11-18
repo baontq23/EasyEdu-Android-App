@@ -109,6 +109,8 @@ public class ClassInfoFragment extends Fragment {
                             switch (index){
                                 case 0:
                                     //thêm thủ công
+                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment);
+                                    BottomMenu.cleanAll();
                                     return true;
                                 case 1:
                                     //thêm từ file
