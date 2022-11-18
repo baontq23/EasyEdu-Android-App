@@ -2,9 +2,7 @@ package com.btcdteam.easyedu.fragments.teacher;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -96,9 +94,7 @@ public class ClassInfoFragment extends Fragment {
         );
         setSearchToolbar(view);
         setMenuItemSelected();
-        SharedPreferences preferences = requireContext().getSharedPreferences("CLASSROOM_ID", Context.MODE_PRIVATE);
-        String name = preferences.getString("classroomName", "");
-        toolbar.setTitle(name);
+        toolbar.setTitle(getArguments() != null ? getArguments().getString("classroom_name") : "Classroom");
         setViewPager();
         setBottomNav();
 
@@ -116,7 +112,9 @@ public class ClassInfoFragment extends Fragment {
                                     return true;
                                 case 1:
                                     //thêm từ file
-                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
+                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
                                     BottomMenu.cleanAll();
                                     return true;
                                 default:
@@ -250,13 +248,13 @@ public class ClassInfoFragment extends Fragment {
 
         // Change search close button image
 
-        ImageView closeButton = (ImageView) searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
+        ImageView closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
         closeButton.setImageResource(R.drawable.ic_round_close_24);
 
 
         // set hint and the text colors
 
-        EditText txtSearch = ((EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text));
+        EditText txtSearch = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         txtSearch.setHint("Tìm kiếm...");
         txtSearch.setHintTextColor(Color.DKGRAY);
         txtSearch.setTextColor(getResources().getColor(R.color.blue_primary, requireActivity().getTheme()));
@@ -328,9 +326,7 @@ public class ClassInfoFragment extends Fragment {
     }
 
     private void getListStudent() {
-        SharedPreferences preferences = requireContext().getSharedPreferences("CLASSROOM_ID", Context.MODE_PRIVATE);
-        int classroomId = preferences.getInt("classroomId", 0);
-
+        int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
             @Override
