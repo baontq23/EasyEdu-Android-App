@@ -2,6 +2,7 @@ package com.btcdteam.easyedu.network;
 
 import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.models.Teacher;
+import com.btcdteam.easyedu.utils.SyncBody;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -51,4 +52,7 @@ public interface APIService {
 
     @PATCH("classroom")
     Call<JsonObject> updateClassRoomById(@Body Classroom classroom);
+
+    @POST("student/import")
+    Call<JsonObject> importStudentData(@Body SyncBody body);
 }
