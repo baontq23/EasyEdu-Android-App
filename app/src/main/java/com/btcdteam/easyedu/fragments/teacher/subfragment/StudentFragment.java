@@ -26,7 +26,6 @@ import com.btcdteam.easyedu.adapter.StudentAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -102,6 +101,14 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rcv = view.findViewById(R.id.rcv_student);
@@ -163,6 +170,8 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
         Bundle bundle = new Bundle();
         bundle.putString("studentId", student.getStudentId());
         bundle.putInt("classRoomId", student.getClassroomId());
+        bundle.putInt("position", position);
+        bundle.putString("studentName", student.getName());
         Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_studentDetailsFragment, bundle);
     }
 
