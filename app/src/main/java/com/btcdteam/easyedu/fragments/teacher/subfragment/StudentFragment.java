@@ -209,7 +209,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
 
     @Override
     public void onOptionClick(int position, StudentDetail student) {
-        BottomMenu.show(new String[]{"Cập nhật", "Xóa", "Danh sách thông báo"})
+        BottomMenu.show(new String[]{"Cập nhật", "Danh sách thông báo", "Xóa"})
                 .setMessage("Học sinh: " + student.getName())
                 .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
                     @Override
@@ -220,11 +220,11 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                                 BottomMenu.cleanAll();
                                 return true;
                             case 1:
-                                deleteStudent(position, student.getStudentId());
-                                return true;
-                            case 2:
                                 Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_feedbackFragment);
                                 BottomMenu.cleanAll();
+                                return true;
+                            case 2:
+                                deleteStudent(position, student.getStudentId());
                                 return true;
                             default:
                                 return false;
