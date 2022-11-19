@@ -36,7 +36,11 @@
                     style="@style/EditText"
                     android:layout_weight="1"
                     android:hint="Ngày sinh"
-                    android:layout_marginEnd="8dp"/>
+                    android:inputType="none"
+                    android:textIsSelectable="true"
+                    android:focusable="false"
+                    android:longClickable="false"
+                    android:layout_marginEnd="8dp" />
 
                 <Spinner
                     android:id="@+id/sp_student_gender"

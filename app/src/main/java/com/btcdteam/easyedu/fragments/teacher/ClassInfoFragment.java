@@ -104,16 +104,16 @@ public class ClassInfoFragment extends Fragment {
                     .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
                         @Override
                         public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
                             switch (index) {
                                 case 0:
                                     //thêm thủ công
-                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment);
+                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
                                     BottomMenu.cleanAll();
                                     return true;
                                 case 1:
                                     //thêm từ file
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
                                     Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
                                     BottomMenu.cleanAll();
                                     return true;

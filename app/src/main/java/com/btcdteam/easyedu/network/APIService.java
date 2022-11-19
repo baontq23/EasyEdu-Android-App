@@ -1,6 +1,7 @@
 package com.btcdteam.easyedu.network;
 
 import com.btcdteam.easyedu.models.Classroom;
+import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Teacher;
 import com.btcdteam.easyedu.utils.SyncBody;
 import com.google.gson.JsonObject;
@@ -55,4 +56,13 @@ public interface APIService {
 
     @POST("student/import")
     Call<JsonObject> importStudentData(@Body SyncBody body);
+
+    @GET("parent/phone/{phone}")
+    Call<JsonObject> getParentByPhone(@Path("phone") String phone);
+
+    @POST("student")
+    Call<JsonObject> createStudentHandMade(@Body JsonObject body);
+
+    @POST("parent")
+    Call<JsonObject> createParent(@Body Parent parent);
 }
