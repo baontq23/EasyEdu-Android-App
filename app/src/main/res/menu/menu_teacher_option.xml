@@ -2,15 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/xoalop"
-        android:title="Xóa Lớp"
+        android:id="@+id/menu_account_info"
+        android:title="Thông tin tài khoản"
         app:showAsAction="never" />
     <item
-        android:id="@+id/doiKi"
-        android:title="Kì 1"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/doiKi2"
-        android:title="Kì 2"
+        android:id="@+id/menu_logout"
+        android:title="Đăng xuất"
         app:showAsAction="never" />
 </menu>

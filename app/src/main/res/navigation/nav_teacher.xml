@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_viewClassFragment_to_createClassFragment"
             app:destination="@id/createClassFragment" />
+        <action
+            android:id="@+id/action_viewClassFragment_to_accountInfoFragment"
+            app:destination="@id/accountInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/classInfoFragment"
@@ -62,4 +65,9 @@
         android:name="com.btcdteam.easyedu.fragments.teacher.EditStudentFragment"
         android:label="fragment_edit_student"
         tools:layout="@layout/fragment_edit_student" />
+    <fragment
+        android:id="@+id/accountInfoFragment"
+        android:name="com.btcdteam.easyedu.fragments.teacher.AccountInfoFragment"
+        android:label="fragment_account_info"
+        tools:layout="@layout/fragment_account_info" />
 </navigation>
