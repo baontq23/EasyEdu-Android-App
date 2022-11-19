@@ -79,16 +79,17 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
 
     private void showPopupMenu(View v){
         PopupMenu popupMenu = new PopupMenu(getContext(), v);
-        popupMenu.inflate(R.menu.menu_class_student);
+        popupMenu.inflate(R.menu.menu_teacher_option);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.xoalop:
+                    case R.id.menu_account_info:
+                        //chỉnh sửa thông tin tài khoản
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_accountInfoFragment);
                         return true;
-                    case R.id.doiKi:
-                        return true;
-                    case R.id.doiKi2:
+                    case R.id.menu_logout:
+                        //đăng xuất
                         return true;
                     default:
                         return false;
