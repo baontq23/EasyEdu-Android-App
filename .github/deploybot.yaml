@@ -1,7 +1,6 @@
-# Config for deploybot.app
-# Docs https://docs.deploybot.app/config/
-# Ordered list of Github Deployment environments
+# Deploybot config
 deployments:
-- name: development
+- name: staging
+  # auto-deploy from the staging branch to the staging environment, when tests pass
   on_push: true
-- name: production
+  on_push_branch: staging
