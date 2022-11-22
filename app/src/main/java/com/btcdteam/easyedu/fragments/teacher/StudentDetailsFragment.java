@@ -3,6 +3,7 @@ package com.btcdteam.easyedu.fragments.teacher;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,8 @@ import com.btcdteam.easyedu.utils.ProgressBarDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialogx.dialogs.MessageDialog;
+import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -118,36 +122,18 @@ public class StudentDetailsFragment extends Fragment {
 
         btnDeleteStudent.setOnClickListener(v -> {
 
-            new AlertDialog.Builder(requireActivity()).setMessage("Bạn có muốn xóa học sinh: " + studentName + " không ?")
-                    .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            MessageDialog messageDialog = new MessageDialog("Xóa học sinh", "Bạn có muốn xóa học sinh: " + studentName + " Không ?", "Có", "Không")
+                    .setButtonOrientation(LinearLayout.HORIZONTAL)
+                    .setOkButton(new OnDialogButtonClickListener<MessageDialog>() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
+                        public boolean onClick(MessageDialog dialog, View v) {
+                            deleteStudent(studentId,classId);
+                            return false;
                         }
-                    })
-                    .setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteStudentById(studentId);
-                            call.enqueue(new Callback<JsonObject>() {
-                                @Override
-                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                                    if (response.code() == 204) {
-                                        Toast.makeText(requireContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
-                                        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_studentDetailsFragment_to_classInfoFragment2);
-                                    } else {
-                                        Toast.makeText(requireContext(), "Không tìm thấy thông tin học sinh", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<JsonObject> call, Throwable t) {
-                                    Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }).show();
+                    });
+            messageDialog.show();
         });
+
 
         swTerm.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -161,6 +147,27 @@ public class StudentDetailsFragment extends Fragment {
             // code gửi feedback ở đây
         });
 
+    }
+
+    void deleteStudent(String studentId, int classId) {
+        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteStudentById(studentId, classId);
+        Log.e(">>>>>>>>>>>>>>>", "deleteStudent: "+studentId+" / "+classId );
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.code() == 204) {
+                    Toast.makeText(requireContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_studentDetailsFragment_to_classInfoFragment2);
+                } else {
+                    Toast.makeText(requireContext(), "Không tìm thấy thông tin học sinh", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     void getInfoTeacherAndParent() {

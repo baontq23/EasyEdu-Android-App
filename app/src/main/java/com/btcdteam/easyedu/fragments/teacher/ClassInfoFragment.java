@@ -74,10 +74,8 @@ public class ClassInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getListStudent();
         bgStudent = view.findViewById(R.id.bg_student);
         bgParent = view.findViewById(R.id.bg_parent);
-
         layoutParent = view.findViewById(R.id.parent_layout);
         layoutStudent = view.findViewById(R.id.student_layout);
         viewPager2 = view.findViewById(R.id.view_pager);
@@ -169,7 +167,6 @@ public class ClassInfoFragment extends Fragment {
 
         icSearch.setOnClickListener(v -> {
             circleReveal(R.id.searchtoolbar, 1, true, true);
-
             item_search.expandActionView();
         });
 
@@ -178,10 +175,12 @@ public class ClassInfoFragment extends Fragment {
             public void onClick(View view) {
                 if (check == 0) {
                     icSetting.setImageResource(R.drawable.semeter02);
+                    studentDetailLis02 = getListStudentSemeter02();
                     broadCast(studentDetailLis02);
                     check = 1;
                 } else {
                     icSetting.setImageResource(R.drawable.semeter01);
+                    studentDetailLis01 = getListStudentSemeter01();
                     broadCast(studentDetailLis01);
                     check = 0;
                 }
@@ -325,7 +324,7 @@ public class ClassInfoFragment extends Fragment {
         anim.start();
     }
 
-    private void getListStudent() {
+    private List<StudentDetail> getListStudentSemeter01() {
         int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
@@ -336,13 +335,10 @@ public class ClassInfoFragment extends Fragment {
                     }.getType();
                     studentDetailList = new ArrayList<>();
                     studentDetailLis01 = new ArrayList<>();
-                    studentDetailLis02 = new ArrayList<>();
                     studentDetailList = new Gson().fromJson(response.body().getAsJsonArray("data"), type);
                     for (StudentDetail o : studentDetailList) {
                         if (o.getSemester() % 2 != 0) {
                             studentDetailLis01.add(o);
-                        } else {
-                            studentDetailLis02.add(o);
                         }
                     }
                 }
@@ -353,5 +349,34 @@ public class ClassInfoFragment extends Fragment {
                 Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
+        return studentDetailLis01;
+    }
+
+    private List<StudentDetail> getListStudentSemeter02() {
+        int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
+        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.code() == 200) {
+                    Type type = new TypeToken<List<StudentDetail>>() {
+                    }.getType();
+                    studentDetailLis02 = new ArrayList<>();
+                    studentDetailList = new Gson().fromJson(response.body().getAsJsonArray("data"), type);
+                    for (StudentDetail o : studentDetailList) {
+                        if (o.getSemester() % 2 == 0) {
+                            studentDetailLis02.add(o);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return studentDetailLis02;
     }
 }
