@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.kongzue.dialogx.dialogs.BottomMenu;
+import com.kongzue.dialogx.dialogs.MessageDialog;
+import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
 import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.lang.reflect.Type;
@@ -57,8 +61,6 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
             if (bundle.getSerializable("Array") != null) {
                 studentDetailList = (List<StudentDetail>) bundle.getSerializable("Array");
                 adapter = new StudentAdapter(studentDetailList, StudentFragment.this);
-                LinearLayoutManager manager = new GridLayoutManager(getContext(), 1);
-                rcv.setLayoutManager(manager);
                 rcv.setAdapter(adapter);
                 checkListStatus();
             }
@@ -91,6 +93,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
         super.onStart();
         requireContext().registerReceiver(receiver, new IntentFilter("ACTION"));
         requireContext().registerReceiver(receiverName, new IntentFilter("SEARCH"));
+        getListStudent();
     }
 
     @Override
@@ -114,6 +117,8 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
         rcv = view.findViewById(R.id.rcv_student);
         searchView = view.findViewById(R.id.reSearchView);
         tvStatusList = view.findViewById(R.id.tv_status_list);
+        LinearLayoutManager manager = new GridLayoutManager(getContext(), 1);
+        rcv.setLayoutManager(manager);
         getListStudent();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -151,8 +156,6 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                         }
                     }
                     adapter = new StudentAdapter(studentDetailLis01, StudentFragment.this);
-                    LinearLayoutManager manager = new GridLayoutManager(getContext(), 1);
-                    rcv.setLayoutManager(manager);
                     rcv.setAdapter(adapter);
                 }
                 checkListStatus();
@@ -175,13 +178,15 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
         Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_studentDetailsFragment, bundle);
     }
 
-    void deleteStudent(int position, String id) {
-        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteStudentById(id);
+    void deleteStudent(int position, String id, int idClass) {
+        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteStudentById(id, idClass);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.code() == 204) {
                     Toast.makeText(requireContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+                    studentDetailLis01.remove(position);
+                    adapter.setList(studentDetailLis01);
                     adapter.notifyItemRemoved(position);
                 } else {
                     Toast.makeText(requireContext(), "Không tìm thấy thông tin học sinh", Toast.LENGTH_SHORT).show();
@@ -195,6 +200,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                 checkListStatus();
             }
         });
+
     }
 
     private void checkListStatus() {
@@ -214,7 +220,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                 .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
                     @Override
                     public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
-                        switch (index){
+                        switch (index) {
                             case 0:
                                 Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment);
                                 BottomMenu.cleanAll();
@@ -224,7 +230,16 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                                 BottomMenu.cleanAll();
                                 return true;
                             case 2:
-                                deleteStudent(position, student.getStudentId());
+                                MessageDialog messageDialog = new MessageDialog("Xóa học sinh", "Bạn có muốn xóa học sinh: " + student.getName() + " Không ?", "Có", "Không")
+                                        .setButtonOrientation(LinearLayout.HORIZONTAL)
+                                        .setOkButton(new OnDialogButtonClickListener<MessageDialog>() {
+                                            @Override
+                                            public boolean onClick(MessageDialog dialog, View v) {
+                                                deleteStudent(position, student.getStudentId(), student.getClassroomId());
+                                                return false;
+                                            }
+                                        });
+                                messageDialog.show();
                                 return true;
                             default:
                                 return false;

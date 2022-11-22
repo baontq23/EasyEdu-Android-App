@@ -31,6 +31,10 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         void onOptionClick(int position, StudentDetail student);
     }
 
+    public void setList(List<StudentDetail> list) {
+        this.list = list;
+    }
+
     public StudentAdapter(List<StudentDetail> list, StudentItemListener listener) {
         this.listener = listener;
         this.list = list;

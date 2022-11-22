@@ -42,8 +42,8 @@ public interface APIService {
     @GET("parent/{idClassroom}")
     Call<JsonObject> getListParentByIdClassRoom(@Path("idClassroom") int classroomId);
 
-    @DELETE("student/{id}")
-    Call<JsonObject> deleteStudentById(@Path("id") String id);
+    @DELETE("classuser/{idStudent}/{idClass}")
+    Call<JsonObject> deleteStudentById(@Path("idStudent") String id,@Path("idClass") int idClass);
 
     @DELETE("classroom/{id}")
     Call<JsonObject> deleteClassRoomById(@Path("id") int id);
