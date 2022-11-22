@@ -224,11 +224,11 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                             case 0:
                                 Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment);
                                 BottomMenu.cleanAll();
-                                return true;
+                                return false;
                             case 1:
                                 Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_feedbackFragment);
                                 BottomMenu.cleanAll();
-                                return true;
+                                return false;
                             case 2:
                                 MessageDialog messageDialog = new MessageDialog("Xóa học sinh", "Bạn có muốn xóa học sinh: " + student.getName() + " Không ?", "Có", "Không")
                                         .setButtonOrientation(LinearLayout.HORIZONTAL)
@@ -240,7 +240,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                                             }
                                         });
                                 messageDialog.show();
-                                return true;
+                                return false;
                             default:
                                 return false;
                         }

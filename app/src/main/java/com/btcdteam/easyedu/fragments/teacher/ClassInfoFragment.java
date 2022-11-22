@@ -34,6 +34,7 @@ import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -175,13 +176,13 @@ public class ClassInfoFragment extends Fragment {
             public void onClick(View view) {
                 if (check == 0) {
                     icSetting.setImageResource(R.drawable.semeter02);
-                    studentDetailLis02 = getListStudentSemeter02();
-                    broadCast(studentDetailLis02);
+                     getListStudentSemeter02();
+                    Snackbar.make(view,"Kì 2",Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
                     check = 1;
                 } else {
                     icSetting.setImageResource(R.drawable.semeter01);
-                    studentDetailLis01 = getListStudentSemeter01();
-                    broadCast(studentDetailLis01);
+                    getListStudentSemeter01();
+                    Snackbar.make(view,"Kì 1",Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
                     check = 0;
                 }
             }
@@ -324,7 +325,7 @@ public class ClassInfoFragment extends Fragment {
         anim.start();
     }
 
-    private List<StudentDetail> getListStudentSemeter01() {
+    private void getListStudentSemeter01() {
         int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
@@ -341,6 +342,7 @@ public class ClassInfoFragment extends Fragment {
                             studentDetailLis01.add(o);
                         }
                     }
+                    broadCast(studentDetailLis01);
                 }
             }
 
@@ -349,10 +351,9 @@ public class ClassInfoFragment extends Fragment {
                 Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
-        return studentDetailLis01;
     }
 
-    private List<StudentDetail> getListStudentSemeter02() {
+    private void getListStudentSemeter02() {
         int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
@@ -368,7 +369,7 @@ public class ClassInfoFragment extends Fragment {
                             studentDetailLis02.add(o);
                         }
                     }
-
+                    broadCast(studentDetailLis02);
                 }
             }
 
@@ -377,6 +378,5 @@ public class ClassInfoFragment extends Fragment {
                 Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
-        return studentDetailLis02;
     }
 }

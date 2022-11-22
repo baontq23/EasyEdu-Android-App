@@ -2,6 +2,7 @@ package com.btcdteam.easyedu.fragments.teacher;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
+import com.btcdteam.easyedu.activity.AuthActivity;
 import com.btcdteam.easyedu.adapter.ClassroomAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.Classroom;
@@ -89,7 +91,10 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
                         Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_accountInfoFragment);
                         return true;
                     case R.id.menu_logout:
-                        //đăng xuất
+                        SharedPreferences.Editor editor = requireActivity().getSharedPreferences("SESSION",MODE_PRIVATE).edit();
+                        editor.clear().apply();
+                        startActivity(new Intent(requireActivity(), AuthActivity.class));
+                        requireActivity().finish();
                         return true;
                     default:
                         return false;
