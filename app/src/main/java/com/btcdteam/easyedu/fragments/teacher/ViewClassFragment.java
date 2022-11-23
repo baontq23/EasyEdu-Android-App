@@ -142,20 +142,25 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
     }
 
     @Override
-    public void onItemLongClick(int position, Classroom classroom) {
-        BottomMenu.show(new String[]{"Cập nhật lớp", "Xóa lớp"})
-                .setMessage(classroom.getName())
-                .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
-                    @Override
-                    public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
-                        if (index == 0) {
-                            updateClassRoom(classroom);
-                        } else {
-                            deleteClassRoom(classroom.getId(), position);
-                        }
+    public void onItemLongClick(int position, Classroom classroom, View v) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), v);
+        popupMenu.inflate(R.menu.menu_class);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.menu_update_class:
+                        updateClassRoom(classroom);
+                        return true;
+                    case R.id.menu_delete_class:
+                        deleteClassRoom(classroom.getId(), position);
+                        return true;
+                    default:
                         return false;
-                    }
-                });
+                }
+            }
+        });
+        popupMenu.show();
     }
 
     @Override
