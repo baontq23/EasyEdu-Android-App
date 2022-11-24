@@ -33,7 +33,8 @@ import com.btcdteam.easyedu.adapter.ViewPagerAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -59,7 +60,8 @@ public class ClassInfoFragment extends Fragment {
     private Menu search_menu;
     private MenuItem item_search;
     private ImageView icSearch, icSetting;
-    private FloatingActionButton fabAddStudent;
+    private FloatingActionButton fabSendFeedback, fabAddStudent, fabAddStudentFile;
+    private FloatingActionsMenu fabMenu;
     private List<StudentDetail> studentDetailLis01, studentDetailLis02, studentDetailList;
     private int check = 0;
     private ScaleAnimation scaleUpAnimation = new ScaleAnimation(0f, 1.0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
@@ -85,6 +87,9 @@ public class ClassInfoFragment extends Fragment {
         icSearch = view.findViewById(R.id.ic_toolbar_search);
         icSetting = view.findViewById(R.id.ic_toolbar_setting);
         fabAddStudent = view.findViewById(R.id.fab_student_add);
+        fabSendFeedback = view.findViewById(R.id.fab_student_send_feedback);
+        fabAddStudentFile = view.findViewById(R.id.fab_student_add_file);
+        fabMenu = view.findViewById(R.id.fab_menu);
 
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -97,31 +102,48 @@ public class ClassInfoFragment extends Fragment {
         setViewPager();
         setBottomNav();
 
-        fabAddStudent.setOnClickListener(v -> {
-            BottomMenu.show(new String[]{"Thêm thủ công", "Thêm file .xls"})
-                    .setMessage("Lựa chọn")
-                    .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
-                        @Override
-                        public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
-                            switch (index) {
-                                case 0:
-                                    //thêm thủ công
-                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
-                                    BottomMenu.cleanAll();
-                                    return true;
-                                case 1:
-                                    //thêm từ file
-                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
-                                    BottomMenu.cleanAll();
-                                    return true;
-                                default:
-                                    return false;
-                            }
-                        }
-                    });
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
+
+        fabSendFeedback.setOnClickListener(v -> {
+            // send feedback
         });
+
+        fabAddStudent.setOnClickListener(v -> {
+           Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
+
+        });
+
+        fabAddStudentFile.setOnClickListener(v -> {
+               Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
+        });
+
+//        fabAddStudent.setOnClickListener(v -> {
+//            BottomMenu.show(new String[]{"Thêm thủ công", "Thêm file .xls"})
+//                    .setMessage("Lựa chọn")
+//                    .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
+//                        @Override
+//                        public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
+//                            Bundle bundle = new Bundle();
+//                            bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
+//                            switch (index) {
+//                                case 0:
+//                                    //thêm thủ công
+//                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
+//                                    BottomMenu.cleanAll();
+//                                    return true;
+//                                case 1:
+//                                    //thêm từ file
+//                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
+//                                    BottomMenu.cleanAll();
+//                                    return true;
+//                                default:
+//                                    return false;
+//                            }
+//                        }
+//                    });
+//        });
     }
 
     private void setBottomNav() {
