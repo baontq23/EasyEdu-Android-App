@@ -134,6 +134,23 @@ public class EditStudentFragment extends Fragment implements TextWatcher {
                 datePickerDialog.show();
             }
         });
+
+        edParentDOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                        calendar.set(Calendar.YEAR, i);
+                        calendar.set(Calendar.MONTH, i1);
+                        calendar.set(Calendar.DAY_OF_MONTH, i2);
+                        edParentDOB.setText(simpleDateFormat.format(calendar.getTime()));
+                    }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+            }
+        });
     }
 
     @Override
@@ -244,6 +261,8 @@ public class EditStudentFragment extends Fragment implements TextWatcher {
 
     private void createStudentWithoutParent() {
         Parent parent = new Parent(edParentName.getText().toString().trim(), edParentPhoneNumber.getText().toString().trim());
+        parent.setDob(edParentDOB.getText().toString().trim());
+        parent.setEmail(edParentEmail.getText().toString().trim());
         if (parent.getName().equals("") || parent.getPhone().equals("")) {
             Toast.makeText(requireContext(), "Chưa chọn phụ huynh!", Toast.LENGTH_SHORT).show();
         } else {
