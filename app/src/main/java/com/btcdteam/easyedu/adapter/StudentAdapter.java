@@ -62,13 +62,13 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ((StudentVH) holder).tvMidtermScore.setText(String.valueOf(student.getMidtermScore()));
 
         studentVH.itemStudent.setOnClickListener(v -> {
-            listener.onItemClick(position, student);
+            listener.onItemClick(holder.getAdapterPosition(), student);
         });
 
         studentVH.option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onOptionClick(position, student);
+                listener.onOptionClick(holder.getAdapterPosition(), student);
             }
         });
     }

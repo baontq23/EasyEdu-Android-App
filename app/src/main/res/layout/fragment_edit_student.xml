@@ -303,7 +303,11 @@
                 android:id="@+id/ed_parent_dob"
                 style="@style/EditText"
                 android:hint="Ngày sinh phụ huynh"
-                android:enabled="false"/>
+                android:inputType="none"
+                android:textIsSelectable="true"
+                android:focusable="false"
+                android:longClickable="false"
+                android:enabled="false" />
 
             <EditText
                 android:id="@+id/ed_parent_email"
