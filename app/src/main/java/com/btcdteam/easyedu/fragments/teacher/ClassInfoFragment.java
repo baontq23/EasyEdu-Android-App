@@ -112,6 +112,7 @@ public class ClassInfoFragment extends Fragment {
 
         fabSendFeedback.setOnClickListener(v -> {
             // send feedback
+            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_feedbackFragment, bundle);
         });
 
         fabAddStudent.setOnClickListener(v -> {

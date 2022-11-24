@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.FeedbackAdapter;
@@ -22,6 +24,7 @@ public class FeedbackFragment extends Fragment {
     ImageView btnBack, btnSendFeedback;
     FeedbackAdapter adapter;
     EditText edFeedback;
+    TextView tvTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +40,7 @@ public class FeedbackFragment extends Fragment {
         btnBack = view.findViewById(R.id.img_feedback_back);
         btnSendFeedback = view.findViewById(R.id.btn_send_feedback);
         edFeedback = view.findViewById(R.id.ed_feedback);
+        tvTitle = view.findViewById(R.id.tv_feedback_title);
 
         btnBack.setOnClickListener(v -> {
             requireActivity().onBackPressed();
