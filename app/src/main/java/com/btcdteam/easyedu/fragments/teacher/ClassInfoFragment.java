@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
@@ -33,7 +35,8 @@ import com.btcdteam.easyedu.adapter.ViewPagerAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -59,7 +62,9 @@ public class ClassInfoFragment extends Fragment {
     private Menu search_menu;
     private MenuItem item_search;
     private ImageView icSearch, icSetting;
-    private FloatingActionButton fabAddStudent;
+    private FloatingActionButton fabSendFeedback, fabAddStudent, fabAddStudentFile;
+    private FloatingActionsMenu fabMenu;
+    private NestedScrollView scrollView;
     private List<StudentDetail> studentDetailLis01, studentDetailLis02, studentDetailList;
     private int check = 0;
     private ScaleAnimation scaleUpAnimation = new ScaleAnimation(0f, 1.0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
@@ -85,6 +90,10 @@ public class ClassInfoFragment extends Fragment {
         icSearch = view.findViewById(R.id.ic_toolbar_search);
         icSetting = view.findViewById(R.id.ic_toolbar_setting);
         fabAddStudent = view.findViewById(R.id.fab_student_add);
+        fabSendFeedback = view.findViewById(R.id.fab_student_send_feedback);
+        fabAddStudentFile = view.findViewById(R.id.fab_student_add_file);
+        fabMenu = view.findViewById(R.id.fab_menu);
+        scrollView = view.findViewById(R.id.nsv_scroll);
 
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -97,30 +106,36 @@ public class ClassInfoFragment extends Fragment {
         setViewPager();
         setBottomNav();
 
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
+
+        fabSendFeedback.setOnClickListener(v -> {
+            // send feedback
+            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_feedbackFragment, bundle);
+        });
+
         fabAddStudent.setOnClickListener(v -> {
-            BottomMenu.show(new String[]{"Thêm thủ công", "Thêm file .xls"})
-                    .setMessage("Lựa chọn")
-                    .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
-                        @Override
-                        public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
-                            switch (index) {
-                                case 0:
-                                    //thêm thủ công
-                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
-                                    BottomMenu.cleanAll();
-                                    return true;
-                                case 1:
-                                    //thêm từ file
-                                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
-                                    BottomMenu.cleanAll();
-                                    return true;
-                                default:
-                                    return false;
-                            }
-                        }
-                    });
+           Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
+
+        });
+
+        fabAddStudentFile.setOnClickListener(v -> {
+               Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
+        });
+
+        //expanded, collapse floating button menu when scroll
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if(scrollY > oldScrollY + 20 && fabMenu.isExpanded()){
+                    fabMenu.collapse();
+                }
+
+                if (scrollY < oldScrollY - 20 && fabMenu.isExpanded()){
+                    fabMenu.collapse();
+                }
+            }
         });
     }
 

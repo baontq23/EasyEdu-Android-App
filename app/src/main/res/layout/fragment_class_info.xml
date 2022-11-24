@@ -6,26 +6,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.teacher.ClassInfoFragment">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.core.widget.NestedScrollView>
 
     <include layout="@layout/toolbar"/>
 
     <include layout="@layout/search_toolbar"
         android:visibility="gone"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_student_add"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fab_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="64dp"
-        app:backgroundTint="@color/blue_primary"
         android:src="@drawable/ic_round_add_24"
-        app:tint="@color/white"/>
+        app:fab_addButtonColorNormal="@color/blue_primary"
+        app:fab_expandDirection="up"
+        app:fab_labelStyle="@style/FloatingStyle"
+        app:fab_labelsPosition="left"
+        app:tint="@color/white">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_student_send_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/blue_primary"
+            app:fab_icon="@drawable/ic_round_notification_add_24"
+            app:fab_size="mini"
+            app:fab_title="Gửi thông báo lớp" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_student_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/blue_primary"
+            app:fab_icon="@drawable/ic_round_person_add_alt_1_24"
+            app:fab_size="mini"
+            app:fab_title="Thêm học sinh thủ công" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_student_add_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/blue_primary"
+            app:fab_icon="@drawable/ic_xls_file"
+            app:fab_size="mini"
+            app:fab_title="Thêm học sinh bằng file xls" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 
     <LinearLayout
