@@ -26,6 +26,7 @@ import com.btcdteam.easyedu.adapter.ClassroomAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.network.APIService;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
@@ -44,7 +45,7 @@ import retrofit2.Response;
 
 public class ViewClassFragment extends Fragment implements ClassroomAdapter.ClassRoomItemListener {
     private ImageView btnInfo;
-    private FloatingActionButton fabAddClass;
+    private ExtendedFloatingActionButton fabAddClass;
     private RecyclerView rcv;
     private List<Classroom> list;
     private LinearProgressIndicator lpiClass;
@@ -77,6 +78,22 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
 
         list = new ArrayList<>();
         getList();
+
+        rcv.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                //scrollUp
+                if(scrollY > oldScrollY + 20 && fabAddClass.isExtended()){
+                    fabAddClass.shrink();
+                }
+
+                //scrollDown
+                if (scrollY < oldScrollY - 20 && !fabAddClass.isExtended()){
+                    fabAddClass.extend();
+                }
+            }
+        });
+
     }
 
     private void showPopupMenu(View v){
