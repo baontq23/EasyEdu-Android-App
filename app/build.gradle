@@ -40,6 +40,7 @@ dependencies {
     def dialogx_version = "0.0.46"
     def nav_version = "2.5.3"
 
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
     implementation "com.github.kongzue.DialogX:DialogX:${dialogx_version}"
