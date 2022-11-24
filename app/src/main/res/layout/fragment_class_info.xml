@@ -45,7 +45,7 @@
             app:fab_colorNormal="@color/blue_primary"
             app:fab_icon="@drawable/ic_round_notification_add_24"
             app:fab_size="mini"
-            app:fab_title="Gửi thông báo" />
+            app:fab_title="Gửi thông báo lớp" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_student_add"
