@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +83,7 @@ public class AccountInfoFragment extends Fragment {
                 }
                 if (response.code() == 204) {
                     Toast.makeText(requireContext(), "Sửa thành công", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_accountInfoFragment_to_viewClassFragment);
                 }
             }
 

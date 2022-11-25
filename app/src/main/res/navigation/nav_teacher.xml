@@ -9,19 +9,27 @@
         android:id="@+id/viewClassFragment"
         android:name="com.btcdteam.easyedu.fragments.teacher.ViewClassFragment"
         android:label="fragment_view_class"
-        tools:layout="@layout/fragment_view_class" >
+        tools:layout="@layout/fragment_view_class">
         <action
             android:id="@+id/action_viewClassFragment_to_classInfoFragment"
-            app:destination="@id/classInfoFragment" />
+            app:destination="@id/classInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_viewClassFragment_to_createClassFragment"
-            app:destination="@id/createClassFragment" />
+            app:destination="@id/createClassFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_viewClassFragment_to_accountInfoFragment"
-            app:destination="@id/accountInfoFragment" />
+            app:destination="@id/accountInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_viewClassFragment_to_changePasswordFragment"
-            app:destination="@id/changePasswordFragment" />
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/classInfoFragment"
@@ -30,19 +38,29 @@
         tools:layout="@layout/fragment_class_info">
         <action
             android:id="@+id/action_classInfoFragment_to_studentDetailsFragment"
-            app:destination="@id/studentDetailsFragment" />
+            app:destination="@id/studentDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_classInfoFragment_to_viewClassFragment"
-            app:destination="@id/viewClassFragment" />
+            app:destination="@id/viewClassFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_classInfoFragment_to_addFileXlsFragment2"
-            app:destination="@id/addFileXlsFragment2" />
+            app:destination="@id/addFileXlsFragment2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_classInfoFragment_to_editStudentFragment"
-            app:destination="@id/editStudentFragment" />
+            app:destination="@id/editStudentFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_classInfoFragment_to_feedbackFragment"
-            app:destination="@id/feedbackFragment" />
+            app:destination="@id/feedbackFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/createClassFragment"
@@ -56,10 +74,14 @@
         tools:layout="@layout/fragment_student_details">
         <action
             android:id="@+id/action_studentDetailsFragment_to_classInfoFragment2"
-            app:destination="@id/classInfoFragment" />
+            app:destination="@id/classInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/action_studentDetailsFragment_to_editStudentFragment"
-            app:destination="@id/editStudentFragment" />
+            app:destination="@id/editStudentFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/addFileXlsFragment2"
@@ -75,7 +97,14 @@
         android:id="@+id/accountInfoFragment"
         android:name="com.btcdteam.easyedu.fragments.teacher.AccountInfoFragment"
         android:label="fragment_account_info"
-        tools:layout="@layout/fragment_account_info" />
+        tools:layout="@layout/fragment_account_info" >
+        <action
+            android:id="@+id/action_accountInfoFragment_to_viewClassFragment"
+            app:destination="@id/viewClassFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            />
+    </fragment>
     <fragment
         android:id="@+id/feedbackFragment"
         android:name="com.btcdteam.easyedu.fragments.teacher.FeedbackFragment"
@@ -84,5 +113,11 @@
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="com.btcdteam.easyedu.fragments.teacher.ChangePasswordFragment"
-        android:label="ChangePasswordFragment" />
+        android:label="ChangePasswordFragment">
+        <action
+            android:id="@+id/action_changePasswordFragment_to_viewClassFragment"
+            app:destination="@id/viewClassFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 </navigation>

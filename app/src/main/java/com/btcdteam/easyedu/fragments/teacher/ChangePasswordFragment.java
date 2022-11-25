@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.apis.ServerAPI;
@@ -29,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChangePasswordFragment extends Fragment {
-    private EditText edName, edPhoneNumber, edOldPass, edNewPass, edRenewPass, edEmail;
+    private EditText edOldPass, edNewPass, edRenewPass;
     private Button btnSave;
     private ImageView btnBack;
     private int id;
@@ -45,18 +46,13 @@ public class ChangePasswordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        edName = view.findViewById(R.id.ed_acc_info_name);
-        edPhoneNumber = view.findViewById(R.id.ed_acc_info_phone_number);
         edOldPass = view.findViewById(R.id.ed_acc_info_old_pass);
         edNewPass = view.findViewById(R.id.ed_acc_info_new_pass);
         edRenewPass = view.findViewById(R.id.ed_acc_info_re_new_pass);
         btnSave = view.findViewById(R.id.btn_acc_info_save);
         btnBack = view.findViewById(R.id.img_acc_info_back);
-        edEmail = view.findViewById(R.id.ed_acc_info_email);
-
 
         id = getArguments().getInt("teacherId");
-        getInfoTeacher(id);
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
 
         btnSave.setEnabled(true);
@@ -95,6 +91,7 @@ public class ChangePasswordFragment extends Fragment {
                 }
                 if (response.code() == 204) {
                     Toast.makeText(requireContext(), "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_changePasswordFragment_to_viewClassFragment);
                 }
             }
 
@@ -105,27 +102,4 @@ public class ChangePasswordFragment extends Fragment {
         });
     }
 
-    private void getInfoTeacher(int id) {
-        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getTeacherById(id);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.code() == 404) {
-                    Toast.makeText(requireContext(), "Giáo viên không tồn tại", Toast.LENGTH_SHORT).show();
-                } else {
-                    Type type = new TypeToken<Teacher>() {
-                    }.getType();
-                    Teacher teacher = new Gson().fromJson(response.body().getAsJsonObject("data").toString(), type);
-                    edName.setText(teacher.getName());
-                    edPhoneNumber.setText(teacher.getPhone());
-                    edEmail.setText(teacher.getEmail());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(requireContext(), "Lỗi kết nối Server", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }
