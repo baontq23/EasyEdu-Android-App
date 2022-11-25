@@ -34,6 +34,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.kongzue.dialogx.dialogs.BottomMenu;
 import com.kongzue.dialogx.dialogs.GuideDialog;
+import com.kongzue.dialogx.dialogs.MessageDialog;
+import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
 import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.lang.reflect.Type;
@@ -119,10 +121,16 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
                         Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_changePasswordFragment, bundle);
                         return true;
                     case R.id.menu_logout:
-                        SharedPreferences.Editor editor = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE).edit();
-                        editor.clear().apply();
-                        startActivity(new Intent(requireActivity(), AuthActivity.class));
-                        requireActivity().finish();
+                        MessageDialog.show("Đăng Xuất","Bạn có muốn đăng xuất không ?","Có","Không").setOkButtonClickListener(new OnDialogButtonClickListener<MessageDialog>() {
+                            @Override
+                            public boolean onClick(MessageDialog dialog, View v) {
+                                SharedPreferences.Editor editor = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE).edit();
+                                editor.clear().apply();
+                                startActivity(new Intent(requireActivity(), AuthActivity.class));
+                                requireActivity().finish();
+                                return false;
+                            }
+                        }).show();
                         return true;
                     default:
                         return false;
