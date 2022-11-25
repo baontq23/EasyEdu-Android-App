@@ -1,11 +1,7 @@
 package com.btcdteam.easyedu.fragments.teacher;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.apis.ServerAPI;
@@ -28,17 +28,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AccountInfoFragment extends Fragment {
-    private EditText edName, edPhoneNumber, edEmail;
+public class ChangePasswordFragment extends Fragment {
+    private EditText edName, edPhoneNumber, edOldPass, edNewPass, edRenewPass, edEmail;
     private Button btnSave;
     private ImageView btnBack;
     private int id;
+    private String oldPass, newPass, rePass;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account_info, container, false);
+        return inflater.inflate(R.layout.fragment_account_change_password, container, false);
     }
 
     @Override
@@ -46,9 +47,13 @@ public class AccountInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         edName = view.findViewById(R.id.ed_acc_info_name);
         edPhoneNumber = view.findViewById(R.id.ed_acc_info_phone_number);
+        edOldPass = view.findViewById(R.id.ed_acc_info_old_pass);
+        edNewPass = view.findViewById(R.id.ed_acc_info_new_pass);
+        edRenewPass = view.findViewById(R.id.ed_acc_info_re_new_pass);
         btnSave = view.findViewById(R.id.btn_acc_info_save);
         btnBack = view.findViewById(R.id.img_acc_info_back);
         edEmail = view.findViewById(R.id.ed_acc_info_email);
+
 
         id = getArguments().getInt("teacherId");
         getInfoTeacher(id);
@@ -58,30 +63,38 @@ public class AccountInfoFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateTeacher(id);
+                oldPass = edOldPass.getText().toString();
+                newPass = edNewPass.getText().toString();
+                rePass = edRenewPass.getText().toString();
+
+                if (TextUtils.isEmpty(oldPass) || TextUtils.isEmpty(newPass) || TextUtils.isEmpty(rePass)) {
+                    Toast.makeText(requireContext(), "Vui lòng nhập đầy đủ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!newPass.equals(rePass)) {
+                    Toast.makeText(requireContext(), "mật khẩu nhập lại không chính xác", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                chanePasswordTeacher(id);
             }
         });
     }
 
-    private void updateTeacher(int id) {
+    private void chanePasswordTeacher(int id) {
         JsonObject object = new JsonObject();
-        object.addProperty("id", id);
-        object.addProperty("name", edName.getText().toString());
-        object.addProperty("phone", edPhoneNumber.getText().toString());
-        object.addProperty("email", edEmail.getText().toString());
+        object.addProperty("teacher_id", id);
+        object.addProperty("old_password", edOldPass.getText().toString());
+        object.addProperty("new_password", edNewPass.getText().toString());
 
-        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).editTeacher(object);
+        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).changePassword(object);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.code() == 404) {
-                    Toast.makeText(requireContext(), "Giáo viên không tồn tại", Toast.LENGTH_SHORT).show();
-                }
-                if (response.code() == 409) {
-                    Toast.makeText(requireContext(), "Email hoặc số điện thoại đã tồn tại trên hệ thống!", Toast.LENGTH_SHORT).show();
+                if (response.code() == 401) {
+                    Toast.makeText(requireContext(), "mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
                 }
                 if (response.code() == 204) {
-                    Toast.makeText(requireContext(), "Sửa thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
                 }
             }
 
