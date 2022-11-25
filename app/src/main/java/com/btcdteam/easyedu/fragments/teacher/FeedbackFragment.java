@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.btcdteam.easyedu.R;
-import com.btcdteam.easyedu.adapter.FeedbackAdapter;
+import com.btcdteam.easyedu.adapter.teacher.FeedbackAdapter;
 
 public class FeedbackFragment extends Fragment {
     RecyclerView rcv;

@@ -11,12 +11,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
-import com.btcdteam.easyedu.adapter.ParentAdapter;
+import com.btcdteam.easyedu.adapter.teacher.ParentAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.network.APIService;

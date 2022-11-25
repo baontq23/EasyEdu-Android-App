@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
-import com.btcdteam.easyedu.adapter.PreviewAdapter;
+import com.btcdteam.easyedu.adapter.teacher.PreviewAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Student;

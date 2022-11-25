@@ -1,4 +1,4 @@
-package com.btcdteam.easyedu.adapter;
+package com.btcdteam.easyedu.adapter.teacher;
 
 import android.view.LayoutInflater;
 import android.view.View;

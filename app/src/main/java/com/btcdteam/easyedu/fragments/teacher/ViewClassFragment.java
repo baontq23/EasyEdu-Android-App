@@ -22,18 +22,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.activity.AuthActivity;
-import com.btcdteam.easyedu.adapter.ClassroomAdapter;
+import com.btcdteam.easyedu.adapter.teacher.ClassroomAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.network.APIService;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.kongzue.dialogx.dialogs.BottomMenu;
-import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
