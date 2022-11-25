@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_viewClassFragment_to_accountInfoFragment"
             app:destination="@id/accountInfoFragment" />
+        <action
+            android:id="@+id/action_viewClassFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/classInfoFragment"
@@ -78,4 +81,8 @@
         android:name="com.btcdteam.easyedu.fragments.teacher.FeedbackFragment"
         android:label="fragment_feedback"
         tools:layout="@layout/fragment_feedback" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.btcdteam.easyedu.fragments.teacher.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" />
 </navigation>

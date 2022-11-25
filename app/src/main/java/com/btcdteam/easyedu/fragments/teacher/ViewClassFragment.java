@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.kongzue.dialogx.dialogs.BottomMenu;
+import com.kongzue.dialogx.dialogs.GuideDialog;
 import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.lang.reflect.Type;
@@ -50,6 +51,8 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
     private List<Classroom> list;
     private LinearProgressIndicator lpiClass;
     private ClassroomAdapter adapter;
+    private SharedPreferences shared;
+    private Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,12 +86,12 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 //scrollUp
-                if(scrollY > oldScrollY + 20 && fabAddClass.isExtended()){
+                if (scrollY > oldScrollY + 20 && fabAddClass.isExtended()) {
                     fabAddClass.shrink();
                 }
 
                 //scrollDown
-                if (scrollY < oldScrollY - 20 && !fabAddClass.isExtended()){
+                if (scrollY < oldScrollY - 20 && !fabAddClass.isExtended()) {
                     fabAddClass.extend();
                 }
             }
@@ -96,19 +99,27 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
 
     }
 
-    private void showPopupMenu(View v){
+    private void showPopupMenu(View v) {
         PopupMenu popupMenu = new PopupMenu(getContext(), v);
         popupMenu.inflate(R.menu.menu_teacher_option);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menu_account_info:
-                        //chỉnh sửa thông tin tài khoản
-                        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_accountInfoFragment);
+                        shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
+                        bundle = new Bundle();
+                        bundle.putInt("teacherId", shared.getInt("session_id", 0));
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_accountInfoFragment, bundle);
+                        return true;
+                    case R.id.menu_change_password:
+                        shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
+                        bundle = new Bundle();
+                        bundle.putInt("teacherId", shared.getInt("session_id", 0));
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_changePasswordFragment, bundle);
                         return true;
                     case R.id.menu_logout:
-                        SharedPreferences.Editor editor = requireActivity().getSharedPreferences("SESSION",MODE_PRIVATE).edit();
+                        SharedPreferences.Editor editor = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE).edit();
                         editor.clear().apply();
                         startActivity(new Intent(requireActivity(), AuthActivity.class));
                         requireActivity().finish();
@@ -165,7 +176,7 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menu_update_class:
                         updateClassRoom(classroom);
                         return true;
@@ -212,6 +223,7 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
             }
         });
     }
+
     private void updateClassRoom(Classroom classroom) {
         Bundle bundle = new Bundle();
         bundle.putInt("type", 1);
