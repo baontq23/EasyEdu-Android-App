@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewStudentFragment extends Fragment implements StudentAdapter.StudentItemListener {
-    private ImageView btnInfo;
+    private ImageView btnInfo, btnNoti;
     private RecyclerView rcv;
     private LinearProgressIndicator lpiClass;
     private StudentAdapter adapter;
@@ -41,8 +41,17 @@ public class ViewStudentFragment extends Fragment implements StudentAdapter.Stud
         super.onViewCreated(view, savedInstanceState);
         lpiClass = view.findViewById(R.id.lpi_parent_student);
         btnInfo = view.findViewById(R.id.img_item_parent_student_info);
+        btnNoti = view.findViewById(R.id.img_item_parent_student_noti);
         rcv = view.findViewById(R.id.rcv_item_parent_student);
         adapter = new StudentAdapter(this);
+
+        btnNoti.setOnClickListener(v -> {
+            Navigation.findNavController(requireActivity(), R.id.nav_host_parent).navigate(R.id.action_viewStudentFragment_to_notificationFragment);
+        });
+
+        btnInfo.setOnClickListener(v -> {
+            //
+        });
 
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rcv.setLayoutManager(manager);

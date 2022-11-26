@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg_primary"
-    tools:context=".fragments.teacher.ViewClassFragment">
+    tools:context=".fragments.parent.ViewStudentFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -37,6 +37,16 @@
                 android:layout_marginEnd="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_info" />
+
+            <ImageView
+                android:id="@+id/img_item_parent_student_noti"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_notification" />
 
         </androidx.appcompat.widget.Toolbar>
 
