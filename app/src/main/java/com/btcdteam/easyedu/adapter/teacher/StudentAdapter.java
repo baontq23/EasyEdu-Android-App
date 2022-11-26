@@ -1,5 +1,6 @@
 package com.btcdteam.easyedu.adapter.teacher;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.btcdteam.easyedu.models.StudentDetail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
@@ -54,20 +56,52 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         StudentDetail student = list.get(position);
         StudentVH studentVH = (StudentVH) holder;
         ((StudentVH) holder).tvStudentName.setText(student.getName());
-        ((StudentVH) holder).tvFinalScore.setText(student.getFinalScore() == null ? "?" : String.valueOf(student.getFinalScore()));
-        ((StudentVH) holder).tvRegularScore1.setText(student.getRegularScore1() == null ? "?" : String.valueOf(student.getRegularScore1()));
-        ((StudentVH) holder).tvRegularScore2.setText(student.getRegularScore2() == null ? "?" : String.valueOf(student.getRegularScore2()));
-        ((StudentVH) holder).tvRegularScore3.setText(student.getRegularScore3() == null ? "?" : String.valueOf(student.getRegularScore3()));
-        ((StudentVH) holder).tvMidtermScore.setText(student.getMidtermScore() == null ? "?" : String.valueOf(student.getMidtermScore()));
+        if (student.getFinalScore() == null) {
+            ((StudentVH) holder).tvFinalScore.setText("?");
+            ((StudentVH) holder).tvFinalScore.setTextColor(Color.parseColor("#D50000"));
+        } else {
+            ((StudentVH) holder).tvFinalScore.setText(String.format(Locale.US, "%.1f", student.getFinalScore()));
+            ((StudentVH) holder).tvFinalScore.setTextColor(Color.parseColor("#3787FF"));
+        }
+        if (student.getRegularScore1() == null) {
+            ((StudentVH) holder).tvRegularScore1.setText("?");
+            ((StudentVH) holder).tvRegularScore1.setTextColor(Color.parseColor("#D50000"));
+        } else {
+            ((StudentVH) holder).tvRegularScore1.setText(String.format(Locale.US, "%.1f", student.getRegularScore1()));
+            ((StudentVH) holder).tvRegularScore1.setTextColor(Color.parseColor("#3787FF"));
+        }
+        if (student.getRegularScore2() == null) {
+            ((StudentVH) holder).tvRegularScore2.setText("?");
+            ((StudentVH) holder).tvRegularScore2.setTextColor(Color.parseColor("#D50000"));
+        } else {
+            ((StudentVH) holder).tvRegularScore2.setText(String.format(Locale.US, "%.1f", student.getRegularScore2()));
+            ((StudentVH) holder).tvRegularScore2.setTextColor(Color.parseColor("#3787FF"));
+        }
+        if (student.getRegularScore3() == null) {
+            ((StudentVH) holder).tvRegularScore3.setText("?");
+            ((StudentVH) holder).tvRegularScore3.setTextColor(Color.parseColor("#D50000"));
+        } else {
+            ((StudentVH) holder).tvRegularScore3.setText(String.format(Locale.US, "%.1f", student.getRegularScore3()));
+            ((StudentVH) holder).tvRegularScore3.setTextColor(Color.parseColor("#3787FF"));
+        }
+        if (student.getMidtermScore() == null) {
+            ((StudentVH) holder).tvMidtermScore.setText("?");
+            ((StudentVH) holder).tvMidtermScore.setTextColor(Color.parseColor("#D50000"));
+        } else {
+            ((StudentVH) holder).tvMidtermScore.setText(String.format(Locale.US, "%.1f", student.getMidtermScore()));
+            ((StudentVH) holder).tvMidtermScore.setTextColor(Color.parseColor("#3787FF"));
+        }
 
         studentVH.itemStudent.setOnClickListener(v -> {
-            listener.onItemClick(holder.getAdapterPosition(), student);
+            if (listener != null)
+                listener.onItemClick(holder.getAdapterPosition(), student);
         });
 
         studentVH.option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onOptionClick(holder.getAdapterPosition(), student);
+                if (listener != null)
+                    listener.onOptionClick(holder.getAdapterPosition(), student);
             }
         });
     }
