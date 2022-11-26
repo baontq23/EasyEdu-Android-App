@@ -3,7 +3,7 @@ package com.btcdteam.easyedu;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.os.Build;
+import android.os.StrictMode;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -18,6 +18,8 @@ public class App extends Application {
         DialogX.init(this);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         createNotificationChannel();
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
     }
 
     private void createNotificationChannel() {
