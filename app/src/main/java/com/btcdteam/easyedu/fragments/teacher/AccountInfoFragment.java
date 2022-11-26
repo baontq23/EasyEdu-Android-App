@@ -2,6 +2,13 @@ package com.btcdteam.easyedu.fragments.teacher;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -12,20 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
-
 import com.btcdteam.easyedu.R;
-import com.btcdteam.easyedu.activity.ParentActivity;
-import com.btcdteam.easyedu.activity.TeacherActivity;
 import com.btcdteam.easyedu.apis.ServerAPI;
-import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Teacher;
 import com.btcdteam.easyedu.network.APIService;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,13 +28,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.kongzue.dialogx.dialogs.MessageDialog;
-import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
 
 import java.lang.reflect.Type;
 
@@ -73,6 +65,7 @@ public class AccountInfoFragment extends Fragment {
         btnSave = view.findViewById(R.id.btn_acc_info_save);
         btnBack = view.findViewById(R.id.img_acc_info_back);
         edEmail = view.findViewById(R.id.ed_acc_info_email);
+        edEmail.setEnabled(false);
         connectWithGG = view.findViewById(R.id.btn_choose_action_login_google1);
         disConnectWithGG = view.findViewById(R.id.btn_choose_action_login_google2);
 
@@ -91,20 +84,16 @@ public class AccountInfoFragment extends Fragment {
         disConnectWithGG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                disConnectWithGG();
+                unLinkGoogleAccount();
             }
         });
 
         connectWithGG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                connectWithGG();
+                signInWithGoogle();
             }
         });
-    }
-
-    private void connectWithGG() {
-            signInWithGoogle();
     }
 
     private void updateTeacher(int id, String email) {
@@ -129,8 +118,7 @@ public class AccountInfoFragment extends Fragment {
                     Toast.makeText(requireContext(), "Email hoặc số điện thoại đã tồn tại trên hệ thống!", Toast.LENGTH_SHORT).show();
                 }
                 if (response.code() == 204) {
-                    Toast.makeText(requireContext(), "Sửa thành công", Toast.LENGTH_SHORT).show();
-                    mGoogleSignInClient.signOut();
+                    Toast.makeText(requireContext(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_accountInfoFragment_to_viewClassFragment);
                 }
             }
@@ -170,8 +158,9 @@ public class AccountInfoFragment extends Fragment {
             }
         });
     }
-    private void disConnectWithGG(){
-        updateTeacher(id,"");
+
+    private void unLinkGoogleAccount() {
+        updateTeacher(id, "");
     }
 
     private final ActivityResultLauncher<Intent> loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -195,6 +184,7 @@ public class AccountInfoFragment extends Fragment {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             edEmail.setText(account.getEmail());
+            mGoogleSignInClient.signOut();
         } catch (ApiException e) {
             e.printStackTrace();
         }
