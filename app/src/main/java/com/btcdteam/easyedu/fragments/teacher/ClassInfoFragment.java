@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.btcdteam.easyedu.R;
-import com.btcdteam.easyedu.adapter.ViewPagerAdapter;
+import com.btcdteam.easyedu.adapter.teacher.ViewPagerAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
@@ -41,8 +40,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.kongzue.dialogx.dialogs.BottomMenu;
-import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;

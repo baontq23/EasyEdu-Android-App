@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.activity.AuthActivity;
-import com.btcdteam.easyedu.adapter.ClassroomAdapter;
+import com.btcdteam.easyedu.adapter.teacher.ClassroomAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.network.APIService;

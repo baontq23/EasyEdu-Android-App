@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
-import com.btcdteam.easyedu.adapter.StudentAdapter;
+import com.btcdteam.easyedu.adapter.teacher.StudentAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;

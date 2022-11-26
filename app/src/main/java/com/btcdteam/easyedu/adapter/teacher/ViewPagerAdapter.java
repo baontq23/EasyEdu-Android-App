@@ -1,4 +1,4 @@
-package com.btcdteam.easyedu.adapter;
+package com.btcdteam.easyedu.adapter.teacher;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
