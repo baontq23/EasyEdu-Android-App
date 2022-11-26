@@ -15,7 +15,7 @@ import com.btcdteam.easyedu.models.Parent;
 
 import java.util.List;
 
-public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentVH> {
 
     private StudentItemListener listener;
 
@@ -29,17 +29,15 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public StudentVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_student_parent, parent, false);
-        return new ParentVH(view);
+        return new StudentVH(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StudentVH holder, int position) {
 
-        ParentVH parentVH = (ParentVH) holder;
-
-        parentVH.itemParent.setOnClickListener(v -> {
+        holder.item.setOnClickListener(v -> {
             listener.onItemClick(position);
         });
     }
@@ -49,14 +47,16 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return 10;
     }
 
-    public class ParentVH extends RecyclerView.ViewHolder {
-        TextView tvParentName;
-        LinearLayout itemParent;
+    public class StudentVH extends RecyclerView.ViewHolder {
+        TextView tvName, tvTotalClass, tvAvgScore;
+        LinearLayout item;
 
-        public ParentVH(@NonNull View itemView) {
+        public StudentVH(@NonNull View itemView) {
             super(itemView);
-            tvParentName = itemView.findViewById(R.id.tv_parent_student_name);
-            itemParent = itemView.findViewById(R.id.item_parent_student);
+            tvName = itemView.findViewById(R.id.tv_parent_student_name);
+            tvTotalClass = itemView.findViewById(R.id.tv_student_parent_total_class);
+            tvAvgScore = itemView.findViewById(R.id.tv_student_parent_avg_score);
+            item = itemView.findViewById(R.id.item_parent_student);
         }
     }
 }

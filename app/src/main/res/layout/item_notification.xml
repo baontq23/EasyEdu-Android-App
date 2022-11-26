@@ -11,13 +11,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_vertical"
-        android:id="@+id/item_parent_student"
+        android:id="@+id/item_parent_noti"
         android:background="?android:selectableItemBackground"
         android:paddingVertical="8dp"
-        android:paddingHorizontal="8dp">
+        android:paddingHorizontal="8dp"
+        android:padding="16dp">
 
         <TextView
-            android:id="@+id/tv_parent_student_name"
+            android:id="@+id/tv_noti_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thông báo từ lớp: Tên lớp"
@@ -28,14 +29,17 @@
             android:ellipsize="end"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nội dung thông báo"/>
-
-        <TextView
+            android:id="@+id/tv_noti_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="dd/MM/yyyy"/>
+
+        <TextView
+            android:id="@+id/tv_noti_content"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nội dung thông báo"/>
 
     </LinearLayout>
 

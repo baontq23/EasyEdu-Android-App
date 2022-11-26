@@ -100,38 +100,35 @@ public class LoginFragment extends Fragment {
                     }
                 });
             } else {
-                requireActivity().startActivity(new Intent(requireActivity(), ParentActivity.class));
-                requireActivity().finish();
+                Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).parentLogin(object);
+                call.enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        progressBarDialog.dismiss();
+                        if (response.code() == 200) {
+                            Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            Type userListType = new TypeToken<Parent>() {
+                            }.getType();
+                            Parent parent = new Gson().fromJson(response.body().getAsJsonObject("data"), userListType);
+                            sharedPreferencesParent(role, parent.getId(), parent.getName(), parent.getEmail(), parent.getPhone(), parent.getDob(), parent.getFcmToken());
+                            requireActivity().startActivity(new Intent(requireActivity(), ParentActivity.class));
+                            requireActivity().finish();
+                        } else if (response.code() == 404) {
+                            Toast.makeText(getContext(), "Sai thông tin tài khoản", Toast.LENGTH_SHORT).show();
+                        } else if (response.code() == 401) {
+                            Toast.makeText(getContext(), "Sai mật khẩu", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Đăng nhập thấy bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-//                Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).parentLogin(object);
-//                call.enqueue(new Callback<JsonObject>() {
-//                    @Override
-//                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-//                        progressBarDialog.dismiss();
-//                        if (response.code() == 200) {
-//                            Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//                            Type userListType = new TypeToken<Parent>() {
-//                            }.getType();
-//                            Parent parent = new Gson().fromJson(response.body().getAsJsonObject("data"), userListType);
-//                            sharedPreferencesParent(role, parent.getId(), parent.getName(), parent.getEmail(), parent.getPhone(), parent.getDob(), parent.getFcmToken());
-//                            requireActivity().startActivity(new Intent(requireActivity(), ParentActivity.class));
-//                            requireActivity().finish();
-//                        } else if (response.code() == 404) {
-//                            Toast.makeText(getContext(), "Sai thông tin tài khoản", Toast.LENGTH_SHORT).show();
-//                        } else if (response.code() == 401) {
-//                            Toast.makeText(getContext(), "Sai mật khẩu", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(getContext(), "Đăng nhập thấy bại", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<JsonObject> call, Throwable t) {
-//                        progressBarDialog.dismiss();
-//                        t.printStackTrace();
-//                        Toast.makeText(requireContext(), "Không thế kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        progressBarDialog.dismiss();
+                        t.printStackTrace();
+                        Toast.makeText(requireContext(), "Không thế kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
