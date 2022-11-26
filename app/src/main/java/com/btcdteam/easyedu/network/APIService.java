@@ -7,6 +7,7 @@ import com.btcdteam.easyedu.utils.SyncBody;
 import com.btcdteam.easyedu.utils.UpdateStudentBody;
 import com.google.gson.JsonObject;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -81,4 +82,7 @@ public interface APIService {
 
     @PATCH("student")
     Call<JsonObject> updateStudent(@Body UpdateStudentBody updateStudentBody);
+
+    @PATCH("classuser/score/import")
+    Call<JsonObject> importStudentScore(@Body RequestBody body);
 }
