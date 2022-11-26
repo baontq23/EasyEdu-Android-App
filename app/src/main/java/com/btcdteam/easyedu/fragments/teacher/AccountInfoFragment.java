@@ -115,7 +115,7 @@ public class AccountInfoFragment extends Fragment {
         if(!email.trim().equals("")){
             object.addProperty("email", edEmail.getText().toString());
         }else{
-            object.addProperty("email", (String) null);
+            object.addProperty("email", "");
         }
 
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).editTeacher(object);
@@ -155,7 +155,7 @@ public class AccountInfoFragment extends Fragment {
                     Teacher teacher = new Gson().fromJson(response.body().getAsJsonObject("data").toString(), type);
                     edName.setText(teacher.getName());
                     edPhoneNumber.setText(teacher.getPhone());
-                    if(teacher.getEmail().equals("")){
+                    if(teacher.getEmail() == null){
                         connectWithGG.setVisibility(View.VISIBLE);
                     }else{
                         edEmail.setText(teacher.getEmail());
