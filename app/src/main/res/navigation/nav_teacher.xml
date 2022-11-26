@@ -61,6 +61,9 @@
             app:destination="@id/feedbackFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_classInfoFragment_to_importScoreFragment"
+            app:destination="@id/importScoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/createClassFragment"
@@ -120,4 +123,9 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+    <fragment
+        android:id="@+id/importScoreFragment"
+        android:name="com.btcdteam.easyedu.fragments.teacher.ImportScoreFragment"
+        android:label="fragment_import_score"
+        tools:layout="@layout/fragment_import_score" />
 </navigation>

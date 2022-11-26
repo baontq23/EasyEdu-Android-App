@@ -33,6 +33,7 @@ import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,7 +55,7 @@ public class StudentDetailsFragment extends Fragment {
             tvParentName,
             tvParentDateOfBirth,
             tvEmail,
-            Tvtotal,
+            tvtotal,
             tvAvg,
             tvPhoneNumber;
 
@@ -99,7 +100,7 @@ public class StudentDetailsFragment extends Fragment {
         tvAvg = view.findViewById(R.id.tv_student_detail_avg);
         swTerm = view.findViewById(R.id.sw_student_detail_term);
         btnDeleteStudent = view.findViewById(R.id.btn_class_detail_delete);
-        Tvtotal = view.findViewById(R.id.Tvtotal);
+        tvtotal = view.findViewById(R.id.Tvtotal);
 
         // parent
         btnSendFeedback = view.findViewById(R.id.btn_send_feedback);
@@ -125,7 +126,7 @@ public class StudentDetailsFragment extends Fragment {
                     .setOkButton(new OnDialogButtonClickListener<MessageDialog>() {
                         @Override
                         public boolean onClick(MessageDialog dialog, View v) {
-                            deleteStudent(studentId,classId);
+                            deleteStudent(studentId, classId);
                             return false;
                         }
                     });
@@ -149,7 +150,7 @@ public class StudentDetailsFragment extends Fragment {
 
     void deleteStudent(String studentId, int classId) {
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).deleteStudentById(studentId, classId);
-        Log.e(">>>>>>>>>>>>>>>", "deleteStudent: "+studentId+" / "+classId );
+        Log.e(">>>>>>>>>>>>>>>", "deleteStudent: " + studentId + " / " + classId);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -202,27 +203,27 @@ public class StudentDetailsFragment extends Fragment {
 
     void setValues(List<StudentDetail> list) {
         for (StudentDetail o : list) {
-            tvTotalScore.setVisibility(View.GONE);
-            Tvtotal.setVisibility(View.GONE);
             Float total = null;
+            tvTotalScore.setVisibility(View.GONE);
+            tvtotal.setVisibility(View.GONE);
             if (o.getRegularScore1() != null && o.getRegularScore2() != null && o.getRegularScore3() != null && o.getMidtermScore() != null && o.getFinalScore() != null) {
-                total = ((o.getRegularScore1() + o.getRegularScore2() + o.getRegularScore3()) + (2 * o.getMidtermScore()) + (3 * o.getFinalScore())) / 8;
+                total = ((o.getRegularScore1() + o.getRegularScore2() + o.getRegularScore3() + (2 * (o.getMidtermScore())) + (3 * (o.getFinalScore())))) / 8;
             }
             tvStudentName.setText(o.getName());
             tvStudentDateOfBirth.setText(o.getDob());
             tvStudentGender.setText(o.getStudentGender());
-            tvRegularScore1.setText(o.getRegularScore1() == null ? "?" : String.valueOf(o.getRegularScore1()));
-            tvRegularScore2.setText(o.getRegularScore2() == null ? "?" : String.valueOf(o.getRegularScore2()));
-            tvRegularScore3.setText(o.getRegularScore3() == null ? "?" : String.valueOf(o.getRegularScore3()));
-            tvMidtermScore.setText(o.getMidtermScore() == null ? "?" : String.valueOf(o.getMidtermScore()));
-            tvFinalScore.setText(o.getFinalScore() == null ? "?" : String.valueOf(o.getFinalScore()));
+            tvRegularScore1.setText(o.getRegularScore1() == null ? "?" : String.format(Locale.US, "%.2f", o.getRegularScore1()));
+            tvRegularScore2.setText(o.getRegularScore2() == null ? "?" : String.format(Locale.US, "%.2f", o.getRegularScore2()));
+            tvRegularScore3.setText(o.getRegularScore3() == null ? "?" : String.format(Locale.US, "%.2f", o.getRegularScore2()));
+            tvMidtermScore.setText(o.getMidtermScore() == null ? "?" : String.format(Locale.US, "%.2f", o.getMidtermScore()));
+            tvFinalScore.setText(o.getFinalScore() == null ? "?" : String.format(Locale.US, "%.2f", o.getFinalScore()));
             tvParentName.setText(o.getParentName());
             tvParentDateOfBirth.setText(o.getParentDob());
             tvEmail.setText(o.getParentEmail());
             if (total == null) {
                 tvAvg.setText("?");
             } else {
-                tvAvg.setText(String.format("%.2f", total));
+                tvAvg.setText(String.format(Locale.US, "%.2f", total));
             }
             tvPhoneNumber.setText(o.getParentPhone());
         }

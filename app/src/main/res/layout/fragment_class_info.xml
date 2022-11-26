@@ -60,10 +60,28 @@
             android:id="@+id/fab_student_add_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/blue_primary"
+            app:fab_colorNormal="@color/dark_green"
             app:fab_icon="@drawable/ic_xls_file"
             app:fab_size="mini"
             app:fab_title="Thêm học sinh bằng file xls" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_import_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/dark_green"
+            app:fab_icon="@drawable/ic_xls_file"
+            app:fab_size="mini"
+            app:fab_title="Nhập điểm qua file" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_export_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/dark_green"
+            app:fab_icon="@drawable/ic_xls_file"
+            app:fab_size="mini"
+            app:fab_title="Xuất bảng điểm" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
