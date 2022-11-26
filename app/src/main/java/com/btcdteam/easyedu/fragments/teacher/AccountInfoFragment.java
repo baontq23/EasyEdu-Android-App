@@ -155,7 +155,7 @@ public class AccountInfoFragment extends Fragment {
                     Teacher teacher = new Gson().fromJson(response.body().getAsJsonObject("data").toString(), type);
                     edName.setText(teacher.getName());
                     edPhoneNumber.setText(teacher.getPhone());
-                    if(teacher.getEmail().equals("")){
+                    if(teacher.getEmail() == null){
                         connectWithGG.setVisibility(View.VISIBLE);
                     }else{
                         edEmail.setText(teacher.getEmail());
