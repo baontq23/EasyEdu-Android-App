@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/blue_primary"
+    android:orientation="horizontal"
+    app:cardCornerRadius="40dp"
+    android:maxHeight="150dp"
+    android:layout_marginVertical="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="16dp">
+
+        <EditText
+            android:id="@+id/ed_feedback"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:maxHeight="150dp"
+            android:hint="Thông báo cho phụ huynh..."
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textColorHint="#97FFFFFF"
+           android:backgroundTint="#00000000"/>
+
+        <ImageView
+            android:id="@+id/btn_send_feedback"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_send"
+            android:background="?android:selectableItemBackgroundBorderless"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
