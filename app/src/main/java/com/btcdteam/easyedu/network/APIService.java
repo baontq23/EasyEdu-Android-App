@@ -4,6 +4,7 @@ import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Teacher;
 import com.btcdteam.easyedu.utils.SyncBody;
+import com.btcdteam.easyedu.utils.UpdateStudentBody;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -74,4 +75,10 @@ public interface APIService {
 
     @POST("auth/change-password")
     Call<JsonObject> changePassword(@Body JsonObject teacher);
+
+    @GET("student/{studentId}/{classroomId}")
+    Call<JsonObject> getStudentById(@Path("studentId") String studentId, @Path("classroomId") int ClassroomId);
+
+    @PATCH("student")
+    Call<JsonObject> updateStudent(@Body UpdateStudentBody updateStudentBody);
 }

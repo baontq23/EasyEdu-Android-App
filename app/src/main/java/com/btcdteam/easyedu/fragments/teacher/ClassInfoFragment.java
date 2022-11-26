@@ -105,6 +105,7 @@ public class ClassInfoFragment extends Fragment {
 
 
         Bundle bundle = new Bundle();
+        bundle.putInt("type", 0);
         bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
 
         fabSendFeedback.setOnClickListener(v -> {

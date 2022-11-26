@@ -221,7 +221,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                     public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
                         switch (index) {
                             case 0:
-                                Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment);
+                                updateStudent(student);
                                 BottomMenu.cleanAll();
                                 return false;
                             case 1:
@@ -245,5 +245,13 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
                         }
                     }
                 });
+    }
+
+    private void updateStudent(StudentDetail studentDetail) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", 1);
+        bundle.putInt("classroom_id", studentDetail.getClassroomId());
+        bundle.putString("student_id", studentDetail.getStudentId());
+        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
     }
 }
