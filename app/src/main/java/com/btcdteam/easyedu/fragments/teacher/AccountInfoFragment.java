@@ -115,7 +115,7 @@ public class AccountInfoFragment extends Fragment {
         if(!email.trim().equals("")){
             object.addProperty("email", edEmail.getText().toString());
         }else{
-            object.addProperty("email", "");
+            object.addProperty("email", (String) null);
         }
 
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).editTeacher(object);
