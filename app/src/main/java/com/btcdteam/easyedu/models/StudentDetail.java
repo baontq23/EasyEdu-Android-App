@@ -15,15 +15,15 @@ public class StudentDetail implements Serializable {
     @SerializedName("student_dob")
     private String dob;
     @SerializedName("regular_score_1")
-    private float regularScore1;
+    private Float regularScore1;
     @SerializedName("regular_score_2")
-    private float regularScore2;
+    private Float regularScore2;
     @SerializedName("regular_score_3")
-    private float regularScore3;
+    private Float regularScore3;
     @SerializedName("midterm_score")
-    private float midtermScore;
+    private Float midtermScore;
     @SerializedName("final_score")
-    private float finalScore;
+    private Float finalScore;
     private int semester;
     @SerializedName("parent_name")
     private String parentName;
@@ -49,6 +49,14 @@ public class StudentDetail implements Serializable {
 
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getClassroomId() {
         return classroomId;
     }
@@ -65,14 +73,6 @@ public class StudentDetail implements Serializable {
         this.studentId = studentId;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -81,43 +81,51 @@ public class StudentDetail implements Serializable {
         this.name = name;
     }
 
-    public float getRegularScore1() {
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public Float getRegularScore1() {
         return regularScore1;
     }
 
-    public void setRegularScore1(float regularScore1) {
+    public void setRegularScore1(Float regularScore1) {
         this.regularScore1 = regularScore1;
     }
 
-    public float getRegularScore2() {
+    public Float getRegularScore2() {
         return regularScore2;
     }
 
-    public void setRegularScore2(float regularScore2) {
+    public void setRegularScore2(Float regularScore2) {
         this.regularScore2 = regularScore2;
     }
 
-    public float getRegularScore3() {
+    public Float getRegularScore3() {
         return regularScore3;
     }
 
-    public void setRegularScore3(float regularScore3) {
+    public void setRegularScore3(Float regularScore3) {
         this.regularScore3 = regularScore3;
     }
 
-    public float getMidtermScore() {
+    public Float getMidtermScore() {
         return midtermScore;
     }
 
-    public void setMidtermScore(float midtermScore) {
+    public void setMidtermScore(Float midtermScore) {
         this.midtermScore = midtermScore;
     }
 
-    public float getFinalScore() {
+    public Float getFinalScore() {
         return finalScore;
     }
 
-    public void setFinalScore(float finalScore) {
+    public void setFinalScore(Float finalScore) {
         this.finalScore = finalScore;
     }
 
@@ -127,14 +135,6 @@ public class StudentDetail implements Serializable {
 
     public void setSemester(int semester) {
         this.semester = semester;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
     }
 
     public String getParentName() {

@@ -53,13 +53,12 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         StudentDetail student = list.get(position);
         StudentVH studentVH = (StudentVH) holder;
-        ((StudentVH) holder).tvRegularScore1.setText(String.valueOf(student.getRegularScore1()));
         ((StudentVH) holder).tvStudentName.setText(student.getName());
-        ((StudentVH) holder).tvFinalScore.setText(String.valueOf(student.getFinalScore()));
-        ((StudentVH) holder).tvRegularScore1.setText(String.valueOf(student.getRegularScore1()));
-        ((StudentVH) holder).tvRegularScore2.setText(String.valueOf(student.getRegularScore2()));
-        ((StudentVH) holder).tvRegularScore3.setText(String.valueOf(student.getRegularScore3()));
-        ((StudentVH) holder).tvMidtermScore.setText(String.valueOf(student.getMidtermScore()));
+        ((StudentVH) holder).tvFinalScore.setText(student.getFinalScore() == null ? "?" : String.valueOf(student.getFinalScore()));
+        ((StudentVH) holder).tvRegularScore1.setText(student.getRegularScore1() == null ? "?" : String.valueOf(student.getRegularScore1()));
+        ((StudentVH) holder).tvRegularScore2.setText(student.getRegularScore2() == null ? "?" : String.valueOf(student.getRegularScore2()));
+        ((StudentVH) holder).tvRegularScore3.setText(student.getRegularScore3() == null ? "?" : String.valueOf(student.getRegularScore3()));
+        ((StudentVH) holder).tvMidtermScore.setText(student.getMidtermScore() == null ? "?" : String.valueOf(student.getMidtermScore()));
 
         studentVH.itemStudent.setOnClickListener(v -> {
             listener.onItemClick(holder.getAdapterPosition(), student);

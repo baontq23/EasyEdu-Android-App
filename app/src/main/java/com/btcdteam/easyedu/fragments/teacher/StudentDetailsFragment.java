@@ -1,7 +1,5 @@
 package com.btcdteam.easyedu.fragments.teacher;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -206,22 +204,25 @@ public class StudentDetailsFragment extends Fragment {
         for (StudentDetail o : list) {
             tvTotalScore.setVisibility(View.GONE);
             Tvtotal.setVisibility(View.GONE);
-            float total = ((o.getRegularScore1() + o.getRegularScore2() + o.getRegularScore3() + (2 * (o.getMidtermScore())) + (3 * (o.getFinalScore())))) / (o.getRegularScore1()) + 5;
+            Float total = null;
+            if (o.getRegularScore1() != null && o.getRegularScore2() != null && o.getRegularScore3() != null && o.getMidtermScore() != null && o.getFinalScore() != null) {
+                total = ((o.getRegularScore1() + o.getRegularScore2() + o.getRegularScore3()) + (2 * o.getMidtermScore()) + (3 * o.getFinalScore())) / 8;
+            }
             tvStudentName.setText(o.getName());
             tvStudentDateOfBirth.setText(o.getDob());
             tvStudentGender.setText(o.getStudentGender());
-            tvRegularScore1.setText(String.valueOf(o.getRegularScore1()));
-            tvRegularScore2.setText(String.valueOf(o.getRegularScore2()));
-            tvRegularScore3.setText(String.valueOf(o.getRegularScore2()));
-            tvMidtermScore.setText(String.valueOf(o.getMidtermScore()));
-            tvFinalScore.setText(String.valueOf(o.getFinalScore()));
+            tvRegularScore1.setText(o.getRegularScore1() == null ? "?" : String.valueOf(o.getRegularScore1()));
+            tvRegularScore2.setText(o.getRegularScore2() == null ? "?" : String.valueOf(o.getRegularScore2()));
+            tvRegularScore3.setText(o.getRegularScore3() == null ? "?" : String.valueOf(o.getRegularScore3()));
+            tvMidtermScore.setText(o.getMidtermScore() == null ? "?" : String.valueOf(o.getMidtermScore()));
+            tvFinalScore.setText(o.getFinalScore() == null ? "?" : String.valueOf(o.getFinalScore()));
             tvParentName.setText(o.getParentName());
             tvParentDateOfBirth.setText(o.getParentDob());
             tvEmail.setText(o.getParentEmail());
-            if (Float.isNaN(total)) {
-                tvAvg.setText("0.0");
+            if (total == null) {
+                tvAvg.setText("?");
             } else {
-                tvAvg.setText(String.valueOf(total));
+                tvAvg.setText(String.format("%.2f", total));
             }
             tvPhoneNumber.setText(o.getParentPhone());
         }
