@@ -30,6 +30,23 @@
             style="@style/EditText"
             android:hint="Hiện tại chưa có tài khoản Email" />
 
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_choose_action_login_google1"
+            style="@style/GoogleButton"
+            android:text="@string/connectWithGoogle"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_choose_action_login_google2"
+            style="@style/GoogleButton"
+            android:text="@string/disConnectWithGoogle"
+            android:visibility="gone"
+
+            />
+
     </LinearLayout>
 
     <androidx.appcompat.widget.Toolbar

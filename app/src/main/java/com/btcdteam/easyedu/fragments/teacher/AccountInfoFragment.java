@@ -1,11 +1,18 @@
 package com.btcdteam.easyedu.fragments.teacher;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +22,24 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.btcdteam.easyedu.R;
+import com.btcdteam.easyedu.activity.ParentActivity;
+import com.btcdteam.easyedu.activity.TeacherActivity;
 import com.btcdteam.easyedu.apis.ServerAPI;
+import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Teacher;
 import com.btcdteam.easyedu.network.APIService;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialogx.dialogs.MessageDialog;
+import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
 
 import java.lang.reflect.Type;
 
@@ -33,11 +52,16 @@ public class AccountInfoFragment extends Fragment {
     private Button btnSave;
     private ImageView btnBack;
     private int id;
+    private Button connectWithGG,disConnectWithGG;
+    private GoogleSignInClient mGoogleSignInClient;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
         return inflater.inflate(R.layout.fragment_account_info, container, false);
     }
 
@@ -49,6 +73,8 @@ public class AccountInfoFragment extends Fragment {
         btnSave = view.findViewById(R.id.btn_acc_info_save);
         btnBack = view.findViewById(R.id.img_acc_info_back);
         edEmail = view.findViewById(R.id.ed_acc_info_email);
+        connectWithGG = view.findViewById(R.id.btn_choose_action_login_google1);
+        disConnectWithGG = view.findViewById(R.id.btn_choose_action_login_google2);
 
         id = getArguments().getInt("teacherId");
         getInfoTeacher(id);
@@ -58,17 +84,39 @@ public class AccountInfoFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateTeacher(id);
+                updateTeacher(id,edEmail.getText().toString());
+            }
+        });
+
+        disConnectWithGG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                disConnectWithGG();
+            }
+        });
+
+        connectWithGG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                connectWithGG();
             }
         });
     }
 
-    private void updateTeacher(int id) {
+    private void connectWithGG() {
+            signInWithGoogle();
+    }
+
+    private void updateTeacher(int id, String email) {
         JsonObject object = new JsonObject();
         object.addProperty("id", id);
         object.addProperty("name", edName.getText().toString());
         object.addProperty("phone", edPhoneNumber.getText().toString());
-        object.addProperty("email", edEmail.getText().toString());
+        if(!email.trim().equals("")){
+            object.addProperty("email", edEmail.getText().toString());
+        }else{
+            object.addProperty("email", "");
+        }
 
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).editTeacher(object);
         call.enqueue(new Callback<JsonObject>() {
@@ -82,6 +130,8 @@ public class AccountInfoFragment extends Fragment {
                 }
                 if (response.code() == 204) {
                     Toast.makeText(requireContext(), "Sửa thành công", Toast.LENGTH_SHORT).show();
+                    mGoogleSignInClient.signOut();
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_accountInfoFragment_to_viewClassFragment);
                 }
             }
 
@@ -105,7 +155,12 @@ public class AccountInfoFragment extends Fragment {
                     Teacher teacher = new Gson().fromJson(response.body().getAsJsonObject("data").toString(), type);
                     edName.setText(teacher.getName());
                     edPhoneNumber.setText(teacher.getPhone());
-                    edEmail.setText(teacher.getEmail());
+                    if(teacher.getEmail().equals("")){
+                        connectWithGG.setVisibility(View.VISIBLE);
+                    }else{
+                        edEmail.setText(teacher.getEmail());
+                        disConnectWithGG.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -114,5 +169,34 @@ public class AccountInfoFragment extends Fragment {
                 Toast.makeText(requireContext(), "Lỗi kết nối Server", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void disConnectWithGG(){
+        updateTeacher(id,"");
+    }
+
+    private final ActivityResultLauncher<Intent> loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getData() == null) {
+                //no data present
+                return;
+            }
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+            handleSignInResult(task);
+        }
+    });
+
+    private void signInWithGoogle() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        loginLauncher.launch(signInIntent);
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            edEmail.setText(account.getEmail());
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
     }
 }
