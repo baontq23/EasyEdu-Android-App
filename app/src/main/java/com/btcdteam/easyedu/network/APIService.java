@@ -65,4 +65,13 @@ public interface APIService {
 
     @POST("parent")
     Call<JsonObject> createParent(@Body Parent parent);
+
+    @PATCH("teacher")
+    Call<JsonObject> editTeacher(@Body JsonObject teacher);
+
+    @GET("teacher/{id}")
+    Call<JsonObject> getTeacherById(@Path("id") int id);
+
+    @POST("auth/change-password")
+    Call<JsonObject> changePassword(@Body JsonObject teacher);
 }
