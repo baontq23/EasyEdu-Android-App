@@ -2,9 +2,13 @@ package com.btcdteam.easyedu.fragments.teacher;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +23,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,12 +42,17 @@ import com.btcdteam.easyedu.adapter.teacher.ViewPagerAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
+import com.btcdteam.easyedu.utils.FileUtils;
+import com.btcdteam.easyedu.utils.ProgressBarDialog;
+import com.btcdteam.easyedu.utils.ScoreFileUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialogx.dialogs.MessageDialog;
+import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -59,18 +72,20 @@ public class ClassInfoFragment extends Fragment {
     private Menu search_menu;
     private MenuItem item_search;
     private ImageView icSearch, icSetting;
-    private FloatingActionButton fabSendFeedback, fabAddStudent, fabAddStudentFile;
+    private FloatingActionButton fabSendFeedback, fabAddStudent, fabAddStudentFile, fabImportScore, fabExportForm;
     private FloatingActionsMenu fabMenu;
     private NestedScrollView scrollView;
     private List<StudentDetail> studentDetailLis01, studentDetailLis02, studentDetailList;
     private int check = 0;
     private ScaleAnimation scaleUpAnimation = new ScaleAnimation(0f, 1.0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
     private ScaleAnimation scaleDownAnimation = new ScaleAnimation(1f, 0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
+    private ProgressBarDialog progressBarDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        progressBarDialog = new ProgressBarDialog(requireActivity());
         return inflater.inflate(R.layout.fragment_class_info, container, false);
     }
 
@@ -89,6 +104,8 @@ public class ClassInfoFragment extends Fragment {
         fabAddStudent = view.findViewById(R.id.fab_student_add);
         fabSendFeedback = view.findViewById(R.id.fab_student_send_feedback);
         fabAddStudentFile = view.findViewById(R.id.fab_student_add_file);
+        fabExportForm = view.findViewById(R.id.fab_export_form);
+        fabImportScore = view.findViewById(R.id.fab_import_score);
         fabMenu = view.findViewById(R.id.fab_menu);
         scrollView = view.findViewById(R.id.nsv_scroll);
 
@@ -114,23 +131,32 @@ public class ClassInfoFragment extends Fragment {
         });
 
         fabAddStudent.setOnClickListener(v -> {
-           Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
 
         });
-
+        fabExportForm.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            intent.putExtra(Intent.EXTRA_TITLE, getArguments() != null ? getArguments().getString("classroom_name") + ".xlsx" : "export.xlsx");
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, Environment.DIRECTORY_DOWNLOADS);
+            exportFormLauncher.launch(intent);
+        });
         fabAddStudentFile.setOnClickListener(v -> {
-               Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
         });
-
+        fabImportScore.setOnClickListener(v -> {
+            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_importScoreFragment, bundle);
+        });
         //expanded, collapse floating button menu when scroll
         scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if(scrollY > oldScrollY + 20 && fabMenu.isExpanded()){
+                if (scrollY > oldScrollY + 20 && fabMenu.isExpanded()) {
                     fabMenu.collapse();
                 }
 
-                if (scrollY < oldScrollY - 20 && fabMenu.isExpanded()){
+                if (scrollY < oldScrollY - 20 && fabMenu.isExpanded()) {
                     fabMenu.collapse();
                 }
             }
@@ -189,13 +215,13 @@ public class ClassInfoFragment extends Fragment {
             public void onClick(View view) {
                 if (check == 0) {
                     icSetting.setImageResource(R.drawable.semeter02);
-                     getListStudentSemeter02();
-                    Snackbar.make(view,"Kì 2",Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
+                    getListStudentSemester02();
+                    Snackbar.make(view, "Kì 2", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
                     check = 1;
                 } else {
                     icSetting.setImageResource(R.drawable.semeter01);
-                    getListStudentSemeter01();
-                    Snackbar.make(view,"Kì 1",Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
+                    getListStudentSemester01();
+                    Snackbar.make(view, "Kì 1", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
                     check = 0;
                 }
             }
@@ -338,7 +364,7 @@ public class ClassInfoFragment extends Fragment {
         anim.start();
     }
 
-    private void getListStudentSemeter01() {
+    private void getListStudentSemester01() {
         int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
@@ -366,7 +392,7 @@ public class ClassInfoFragment extends Fragment {
         });
     }
 
-    private void getListStudentSemeter02() {
+    private void getListStudentSemester02() {
         int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
@@ -392,4 +418,61 @@ public class ClassInfoFragment extends Fragment {
             }
         });
     }
+
+    private final ActivityResultLauncher<Intent> exportFormLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                if (result.getData() == null) {
+                    //no data present
+                    return;
+                }
+                progressBarDialog.setMessage("Loading").show();
+                int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
+                Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
+                call.enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if (response.code() == 200) {
+                            Type type = new TypeToken<List<StudentDetail>>() {
+                            }.getType();
+                            studentDetailList = new Gson().fromJson(response.body().getAsJsonArray("data"), type);
+                            String filePath = new FileUtils(requireActivity()).getPath(result.getData().getData());
+                            new ScoreFileUtils(filePath, studentDetailList, new ScoreFileUtils.addOnCompleteListener() {
+                                @Override
+                                public void onComplete(Uri export) {
+                                    progressBarDialog.dismiss();
+                                    new MessageDialog("Thông báo", "Xuất bảng điểm thành công!", "Mở", "Đóng")
+                                            .setOkButtonClickListener(new OnDialogButtonClickListener<MessageDialog>() {
+                                                @Override
+                                                public boolean onClick(MessageDialog dialog, View v) {
+                                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                                    intent.setDataAndType(export, "*/*");
+                                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                                    startActivity(intent);
+                                                    return false;
+                                                }
+                                            }).show();
+
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    progressBarDialog.dismiss();
+                                    Toast.makeText(requireActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }).exportScoreInputFile();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+            }
+        }
+    });
 }

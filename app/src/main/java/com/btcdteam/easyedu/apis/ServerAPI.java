@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServerAPI {
     public static Retrofit retrofit;
-    public static final String LOCAL_BASEURL = "http://192.168.1.234:3000/";
+    public static final String LOCAL_BASEURL = "http://192.168.31.158:3000/";
     public static final String SERVER_BASEURL = "https://api.easyedu.online/";
 
     public static Retrofit getInstance() {
