@@ -84,18 +84,7 @@ public class ChooseActionFragment extends Fragment {
         btnChooseActionLoginGoogle.setOnClickListener(v -> {
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
             if (acct != null) {
-                new MessageDialog("Thông tin", "Email: " + acct.getEmail(), "Logout", "Close").setOkButtonClickListener(new OnDialogButtonClickListener<MessageDialog>() {
-                    @Override
-                    public boolean onClick(MessageDialog dialog, View v) {
-                        mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(requireContext(), "Logout successfully!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        return false;
-                    }
-                }).show();
+               mGoogleSignInClient.signOut();
             } else {
                 signInWithGoogle();
             }
