@@ -20,12 +20,21 @@
     </fragment>
     <fragment
         android:id="@+id/studentDetailFragment"
-        android:name="com.btcdteam.easyedu.fragments.parent.StudentDetailFragment"
+        android:name="com.btcdteam.easyedu.fragments.parent.StudentsClassFragment"
         android:label="fragment_student_detail"
-        tools:layout="@layout/fragment_student_detail" />
+        tools:layout="@layout/fragment_student_class" >
+        <action
+            android:id="@+id/action_studentDetailFragment_to_studentDetailFragment2"
+            app:destination="@id/studentDetailFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.btcdteam.easyedu.fragments.parent.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/studentDetailFragment2"
+        android:name="com.btcdteam.easyedu.fragments.parent.StudentDetailFragment"
+        android:label="fragment_student_detail"
+        tools:layout="@layout/fragment_student_detail" />
 </navigation>
