@@ -216,12 +216,12 @@ public class ClassInfoFragment extends Fragment {
                 if (check == 0) {
                     icSetting.setImageResource(R.drawable.semeter02);
                     getListStudentSemester02();
-                    Snackbar.make(view, "Kì 2", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
+                    Snackbar.make(view, "Kì 2", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary, requireActivity().getTheme())).show();
                     check = 1;
                 } else {
                     icSetting.setImageResource(R.drawable.semeter01);
                     getListStudentSemester01();
-                    Snackbar.make(view, "Kì 1", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
+                    Snackbar.make(view, "Kì 1", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary, requireActivity().getTheme())).show();
                     check = 0;
                 }
             }
