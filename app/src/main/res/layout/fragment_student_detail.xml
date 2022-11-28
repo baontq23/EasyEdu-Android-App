@@ -30,6 +30,16 @@
             android:textColor="@color/blue_primary"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/img_parent_student_detail_noti"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="end"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:padding="10dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_notification" />
     </androidx.appcompat.widget.Toolbar>
 
 </FrameLayout>

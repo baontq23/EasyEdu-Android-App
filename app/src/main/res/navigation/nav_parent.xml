@@ -36,5 +36,9 @@
         android:id="@+id/studentDetailFragment2"
         android:name="com.btcdteam.easyedu.fragments.parent.StudentDetailFragment"
         android:label="fragment_student_detail"
-        tools:layout="@layout/fragment_student_detail" />
+        tools:layout="@layout/fragment_student_detail" >
+        <action
+            android:id="@+id/action_studentDetailFragment2_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+    </fragment>
 </navigation>
