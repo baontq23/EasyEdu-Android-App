@@ -1,6 +1,17 @@
 package com.btcdteam.easyedu.fragments.parent;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,15 +20,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-
 import com.btcdteam.easyedu.R;
+import com.btcdteam.easyedu.activity.AuthActivity;
 import com.btcdteam.easyedu.adapter.parent.StudentAdapter;
-import com.btcdteam.easyedu.models.Parent;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.kongzue.dialogx.dialogs.MessageDialog;
+import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +36,7 @@ public class ViewStudentFragment extends Fragment implements StudentAdapter.Stud
     private LinearProgressIndicator lpiClass;
     private StudentAdapter adapter;
     private List<String> list = new ArrayList<>();
-
+    private SharedPreferences shared;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,13 +57,47 @@ public class ViewStudentFragment extends Fragment implements StudentAdapter.Stud
             Navigation.findNavController(requireActivity(), R.id.nav_host_parent).navigate(R.id.action_viewStudentFragment_to_notificationFragment);
         });
 
-        btnInfo.setOnClickListener(v -> {
-            //
-        });
+        btnInfo.setOnClickListener(this::showPopupMenu);
 
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         rcv.setLayoutManager(manager);
         rcv.setAdapter(adapter);
+    }
+
+    private void showPopupMenu(View v) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), v);
+        popupMenu.inflate(R.menu.menu_teacher_option);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Bundle bundle;
+                switch (item.getItemId()) {
+                    case R.id.menu_account_info:
+                        shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
+                        Toast.makeText(requireContext(), shared.getString("session_name", "None"), Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.menu_change_password:
+                        shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
+
+                        return true;
+                    case R.id.menu_logout:
+                        MessageDialog.show("Đăng xuất", "Bạn có muốn đăng xuất không ?", "Có", "Không").setOkButtonClickListener(new OnDialogButtonClickListener<MessageDialog>() {
+                            @Override
+                            public boolean onClick(MessageDialog dialog, View v) {
+                                SharedPreferences.Editor editor = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE).edit();
+                                editor.clear().apply();
+                                startActivity(new Intent(requireActivity(), AuthActivity.class));
+                                requireActivity().finish();
+                                return false;
+                            }
+                        }).show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
     }
 
     @Override
