@@ -1,8 +1,10 @@
 package com.btcdteam.easyedu.network;
 
 import com.btcdteam.easyedu.models.Classroom;
+import com.btcdteam.easyedu.models.Feedback;
 import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Teacher;
+import com.btcdteam.easyedu.utils.FCMBodyRequest;
 import com.btcdteam.easyedu.utils.SyncBody;
 import com.btcdteam.easyedu.utils.UpdateStudentBody;
 import com.google.gson.JsonObject;
@@ -12,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -85,4 +88,19 @@ public interface APIService {
 
     @PATCH("classuser/score/import")
     Call<JsonObject> importStudentScore(@Body RequestBody body);
+
+    @PATCH("parent")
+    Call<JsonObject> updateParent(@Body Parent parent);
+
+    @POST("feedback")
+    Call<JsonObject> sendFeedback(@Body Feedback feedback);
+
+    @Headers({
+            "Authorization: key=AAAAPROn9MM:APA91bHk2VbqYEpKdm9wdYJNm1-SrlRsgityfCotN5wo5eh6gNeVv2HPy1j8wfhN3i4LUBCB4q4aUZOSSRNlTEfZqEpabqHT6bZTzl8rgMT87HNGUe2CPuhFOF5afX9vKkAhZgk9QcRh",
+            "Content-Type: application/json"
+    })
+    @POST("fcm/send")
+    Call<JsonObject> pushNotification(@Body FCMBodyRequest body);
+
+
 }
