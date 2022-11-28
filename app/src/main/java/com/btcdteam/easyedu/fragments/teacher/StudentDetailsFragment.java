@@ -285,7 +285,8 @@ public class StudentDetailsFragment extends Fragment {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 progressBarDialog.dismiss();
                 if (response.code() == 200) {
-                    parentFcmToken = String.valueOf(response.body().getAsJsonArray("data").get(0).getAsJsonObject().get("parent_fcmtoken"));
+                    parentFcmToken = String.valueOf(response.body().getAsJsonArray("data").get(0).getAsJsonObject().get("parent_fcmtoken")).replace("\"", "");
+                    ;
                     Type type = new TypeToken<List<StudentDetail>>() {
                     }.getType();
                     studentDetails = new Gson().fromJson(response.body().getAsJsonArray("data"), type);
