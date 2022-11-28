@@ -1,40 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginVertical="24dp"
     android:backgroundTint="@color/blue_primary"
-    android:orientation="horizontal"
-    app:cardCornerRadius="40dp"
     android:maxHeight="150dp"
-    android:layout_marginVertical="24dp">
+    android:orientation="horizontal"
+    app:cardCornerRadius="40dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:paddingVertical="8dp"
-        android:paddingHorizontal="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
 
         <EditText
             android:id="@+id/ed_feedback"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:maxHeight="150dp"
-            android:hint="Thông báo cho phụ huynh..."
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="#00000000"
+            android:hint="Thông báo cho phụ huynh..."
+            android:maxHeight="150dp"
             android:textColor="@color/white"
-            android:textColorHint="#97FFFFFF"
-           android:backgroundTint="#00000000"/>
+            android:textColorHint="#97FFFFFF" />
 
         <ImageView
             android:id="@+id/btn_send_feedback"
             android:layout_width="46dp"
             android:layout_height="46dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:padding="8dp"
-            android:src="@drawable/ic_send"
-            android:background="?android:selectableItemBackgroundBorderless"/>
+            android:src="@drawable/ic_send" />
 
-    </LinearLayout>
+        <ProgressBar
+            android:id="@+id/pb_text_field_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:indeterminate="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:indeterminateTint="@color/bg_primary"
+            android:indeterminateTintMode="src_atop" />
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

@@ -126,15 +126,16 @@ public class ClassInfoFragment extends Fragment {
         bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
 
         fabSendFeedback.setOnClickListener(v -> {
-            // send feedback
+            fabMenu.collapse();
             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_feedbackFragment, bundle);
         });
 
         fabAddStudent.setOnClickListener(v -> {
+            fabMenu.collapse();
             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
-
         });
         fabExportForm.setOnClickListener(v -> {
+            fabMenu.collapse();
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -143,9 +144,11 @@ public class ClassInfoFragment extends Fragment {
             exportFormLauncher.launch(intent);
         });
         fabAddStudentFile.setOnClickListener(v -> {
+            fabMenu.collapse();
             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
         });
         fabImportScore.setOnClickListener(v -> {
+            fabMenu.collapse();
             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_importScoreFragment, bundle);
         });
         //expanded, collapse floating button menu when scroll
@@ -216,12 +219,12 @@ public class ClassInfoFragment extends Fragment {
                 if (check == 0) {
                     icSetting.setImageResource(R.drawable.semeter02);
                     getListStudentSemester02();
-                    Snackbar.make(view, "Kì 2", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
+                    Snackbar.make(view, "Kì 2", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary, requireActivity().getTheme())).show();
                     check = 1;
                 } else {
                     icSetting.setImageResource(R.drawable.semeter01);
                     getListStudentSemester01();
-                    Snackbar.make(view, "Kì 1", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
+                    Snackbar.make(view, "Kì 1", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary, requireActivity().getTheme())).show();
                     check = 0;
                 }
             }
