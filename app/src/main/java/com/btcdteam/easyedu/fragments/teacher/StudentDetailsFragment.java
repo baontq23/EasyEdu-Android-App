@@ -232,7 +232,7 @@ public class StudentDetailsFragment extends Fragment {
     private void saveFeedback() {
         pbTextFieldLoader.setVisibility(View.VISIBLE);
         btnSendFeedback.setVisibility(View.INVISIBLE);
-        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).sendFeedback(new Feedback(edSendFeedBack.getText().toString().trim(), teacherId, studentId));
+        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).sendFeedback(new Feedback(edSendFeedBack.getText().toString().trim(), classId, studentId));
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
