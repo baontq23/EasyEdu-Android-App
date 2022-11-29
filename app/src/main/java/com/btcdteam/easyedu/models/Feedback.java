@@ -9,14 +9,14 @@ public class Feedback {
     private String content;
     @SerializedName("feedback_date")
     private long date;
-    @SerializedName("teacher_id")
-    private int teacherId;
+    @SerializedName("classroom_id")
+    private int classroomId;
     @SerializedName("student_id")
     private String studentId;
 
-    public Feedback(String content, int teacherId, String studentId) {
+    public Feedback(String content, int classroomId, String studentId) {
         this.content = content;
-        this.teacherId = teacherId;
+        this.classroomId = classroomId;
         this.studentId = studentId;
         date = System.currentTimeMillis();
     }
@@ -49,12 +49,12 @@ public class Feedback {
         this.date = date;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+    public int getClassroomId() {
+        return classroomId;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setClassroomId(int teacherId) {
+        this.classroomId = teacherId;
     }
 
     public String getStudentId() {

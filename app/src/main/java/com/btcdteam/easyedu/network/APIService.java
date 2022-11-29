@@ -48,7 +48,7 @@ public interface APIService {
     Call<JsonObject> getListParentByIdClassRoom(@Path("idClassroom") int classroomId);
 
     @DELETE("classuser/{idStudent}/{idClass}")
-    Call<JsonObject> deleteStudentById(@Path("idStudent") String id,@Path("idClass") int idClass);
+    Call<JsonObject> deleteStudentById(@Path("idStudent") String id, @Path("idClass") int idClass);
 
     @DELETE("classroom/{id}")
     Call<JsonObject> deleteClassRoomById(@Path("id") int id);
@@ -94,6 +94,9 @@ public interface APIService {
 
     @POST("feedback")
     Call<JsonObject> sendFeedback(@Body Feedback feedback);
+
+    @POST("feedback/multi")
+    Call<JsonObject> sendMultiFeedback(@Body JsonObject body);
 
     @Headers({
             "Authorization: key=AAAAPROn9MM:APA91bHk2VbqYEpKdm9wdYJNm1-SrlRsgityfCotN5wo5eh6gNeVv2HPy1j8wfhN3i4LUBCB4q4aUZOSSRNlTEfZqEpabqHT6bZTzl8rgMT87HNGUe2CPuhFOF5afX9vKkAhZgk9QcRh",
