@@ -13,8 +13,9 @@
         <action
             android:id="@+id/action_chooseRoleFragment_to_chooseActionFragment"
             app:destination="@id/chooseActionFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/anim_dialogx_right_enter"
+            app:exitAnim="@anim/anim_dialogx_left_exit"
+            app:popEnterAnim="@anim/anim_dialogx_left_enter" />
         <action
             android:id="@+id/action_chooseRoleFragment_to_loginFragment2"
             app:destination="@id/loginFragment" />
@@ -27,13 +28,15 @@
         <action
             android:id="@+id/action_chooseActionFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/anim_dialogx_right_enter"
+            app:exitAnim="@anim/anim_dialogx_left_exit"
+            app:popEnterAnim="@anim/anim_dialogx_left_enter" />
         <action
             android:id="@+id/action_chooseActionFragment_to_registerFragment"
             app:destination="@id/registerFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/anim_dialogx_right_enter"
+            app:exitAnim="@anim/anim_dialogx_left_exit"
+            app:popEnterAnim="@anim/anim_dialogx_left_enter" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -46,10 +49,13 @@
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_chooseActionFragment"
-            app:destination="@id/chooseActionFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_dialogx_right_enter"
+            app:exitAnim="@anim/anim_dialogx_left_exit"
+            app:popEnterAnim="@anim/anim_dialogx_left_enter"
+            app:popUpTo="@id/chooseActionFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>
