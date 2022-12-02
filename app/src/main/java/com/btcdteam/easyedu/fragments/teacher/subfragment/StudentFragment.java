@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StudentFragment extends Fragment implements StudentAdapter.StudentItemListener, SwipeRefreshLayout.OnRefreshListener {
+public class StudentFragment extends Fragment implements StudentAdapter.StudentItemListener {
     private RecyclerView rcv;
     private StudentAdapter adapter;
     private List<StudentDetail> studentDetailList = new ArrayList<>();
@@ -49,7 +48,6 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     private String text = null;
     private TextView tvStatusList;
     private SharedPreferences preferences;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -105,12 +103,6 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
         rcv = view.findViewById(R.id.rcv_student);
         searchView = view.findViewById(R.id.reSearchView);
         tvStatusList = view.findViewById(R.id.tv_status_list);
-        LinearLayoutManager manager = new LinearLayoutManager(requireActivity());
-        swipeRefreshLayout = view.findViewById(R.id.srl_student);
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeResources(R.color.blue_primary);
-        swipeRefreshLayout.setProgressViewOffset(false, 100, 400);
 
         LinearLayoutManager manager = new LinearLayoutManager(requireActivity());
         rcv.setLayoutManager(manager);
@@ -247,10 +239,5 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
         bundle.putInt("classroom_id", studentDetail.getClassroomId());
         bundle.putString("student_id", studentDetail.getStudentId());
         Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
-    }
-
-    @Override
-    public void onRefresh() {
-
     }
 }

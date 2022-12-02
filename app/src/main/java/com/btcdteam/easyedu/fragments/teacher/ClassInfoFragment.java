@@ -35,11 +35,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.teacher.ViewPagerAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
+import com.btcdteam.easyedu.fragments.teacher.subfragment.StudentFragment;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
 import com.btcdteam.easyedu.utils.FileUtils;
@@ -64,7 +66,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ClassInfoFragment extends Fragment {
+public class ClassInfoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private View bgStudent, bgParent;
     private FrameLayout layoutStudent, layoutParent;
     private ViewPager2 viewPager2;
@@ -80,6 +82,7 @@ public class ClassInfoFragment extends Fragment {
     private ScaleAnimation scaleUpAnimation = new ScaleAnimation(0f, 1.0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
     private ScaleAnimation scaleDownAnimation = new ScaleAnimation(1f, 0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
     private ProgressBarDialog progressBarDialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,6 +117,12 @@ public class ClassInfoFragment extends Fragment {
         fabImportScore = view.findViewById(R.id.fab_import_score);
         fabMenu = view.findViewById(R.id.fab_menu);
         scrollView = view.findViewById(R.id.nsv_scroll);
+
+        swipeRefreshLayout = view.findViewById(R.id.srl_student);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_primary);
+        swipeRefreshLayout.setProgressViewOffset(false, 100, 400);
 
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -374,6 +383,8 @@ public class ClassInfoFragment extends Fragment {
     }
 
     private void getListStudentSemester01() {
+        if(!swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(true);
+
         int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
@@ -391,11 +402,13 @@ public class ClassInfoFragment extends Fragment {
                         }
                     }
                     broadCast(studentDetailLis01);
+                    if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
@@ -484,4 +497,9 @@ public class ClassInfoFragment extends Fragment {
             }
         }
     });
+
+    @Override
+    public void onRefresh() {
+        getListStudentSemester01();
+    }
 }

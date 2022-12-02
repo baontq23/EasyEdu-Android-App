@@ -11,12 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_item_class"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srl_class"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="?android:actionBarSize"
-            android:clipToPadding="false"/>
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_item_class"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="?android:actionBarSize"
+                android:clipToPadding="false"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
@@ -59,10 +66,4 @@
         app:icon="@drawable/ic_round_add_24"
         app:iconTint="@color/white"
         android:minHeight="56dp"/>
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/lpi_class"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true" />
 </RelativeLayout>
