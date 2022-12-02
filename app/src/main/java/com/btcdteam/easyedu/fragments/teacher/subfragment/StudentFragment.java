@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,22 +21,18 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.teacher.StudentAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.kongzue.dialogx.dialogs.BottomMenu;
 import com.kongzue.dialogx.dialogs.MessageDialog;
 import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
 import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +90,6 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
         super.onStart();
         requireContext().registerReceiver(receiver, new IntentFilter("ACTION"));
         requireContext().registerReceiver(receiverName, new IntentFilter("SEARCH"));
-        getListStudent();
     }
 
     @Override
@@ -106,28 +100,20 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rcv = view.findViewById(R.id.rcv_student);
         searchView = view.findViewById(R.id.reSearchView);
         tvStatusList = view.findViewById(R.id.tv_status_list);
+        LinearLayoutManager manager = new LinearLayoutManager(requireActivity());
         swipeRefreshLayout = view.findViewById(R.id.srl_student);
 
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_primary);
         swipeRefreshLayout.setProgressViewOffset(false, 100, 400);
 
-        LinearLayoutManager manager = new GridLayoutManager(getContext(), 1);
+        LinearLayoutManager manager = new LinearLayoutManager(requireActivity());
         rcv.setLayoutManager(manager);
-        getListStudent();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -144,43 +130,36 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
             }
         });
 
-
     }
 
-    private void getListStudent() {
-        if(preferences == null) return;
-        if(!swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(true);
-        int classroomId = preferences.getInt("classroomId", 0);
-        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.code() == 200) {
-                    Type type = new TypeToken<List<StudentDetail>>() {
-                    }.getType();
-                    studentDetailList = new ArrayList<>();
-                    studentDetailLis01 = new ArrayList<>();
-                    studentDetailList = new Gson().fromJson(response.body().getAsJsonArray("data"), type);
-                    for (StudentDetail o : studentDetailList) {
-                        if (o.getSemester() % 2 != 0) {
-                            studentDetailLis01.add(o);
-                        }
-                    }
-                    adapter = new StudentAdapter(studentDetailLis01, StudentFragment.this);
-                    rcv.setAdapter(adapter);
-
-                    if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
-                }
-                checkListStatus();
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void getListStudent() {
+//        int classroomId = preferences.getInt("classroomId", 0);
+//        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
+//        call.enqueue(new Callback<JsonObject>() {
+//            @Override
+//            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//                if (response.code() == 200) {
+//                    Type type = new TypeToken<List<StudentDetail>>() {
+//                    }.getType();
+//                    studentDetailLis01 = new ArrayList<>();
+//                    studentDetailList = new Gson().fromJson(response.body().getAsJsonArray("data"), type);
+//                    for (StudentDetail o : studentDetailList) {
+//                        if (o.getSemester() % 2 != 0) {
+//                            studentDetailLis01.add(o);
+//                        }
+//                    }
+//                    adapter = new StudentAdapter(studentDetailLis01, StudentFragment.this);
+//                    rcv.setAdapter(adapter);
+//                }
+//                checkListStatus();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     @Override
     public void onItemClick(int position, StudentDetail student) {
@@ -272,6 +251,6 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
 
     @Override
     public void onRefresh() {
-            getListStudent();
+
     }
 }

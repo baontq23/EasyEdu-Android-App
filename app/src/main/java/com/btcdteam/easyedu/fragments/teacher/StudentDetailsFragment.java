@@ -22,7 +22,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.apis.GoogleAPI;
@@ -263,7 +262,8 @@ public class StudentDetailsFragment extends Fragment {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.code() == 204) {
                     Toast.makeText(requireContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
-                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_studentDetailsFragment_to_classInfoFragment2);
+//                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_studentDetailsFragment_to_classInfoFragment2);
+                    requireActivity().onBackPressed();
                 } else {
                     Toast.makeText(requireContext(), "Không tìm thấy thông tin học sinh", Toast.LENGTH_SHORT).show();
                 }
