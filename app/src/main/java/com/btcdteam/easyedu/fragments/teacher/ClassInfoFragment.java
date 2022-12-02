@@ -402,8 +402,8 @@ public class ClassInfoFragment extends Fragment implements SwipeRefreshLayout.On
                         }
                     }
                     broadCast(studentDetailLis01);
-                    if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
                 }
+                if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override

@@ -7,9 +7,11 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +32,6 @@ import com.google.gson.JsonObject;
 import com.kongzue.dialogx.dialogs.BottomMenu;
 import com.kongzue.dialogx.dialogs.MessageDialog;
 import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
-import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -199,38 +200,39 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     }
 
     @Override
-    public void onOptionClick(int position, StudentDetail student) {
-        BottomMenu.show(new String[]{"Cập nhật", "Danh sách thông báo", "Xóa"})
-                .setMessage("Học sinh: " + student.getName())
-                .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
-                    @Override
-                    public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
-                        switch (index) {
-                            case 0:
-                                updateStudent(student);
-                                BottomMenu.cleanAll();
-                                return false;
-                            case 1:
-                                Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_feedbackFragment);
-                                BottomMenu.cleanAll();
-                                return false;
-                            case 2:
-                                MessageDialog messageDialog = new MessageDialog("Xóa học sinh", "Bạn có muốn xóa học sinh: " + student.getName() + " Không ?", "Có", "Không")
-                                        .setButtonOrientation(LinearLayout.HORIZONTAL)
-                                        .setOkButton(new OnDialogButtonClickListener<MessageDialog>() {
-                                            @Override
-                                            public boolean onClick(MessageDialog dialog, View v) {
-                                                deleteStudent(position, student.getStudentId(), student.getClassroomId());
-                                                return false;
-                                            }
-                                        });
-                                messageDialog.show();
-                                return false;
-                            default:
-                                return false;
-                        }
-                    }
-                });
+    public void onOptionClick(int position, StudentDetail student, View v) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), v);
+        popupMenu.inflate(R.menu.menu_student);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.student_udpate:
+                        updateStudent(student);
+                        BottomMenu.cleanAll();
+                        return true;
+                    case R.id.student_list_feedback:
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_feedbackFragment);
+                        BottomMenu.cleanAll();
+                        return true;
+                    case R.id.student_delete:
+                        MessageDialog messageDialog = new MessageDialog("Xóa học sinh", "Bạn có muốn xóa học sinh: " + student.getName() + " Không ?", "Có", "Không")
+                                .setButtonOrientation(LinearLayout.HORIZONTAL)
+                                .setOkButton(new OnDialogButtonClickListener<MessageDialog>() {
+                                    @Override
+                                    public boolean onClick(MessageDialog dialog, View v) {
+                                        deleteStudent(position, student.getStudentId(), student.getClassroomId());
+                                        return false;
+                                    }
+                                });
+                        messageDialog.show();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
     }
 
     private void updateStudent(StudentDetail studentDetail) {
