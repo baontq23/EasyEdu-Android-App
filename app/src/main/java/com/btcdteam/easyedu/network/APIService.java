@@ -105,5 +105,16 @@ public interface APIService {
     @POST("fcm/send")
     Call<JsonObject> pushNotification(@Body FCMBodyRequest body);
 
+    @GET("student/parent/{parentId}")
+    Call<JsonObject> getListStudentByParent(@Path("parentId") String id);
+
+    @GET("parent/analytics/student/{studentId}")
+    Call<JsonObject> getScoreWithClass(@Path("studentId") String id);
+
+    @GET("feedback/student/{studentId}")
+    Call<JsonObject> getFeedbackByStudent(@Path("studentId") String id);
+
+    @GET("parent/analytics/student/{studentId}/{classId}")
+    Call<JsonObject> getScoreByStudentAndClass(@Path("studentId") String studentId, @Path("classId") String classId);
 
 }

@@ -43,7 +43,7 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
     private RecyclerView rcv;
     private StudentAdapter adapter;
     private List<StudentDetail> studentDetailList = new ArrayList<>();
-    private List<StudentDetail> studentDetailLis01 = new ArrayList<>();
+    //private List<StudentDetail> studentDetailLis01 = new ArrayList<>();
     private SearchView searchView;
     private String text = null;
     private TextView tvStatusList;
@@ -169,8 +169,8 @@ public class StudentFragment extends Fragment implements StudentAdapter.StudentI
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.code() == 204) {
                     Toast.makeText(requireContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
-                    studentDetailLis01.remove(position);
-                    adapter.setList(studentDetailLis01);
+                    studentDetailList.remove(position);
+                    adapter.setList(studentDetailList);
                     adapter.notifyItemRemoved(position);
                 } else {
                     Toast.makeText(requireContext(), "Không tìm thấy thông tin học sinh", Toast.LENGTH_SHORT).show();
