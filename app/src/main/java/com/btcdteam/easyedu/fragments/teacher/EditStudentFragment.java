@@ -275,6 +275,7 @@ public class EditStudentFragment extends Fragment implements TextWatcher {
                 progressBarDialog.dismiss();
                 if (response.code() == 201) {
                     Toast.makeText(requireContext(), "Tạo học sinh thành công!", Toast.LENGTH_SHORT).show();
+                    requireActivity().onBackPressed();
                 } else if (response.code() == 400) {
                     Toast.makeText(requireContext(), "Thông tin không hợp lệ!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -425,6 +426,7 @@ public class EditStudentFragment extends Fragment implements TextWatcher {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 progressBarDialog.dismiss();
                 if (response.code() == 204) {
+                    requireActivity().onBackPressed();
                     Toast.makeText(requireContext(), "Cập nhật dữ liệu thành công!", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 404) {
                     Toast.makeText(requireContext(), "Học sinh không tồn tại!", Toast.LENGTH_SHORT).show();

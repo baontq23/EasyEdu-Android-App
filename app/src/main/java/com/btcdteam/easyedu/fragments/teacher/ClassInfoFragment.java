@@ -90,6 +90,12 @@ public class ClassInfoFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getListStudentSemester01();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bgStudent = view.findViewById(R.id.bg_student);
