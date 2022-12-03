@@ -1,7 +1,5 @@
 package com.btcdteam.easyedu.utils;
 
-import android.util.Log;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,13 +12,13 @@ public class TimeUtils {
     public final static String hoursAgo = " giờ trước";
     public final static String minAgo = " phút trước";
     public final static String secAgo = " giây trước";
-    static int second = 1000; // milliseconds
-    static int minute = 60;
-    static int hour = minute * 60;
-    static int day = hour * 24;
-    static int week = day * 7;
-    static int month = day * 30;
-    static int year = month * 12;
+    static final int second = 1000; // milliseconds
+    static final int minute = 60;
+    static final int hour = minute * 60;
+    static final int day = hour * 24;
+    static final int week = day * 7;
+    static final int month = day * 30;
+    static final int year = month * 12;
 
     public static String convertToDate(long timestamp) {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
@@ -58,7 +56,6 @@ public class TimeUtils {
 
             difference = format_before.format(c.getTime());
         }
-        Log.d("time difference is: ", "" + difference);
         return difference;
     }
 }

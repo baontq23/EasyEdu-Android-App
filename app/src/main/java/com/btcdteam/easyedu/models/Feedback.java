@@ -13,12 +13,32 @@ public class Feedback {
     private int classroomId;
     @SerializedName("student_id")
     private String studentId;
+    @SerializedName("classroom_name")
+    private String classroomName;
+    @SerializedName("classroom_subject")
+    private String classroomSubject;
 
     public Feedback(String content, int classroomId, String studentId) {
         this.content = content;
         this.classroomId = classroomId;
         this.studentId = studentId;
         date = System.currentTimeMillis();
+    }
+
+    public String getClassroomName() {
+        return classroomName;
+    }
+
+    public void setClassroomName(String classroomName) {
+        this.classroomName = classroomName;
+    }
+
+    public String getClassroomSubject() {
+        return classroomSubject;
+    }
+
+    public void setClassroomSubject(String classroomSubject) {
+        this.classroomSubject = classroomSubject;
     }
 
     public Feedback() {

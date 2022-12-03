@@ -26,4 +26,5 @@
     <string name="channel_name">Phản hồi</string>
     <string name="channel_description">Phản hồi của giáo viên gửi cho phụ huynh</string>
     <string name="default_notification_channel_id">teacher_feedback</string>
+    <string name="server_connect_error">Không thể kết nối tới máy chủ!</string>
 </resources>

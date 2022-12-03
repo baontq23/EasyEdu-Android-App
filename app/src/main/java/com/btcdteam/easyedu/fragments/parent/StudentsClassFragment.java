@@ -1,6 +1,10 @@
 package com.btcdteam.easyedu.fragments.parent;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,11 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.teacher.ClassroomAdapter;
@@ -67,6 +66,6 @@ public class StudentsClassFragment extends Fragment implements ClassroomAdapter.
 
     @Override
     public void onItemClick(int position, Classroom classroom) {
-        Navigation.findNavController(requireActivity(), R.id.nav_host_parent).navigate(R.id.action_studentDetailFragment_to_studentDetailFragment2);
+        Navigation.findNavController(requireActivity(), R.id.nav_host_parent).navigate(R.id.action_viewStudentFragment_to_studentDetailFragment);
     }
 }
