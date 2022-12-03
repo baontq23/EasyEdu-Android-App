@@ -57,6 +57,7 @@ public class ViewStudentFragment extends Fragment implements PreviewStudentAdapt
     private List<PreviewScore> classItems;
     private SharedPreferences shared;
     private String parentId = null;
+    private String parentPhoneNumber = null;
     int selectMenuIndex = 0;
 
     @Override
@@ -64,6 +65,7 @@ public class ViewStudentFragment extends Fragment implements PreviewStudentAdapt
         // Inflate the layout for this fragment
         shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
         parentId = shared.getString("session_id", "None");
+        parentPhoneNumber = shared.getString("session_phone", "None");
         return inflater.inflate(R.layout.fragment_view_student, container, false);
     }
 
@@ -165,10 +167,15 @@ public class ViewStudentFragment extends Fragment implements PreviewStudentAdapt
                         }).setSelection(selectMenuIndex);
                         return true;
                     case 2:
-                        Toast.makeText(requireContext(), shared.getString("session_name", "None"), Toast.LENGTH_SHORT).show();
+                        Bundle bundle02 = new Bundle();
+                        bundle02.putString("parentPhoneNumber",parentPhoneNumber);
+                        bundle02.putString("parentId",parentId);
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_parent).navigate(R.id.action_viewStudentFragment_to_parentInfoFragment,bundle02);
                         return true;
                     case 3:
-                        shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
+                        Bundle bundle01 = new Bundle();
+                        bundle01.putString("parentId",parentId);
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_parent).navigate(R.id.action_viewStudentFragment_to_parentChangePassword,bundle01);
                         return true;
                     case 4:
                         MessageDialog.show("Đăng xuất", "Bạn có muốn đăng xuất không ?", "Có", "Không").setOkButtonClickListener(new OnDialogButtonClickListener<MessageDialog>() {
