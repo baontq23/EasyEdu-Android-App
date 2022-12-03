@@ -30,7 +30,7 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public interface StudentItemListener {
         void onItemClick(int position, StudentDetail student);
 
-        void onOptionClick(int position, StudentDetail student);
+        void onOptionClick(int position, StudentDetail student, View v);
     }
 
     public void setList(List<StudentDetail> list) {
@@ -101,7 +101,7 @@ public class StudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             @Override
             public void onClick(View view) {
                 if (listener != null)
-                    listener.onOptionClick(holder.getAdapterPosition(), student);
+                    listener.onOptionClick(holder.getAdapterPosition(), student, view);
             }
         });
     }

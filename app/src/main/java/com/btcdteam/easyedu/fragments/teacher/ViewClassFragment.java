@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.activity.AuthActivity;
@@ -27,16 +28,11 @@ import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.Classroom;
 import com.btcdteam.easyedu.network.APIService;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.kongzue.dialogx.dialogs.BottomMenu;
-import com.kongzue.dialogx.dialogs.GuideDialog;
 import com.kongzue.dialogx.dialogs.MessageDialog;
 import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
-import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -46,15 +42,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ViewClassFragment extends Fragment implements ClassroomAdapter.ClassRoomItemListener {
+public class ViewClassFragment extends Fragment implements ClassroomAdapter.ClassRoomItemListener, SwipeRefreshLayout.OnRefreshListener {
     private ImageView btnInfo;
     private ExtendedFloatingActionButton fabAddClass;
     private RecyclerView rcv;
     private List<Classroom> list;
-    private LinearProgressIndicator lpiClass;
     private ClassroomAdapter adapter;
     private SharedPreferences shared;
     private Bundle bundle;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,10 +62,14 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lpiClass = view.findViewById(R.id.lpi_class);
         btnInfo = view.findViewById(R.id.img_item_class_info);
         rcv = view.findViewById(R.id.rcv_item_class);
+        swipeRefreshLayout = view.findViewById(R.id.srl_class);
         fabAddClass = view.findViewById(R.id.fab_add_class);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_primary);
+        swipeRefreshLayout.setProgressViewOffset(false, 100, 400);
 
         fabAddClass.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
@@ -141,12 +141,13 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
     }
 
     private void getList() {
+        if(!swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(true);
         SharedPreferences shared = requireActivity().getSharedPreferences("SESSION", MODE_PRIVATE);
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListClassroom(shared.getInt("session_id", 0));
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                lpiClass.hide();
+                if (swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
                 if (response.code() == 200) {
                     Type type = new TypeToken<List<Classroom>>() {
                     }.getType();
@@ -156,6 +157,7 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
                     rcv.setLayoutManager(manager);
                     rcv.setAdapter(adapter);
                 } else {
+                    if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(getContext(), "Không có lớp nào!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -163,7 +165,7 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
-                lpiClass.hide();
+                if (swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getContext(), "Không thể kết nối với máy chủ!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -240,5 +242,10 @@ public class ViewClassFragment extends Fragment implements ClassroomAdapter.Clas
         bundle.putString("classroomDescription", classroom.getDescription());
         bundle.putString("classroomSubject", classroom.getSubject());
         Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_viewClassFragment_to_createClassFragment, bundle);
+    }
+
+    @Override
+    public void onRefresh() {
+        getList();
     }
 }

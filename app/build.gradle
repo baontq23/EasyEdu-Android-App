@@ -37,6 +37,7 @@ android {
 dependencies {
     implementation files('libs/poishadow-all.jar')
     implementation 'com.google.firebase:firebase-messaging:23.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     def dialogx_version = "0.0.46"
     def nav_version = "2.5.3"
 
