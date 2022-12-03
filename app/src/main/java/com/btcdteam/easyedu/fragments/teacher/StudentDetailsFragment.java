@@ -199,6 +199,8 @@ public class StudentDetailsFragment extends Fragment {
     }
 
     private void pushNotificationToParent() {
+        pbTextFieldLoader.setVisibility(View.VISIBLE);
+        btnSendFeedback.setVisibility(View.INVISIBLE);
         FCMBodyRequest bodyRequest = new FCMBodyRequest();
         bodyRequest.setNotification("Bạn có thông báo từ giáo viên", edSendFeedBack.getText().toString().trim());
         ArrayList<String> fcmTokens = new ArrayList<>();
