@@ -6,18 +6,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.teacher.ClassInfoFragment">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_scroll"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_student"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_scroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-    </androidx.core.widget.NestedScrollView>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include layout="@layout/toolbar"/>
 
