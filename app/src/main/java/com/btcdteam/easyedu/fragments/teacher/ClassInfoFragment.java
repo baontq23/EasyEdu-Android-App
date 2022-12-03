@@ -127,7 +127,7 @@ public class ClassInfoFragment extends Fragment implements SwipeRefreshLayout.On
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v ->
-                Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_viewClassFragment)
+                requireActivity().onBackPressed()
         );
         setSearchToolbar(view);
         setMenuItemSelected();
