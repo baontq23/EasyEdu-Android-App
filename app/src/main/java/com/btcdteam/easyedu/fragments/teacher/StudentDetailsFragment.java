@@ -76,7 +76,7 @@ public class StudentDetailsFragment extends Fragment {
     private Button btnDeleteStudent;
     private List<StudentDetail> studentDetails;
     private StudentDetail studentDetails1, studentDetails2;
-    private String studentId, studentName;
+    private String studentId;
     private int classId;
     private int teacherId;
     private String parentFcmToken = null;
@@ -99,7 +99,6 @@ public class StudentDetailsFragment extends Fragment {
         studentDetails = new ArrayList<>();
         studentId = getArguments().getString("studentId");
         classId = getArguments().getInt("classRoomId");
-        studentName = getArguments().getString("studentName");
 
         //student
         tvStudentName = view.findViewById(R.id.tv_student_detail_name);
@@ -143,7 +142,7 @@ public class StudentDetailsFragment extends Fragment {
             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_studentDetailsFragment_to_editStudentFragment, bundle);
         });
         btnDeleteStudent.setOnClickListener(v -> {
-            new MessageDialog("Xóa học sinh", "Bạn có muốn xóa học sinh: " + studentName + " không ?", "Có", "Không")
+            new MessageDialog("Xóa học sinh", "Bạn có muốn xóa học sinh: " + studentDetails1.getName() + " không ?", "Có", "Không")
                     .setButtonOrientation(LinearLayout.HORIZONTAL)
                     .setOkButton(new OnDialogButtonClickListener<MessageDialog>() {
                         @Override

@@ -1,14 +1,6 @@
 package com.btcdteam.easyedu.fragments.teacher;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +8,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.parent.NotificationAdapter;
@@ -30,7 +29,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.List;
-
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,7 +64,10 @@ public class FeedbackOfOneStudentFragment extends Fragment {
         getListFeedback();
 
         fabFeedback.setOnClickListener(v -> {
-            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_feedbackOfOneStudentFragment_to_feedbackFragment, getArguments());
+            Bundle bundle = new Bundle();
+            bundle.putString("studentId", getArguments().getString("student_id"));
+            bundle.putInt("classRoomId", getArguments().getInt("classroom_id"));
+            Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_feedbackOfOneStudentFragment_to_studentDetailsFragment, bundle);
         });
 
         rcv.setOnScrollChangeListener(new View.OnScrollChangeListener() {
