@@ -62,7 +62,7 @@
         </activity>
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id"/>
+            android:value="@string/default_notification_channel_id" />
         <service
             android:name=".service.FCMService"
             android:exported="false">
@@ -71,5 +71,10 @@
             </intent-filter>
         </service>
     </application>
-
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="smsto" />
+        </intent>
+    </queries>
 </manifest>

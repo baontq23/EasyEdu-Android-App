@@ -119,7 +119,7 @@ public class AccountInfoFragment extends Fragment {
                 }
                 if (response.code() == 204) {
                     Toast.makeText(requireContext(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
-                    Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_accountInfoFragment_to_viewClassFragment);
+                    requireActivity().onBackPressed();
                 }
             }
 

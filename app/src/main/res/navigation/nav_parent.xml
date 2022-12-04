@@ -10,22 +10,54 @@
         android:label="ViewStudentFragment" >
         <action
             android:id="@+id/action_viewStudentFragment_to_studentDetailFragment"
-            app:destination="@id/studentDetailFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
+            app:destination="@id/studentDetailFragment2"
+            app:enterAnim="@anim/anim_dialogx_right_enter"
+            app:exitAnim="@anim/anim_dialogx_left_exit"
+            app:popEnterAnim="@anim/anim_dialogx_left_enter"
+            app:popExitAnim="@anim/anim_dialogx_right_exit"
             app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_viewStudentFragment_to_notificationFragment"
-            app:destination="@id/notificationFragment" />
+            app:destination="@id/notificationFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_viewStudentFragment_to_parentInfoFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:destination="@id/parentInfoFragment"
+            app:popExitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/action_viewStudentFragment_to_parentChangePassword"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:destination="@id/parentChangePassword"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
-    <fragment
-        android:id="@+id/studentDetailFragment"
-        android:name="com.btcdteam.easyedu.fragments.parent.StudentDetailFragment"
-        android:label="fragment_student_detail"
-        tools:layout="@layout/fragment_student_detail" />
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.btcdteam.easyedu.fragments.parent.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/studentDetailFragment2"
+        android:name="com.btcdteam.easyedu.fragments.parent.StudentDetailFragment"
+        android:label="fragment_student_detail"
+        tools:layout="@layout/fragment_student_detail" >
+        <action
+            android:id="@+id/action_studentDetailFragment2_to_notificationFragment"
+            app:destination="@id/notificationFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/parentInfoFragment"
+        android:name="com.btcdteam.easyedu.fragments.parent.ParentInfoFragment"
+        android:label="ParentInfoFragment" />
+    <fragment
+        android:id="@+id/parentChangePassword"
+        android:name="com.btcdteam.easyedu.fragments.parent.ParentChangePassword"
+        android:label="ParentChangePassword" />
 </navigation>

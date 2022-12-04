@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,17 @@ import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Teacher;
 import com.btcdteam.easyedu.network.APIService;
 import com.btcdteam.easyedu.utils.ProgressBarDialog;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -111,8 +117,7 @@ public class LoginFragment extends Fragment {
                             }.getType();
                             Parent parent = new Gson().fromJson(response.body().getAsJsonObject("data"), userListType);
                             sharedPreferencesParent(role, parent.getId(), parent.getName(), parent.getEmail(), parent.getPhone(), parent.getDob(), parent.getFcmToken());
-                            requireActivity().startActivity(new Intent(requireActivity(), ParentActivity.class));
-                            requireActivity().finish();
+                            updateFcmToken(parent);
                         } else if (response.code() == 404) {
                             Toast.makeText(getContext(), "Sai thông tin tài khoản", Toast.LENGTH_SHORT).show();
                         } else if (response.code() == 401) {
@@ -134,6 +139,46 @@ public class LoginFragment extends Fragment {
 
     }
 
+    private void updateFcmToken(Parent parent) {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            Toast.makeText(requireActivity(), "Đã xảy ra lỗi thông báo, vui lòng cài đặt lại ứng dụng!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String token = task.getResult();
+                            if (parent.getFcmToken() == null || parent.getFcmToken().isEmpty() || !parent.getFcmToken().equalsIgnoreCase(token)) {
+                                parent.setFcmToken(token);
+                                Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).updateParent(parent);
+                                call.enqueue(new Callback<JsonObject>() {
+                                    @Override
+                                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                        if (response.code() != HttpsURLConnection.HTTP_NO_CONTENT) {
+                                            Toast.makeText(requireActivity(), "Xảy ra lỗi khi cập nhật token, bạn sẽ không nhận được thông báo nổi từ giáo viên. Hãy kiểm tra thủ công!", Toast.LENGTH_LONG).show();
+                                        }
+                                        enterParentActivity();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                                        t.printStackTrace();
+                                        Toast.makeText(requireActivity(), "Không thể kết nối tới máy chủ!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
+                                enterParentActivity();
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void enterParentActivity() {
+        requireActivity().startActivity(new Intent(requireActivity(), ParentActivity.class));
+        requireActivity().finish();
+    }
 
     private void sharedPreferencesTeacher(String role, int id, String name, String email, String phone, String dob) {
         SharedPreferences.Editor edt = requireActivity().getSharedPreferences("SESSION", Context.MODE_PRIVATE).edit();

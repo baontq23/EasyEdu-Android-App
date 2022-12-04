@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btcdteam.easyedu.R;
-import com.btcdteam.easyedu.adapter.teacher.StudentAdapter;
+import com.btcdteam.easyedu.adapter.teacher.ScorePreviewAdapter;
 import com.btcdteam.easyedu.apis.ServerAPI;
 import com.btcdteam.easyedu.models.StudentDetail;
 import com.btcdteam.easyedu.network.APIService;
@@ -31,6 +31,7 @@ import com.btcdteam.easyedu.utils.FileUtils;
 import com.btcdteam.easyedu.utils.StudentScoreReader;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 import com.kongzue.dialogx.dialogs.MessageDialog;
 import com.kongzue.dialogx.interfaces.OnDialogButtonClickListener;
@@ -73,6 +74,7 @@ public class ImportScoreFragment extends Fragment {
         btnAddFileSave = view.findViewById(R.id.btn_add_file_save);
         lpiImportScore = view.findViewById(R.id.lpi_import_score);
         fabAddXlsFile = view.findViewById(R.id.fab_add_xls_file);
+        btnAddFileSave.setEnabled(false);
         lpiImportScore.hide();
         imgAddFileBack.setOnClickListener(v -> requireActivity().onBackPressed());
         fabAddXlsFile.setOnClickListener(v -> {
@@ -106,6 +108,7 @@ public class ImportScoreFragment extends Fragment {
         JSONArray scores = new JSONArray();
         if (list == null || list.size() == 0 || list.size() % 2 != 0) {
             Toast.makeText(requireContext(), "Dữ liệu không hợp lệ, vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+            lpiImportScore.hide();
             return;
         }
         for (StudentDetail detail : list) {
@@ -127,7 +130,13 @@ public class ImportScoreFragment extends Fragment {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 lpiImportScore.hide();
-                Toast.makeText(requireContext(), "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                if (response.code() == 200) {
+                    tvAddFileTitle.setText("Đã cập nhật bảng điểm");
+                    btnAddFileSave.setEnabled(false);
+                    Snackbar.make(requireView(), "Cập nhật thành công !", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary, requireActivity().getTheme())).show();
+                } else {
+                    Snackbar.make(requireView(), "Đã có lỗi khi cập nhật, vui lòng thử lại sau!", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.caution, requireActivity().getTheme())).show();
+                }
             }
 
             @Override
@@ -153,18 +162,26 @@ public class ImportScoreFragment extends Fragment {
                 new StudentScoreReader(filePath, new StudentScoreReader.HandleOnComplete() {
                     @Override
                     public void onComplete(List<StudentDetail> studentDetails) {
-                        StudentAdapter studentDetailAdapter = new StudentAdapter(studentDetails, null);
-                        rcvAddFile.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
-                        rcvAddFile.setAdapter(studentDetailAdapter);
-                        list = studentDetails;
                         lpiImportScore.hide();
-                        tvAddFileTitle.setText("Kiểm tra thông tin");
+                        if (getArguments() != null) {
+                            if (studentDetails.get(0).getClassroomId() != getArguments().getInt("classroom_id")) {
+                                Snackbar.make(requireView(), "Bảng điểm bạn chọn không thuộc lớp này!", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.caution, requireActivity().getTheme())).show();
+                                return;
+                            }
+                            ScorePreviewAdapter studentDetailAdapter = new ScorePreviewAdapter(requireActivity(), studentDetails);
+                            rcvAddFile.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+                            rcvAddFile.setAdapter(studentDetailAdapter);
+                            list = studentDetails;
+                            tvAddFileTitle.setText("Kiểm tra thông tin");
+                            btnAddFileSave.setEnabled(true);
+                        }
                     }
 
                     @Override
                     public void onError(Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(requireContext(), "File không hợp lệ, vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                        lpiImportScore.hide();
+                        Snackbar.make(requireView(), "File không hợp lệ, vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.caution, requireActivity().getTheme())).show();
                     }
                 }).start();
             }

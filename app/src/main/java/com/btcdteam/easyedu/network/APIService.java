@@ -1,8 +1,10 @@
 package com.btcdteam.easyedu.network;
 
 import com.btcdteam.easyedu.models.Classroom;
+import com.btcdteam.easyedu.models.Feedback;
 import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Teacher;
+import com.btcdteam.easyedu.utils.FCMBodyRequest;
 import com.btcdteam.easyedu.utils.SyncBody;
 import com.btcdteam.easyedu.utils.UpdateStudentBody;
 import com.google.gson.JsonObject;
@@ -12,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -45,7 +48,7 @@ public interface APIService {
     Call<JsonObject> getListParentByIdClassRoom(@Path("idClassroom") int classroomId);
 
     @DELETE("classuser/{idStudent}/{idClass}")
-    Call<JsonObject> deleteStudentById(@Path("idStudent") String id,@Path("idClass") int idClass);
+    Call<JsonObject> deleteStudentById(@Path("idStudent") String id, @Path("idClass") int idClass);
 
     @DELETE("classroom/{id}")
     Call<JsonObject> deleteClassRoomById(@Path("id") int id);
@@ -77,6 +80,9 @@ public interface APIService {
     @POST("auth/change-password")
     Call<JsonObject> changePassword(@Body JsonObject teacher);
 
+    @PATCH("parent/changePassword/{id}")
+    Call<JsonObject> changePasswordParent(@Path("id") String id, @Body JsonObject parent);
+
     @GET("student/{studentId}/{classroomId}")
     Call<JsonObject> getStudentById(@Path("studentId") String studentId, @Path("classroomId") int ClassroomId);
 
@@ -85,4 +91,36 @@ public interface APIService {
 
     @PATCH("classuser/score/import")
     Call<JsonObject> importStudentScore(@Body RequestBody body);
+
+    @PATCH("parent")
+    Call<JsonObject> updateParent(@Body Parent parent);
+
+    @PATCH("parent")
+    Call<JsonObject> updateParent(@Body JsonObject parent);
+
+    @POST("feedback")
+    Call<JsonObject> sendFeedback(@Body Feedback feedback);
+
+    @POST("feedback/multi")
+    Call<JsonObject> sendMultiFeedback(@Body JsonObject body);
+
+    @Headers({
+            "Authorization: key=AAAAPROn9MM:APA91bHk2VbqYEpKdm9wdYJNm1-SrlRsgityfCotN5wo5eh6gNeVv2HPy1j8wfhN3i4LUBCB4q4aUZOSSRNlTEfZqEpabqHT6bZTzl8rgMT87HNGUe2CPuhFOF5afX9vKkAhZgk9QcRh",
+            "Content-Type: application/json"
+    })
+    @POST("fcm/send")
+    Call<JsonObject> pushNotification(@Body FCMBodyRequest body);
+
+    @GET("student/parent/{parentId}")
+    Call<JsonObject> getListStudentByParent(@Path("parentId") String id);
+
+    @GET("parent/analytics/student/{studentId}")
+    Call<JsonObject> getScoreWithClass(@Path("studentId") String id);
+
+    @GET("feedback/student/{studentId}")
+    Call<JsonObject> getFeedbackByStudent(@Path("studentId") String id);
+
+    @GET("parent/analytics/student/{studentId}/{classId}")
+    Call<JsonObject> getScoreByStudentAndClass(@Path("studentId") String studentId, @Path("classId") String classId);
+
 }

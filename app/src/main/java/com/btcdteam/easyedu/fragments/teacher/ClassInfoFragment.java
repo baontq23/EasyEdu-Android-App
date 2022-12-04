@@ -35,6 +35,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.btcdteam.easyedu.R;
@@ -45,6 +46,7 @@ import com.btcdteam.easyedu.network.APIService;
 import com.btcdteam.easyedu.utils.FileUtils;
 import com.btcdteam.easyedu.utils.ProgressBarDialog;
 import com.btcdteam.easyedu.utils.ScoreFileUtils;
+import com.btcdteam.easyedu.utils.SnackbarUntil;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.snackbar.Snackbar;
@@ -64,7 +66,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ClassInfoFragment extends Fragment {
+public class ClassInfoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private View bgStudent, bgParent;
     private FrameLayout layoutStudent, layoutParent;
     private ViewPager2 viewPager2;
@@ -80,6 +82,7 @@ public class ClassInfoFragment extends Fragment {
     private ScaleAnimation scaleUpAnimation = new ScaleAnimation(0f, 1.0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
     private ScaleAnimation scaleDownAnimation = new ScaleAnimation(1f, 0f, 1f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
     private ProgressBarDialog progressBarDialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,6 +90,12 @@ public class ClassInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         progressBarDialog = new ProgressBarDialog(requireActivity());
         return inflater.inflate(R.layout.fragment_class_info, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getListStudentSemester01();
     }
 
     @Override
@@ -109,10 +118,16 @@ public class ClassInfoFragment extends Fragment {
         fabMenu = view.findViewById(R.id.fab_menu);
         scrollView = view.findViewById(R.id.nsv_scroll);
 
+        swipeRefreshLayout = view.findViewById(R.id.srl_student);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_primary);
+        swipeRefreshLayout.setProgressViewOffset(false, 100, 400);
+
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v ->
-                Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_viewClassFragment)
+                requireActivity().onBackPressed()
         );
         setSearchToolbar(view);
         setMenuItemSelected();
@@ -126,15 +141,24 @@ public class ClassInfoFragment extends Fragment {
         bundle.putInt("classroom_id", getArguments() != null ? getArguments().getInt("classroom_id") : 0);
 
         fabSendFeedback.setOnClickListener(v -> {
-            // send feedback
+            if (studentDetailList == null || studentDetailList.size() == 0) {
+                SnackbarUntil.showWarning(requireView(), "Không có học sinh nào!");
+                return;
+            }
+            fabMenu.collapse();
             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_feedbackFragment, bundle);
         });
 
         fabAddStudent.setOnClickListener(v -> {
+            fabMenu.collapse();
             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_editStudentFragment, bundle);
-
         });
         fabExportForm.setOnClickListener(v -> {
+            if (studentDetailList == null || studentDetailList.size() == 0) {
+                SnackbarUntil.showWarning(requireView(), "Không có học sinh nào!");
+                return;
+            }
+            fabMenu.collapse();
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -143,9 +167,15 @@ public class ClassInfoFragment extends Fragment {
             exportFormLauncher.launch(intent);
         });
         fabAddStudentFile.setOnClickListener(v -> {
+            fabMenu.collapse();
             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_addFileXlsFragment2, bundle);
         });
         fabImportScore.setOnClickListener(v -> {
+            if (studentDetailList == null || studentDetailList.size() == 0) {
+                SnackbarUntil.showWarning(requireView(), "Không có học sinh nào!");
+                return;
+            }
+            fabMenu.collapse();
             Navigation.findNavController(requireActivity(), R.id.nav_host_teacher).navigate(R.id.action_classInfoFragment_to_importScoreFragment, bundle);
         });
         //expanded, collapse floating button menu when scroll
@@ -216,12 +246,12 @@ public class ClassInfoFragment extends Fragment {
                 if (check == 0) {
                     icSetting.setImageResource(R.drawable.semeter02);
                     getListStudentSemester02();
-                    Snackbar.make(view, "Kì 2", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
+                    Snackbar.make(view, "Kì 2", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary, requireActivity().getTheme())).show();
                     check = 1;
                 } else {
                     icSetting.setImageResource(R.drawable.semeter01);
                     getListStudentSemester01();
-                    Snackbar.make(view, "Kì 1", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary)).show();
+                    Snackbar.make(view, "Kì 1", Toast.LENGTH_SHORT).setBackgroundTint(getResources().getColor(R.color.blue_primary, requireActivity().getTheme())).show();
                     check = 0;
                 }
             }
@@ -365,6 +395,8 @@ public class ClassInfoFragment extends Fragment {
     }
 
     private void getListStudentSemester01() {
+        if(!swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(true);
+
         int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
@@ -383,10 +415,12 @@ public class ClassInfoFragment extends Fragment {
                     }
                     broadCast(studentDetailLis01);
                 }
+                if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
             }
         });
@@ -475,4 +509,9 @@ public class ClassInfoFragment extends Fragment {
             }
         }
     });
+
+    @Override
+    public void onRefresh() {
+        getListStudentSemester01();
+    }
 }
