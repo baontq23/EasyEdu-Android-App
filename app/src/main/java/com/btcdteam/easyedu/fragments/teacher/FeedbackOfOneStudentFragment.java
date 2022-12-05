@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.parent.NotificationAdapter;
@@ -34,13 +35,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedbackOfOneStudentFragment extends Fragment {
+public class FeedbackOfOneStudentFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private RecyclerView rcv;
     private ImageView btnBack;
     private NotificationAdapter adapterNoti;
     private TextView tvTitle;
     private List<Feedback> listFeedback;
     private ExtendedFloatingActionButton fabFeedback;
+    private SwipeRefreshLayout srl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +58,12 @@ public class FeedbackOfOneStudentFragment extends Fragment {
         btnBack = view.findViewById(R.id.img_feedback_back_of_one_student);
         tvTitle = view.findViewById(R.id.tv_feedback_title_of_one_student);
         fabFeedback = view.findViewById(R.id.fab_add_feedback_of_one_student);
+        srl = view.findViewById(R.id.srl_feedback_of_one_student);
+
+        srl.setOnRefreshListener(this);
+        srl.setColorSchemeResources(R.color.blue_primary);
+        srl.setProgressViewOffset(false, 100, 400);
+
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         btnBack.setOnClickListener(v -> {
             requireActivity().onBackPressed();
@@ -91,7 +99,6 @@ public class FeedbackOfOneStudentFragment extends Fragment {
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                Log.i(">>>>>>", "onResponse: "+response.code());
                 if (response.code() == 200) {
                     Type type = new TypeToken<List<Feedback>>() {
                     }.getType();
@@ -103,14 +110,20 @@ public class FeedbackOfOneStudentFragment extends Fragment {
                 } else {
                     SnackbarUntil.showWarning(requireView(), "Không có thông báo nào!");
                 }
+                if (srl.isRefreshing()) srl.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 SnackbarUntil.showError(requireView(), "Không thể kết nối tới máy chủ!");
+                if (srl.isRefreshing()) srl.setRefreshing(false);
             }
         });
     }
 
+    @Override
+    public void onRefresh() {
+        getListFeedback();
+    }
 }

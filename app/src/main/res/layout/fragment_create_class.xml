@@ -62,7 +62,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/ed_create_class_class_name"
                 style="@style/EditText"
-                android:hint="Tên lớp" />
+                android:hint="Tên lớp (*)" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -76,7 +76,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/ed_create_class_subject"
                 style="@style/EditText"
-                android:hint="Môn học" />
+                android:hint="Môn học (*)" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
