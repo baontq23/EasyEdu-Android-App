@@ -130,6 +130,7 @@ public class FeedbackFragment extends Fragment implements FeedbackAdapter.Feedba
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case 1:
+                        srl.setEnabled(false);
                         adapter.toggleShowCheckbox();
                         actionMode = requireActivity().startActionMode(new android.view.ActionMode.Callback() {
                             @Override
@@ -161,16 +162,20 @@ public class FeedbackFragment extends Fragment implements FeedbackAdapter.Feedba
                             @Override
                             public void onDestroyActionMode(android.view.ActionMode mode) {
                                 adapter.toggleShowCheckbox();
+                                srl.setEnabled(true);
                             }
                         });
                         return true;
                     case 2:
+                        srl.setEnabled(false);
                         adapter.setMode(FeedbackAdapter.FILTER_INSTALL_APP);
                         return true;
                     case 3:
+                        srl.setEnabled(false);
                         adapter.setMode(FeedbackAdapter.FILTER_NOT_INSTALL_APP);
                         return true;
                     case 4:
+                        srl.setEnabled(true);
                         adapter.setMode(FeedbackAdapter.FILTER_DEFAULT);
                         return true;
                     default:
