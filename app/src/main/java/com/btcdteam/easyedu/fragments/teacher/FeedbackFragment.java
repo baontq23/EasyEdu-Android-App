@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.adapter.teacher.FeedbackAdapter;
@@ -54,13 +55,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedbackFragment extends Fragment implements FeedbackAdapter.FeedbackCallback {
+public class FeedbackFragment extends Fragment implements FeedbackAdapter.FeedbackCallback, SwipeRefreshLayout.OnRefreshListener {
     RecyclerView rcv;
     ImageView btnBack, btnSendFeedback, btnFeedbackOption;
     FeedbackAdapter adapter;
     EditText edFeedback;
     TextView tvTitle;
     List<ParentPreview> list;
+    private SwipeRefreshLayout srl;
     private int teacherId;
     ArrayList<String> fcmTokens;
     private ProgressBar pbTextFieldLoader;
@@ -86,6 +88,10 @@ public class FeedbackFragment extends Fragment implements FeedbackAdapter.Feedba
         edFeedback = view.findViewById(R.id.ed_feedback);
         tvTitle = view.findViewById(R.id.tv_feedback_title);
         pbTextFieldLoader = view.findViewById(R.id.pb_text_field_loader);
+        srl = view.findViewById(R.id.srl_feedback);
+        srl.setOnRefreshListener(this);
+        srl.setColorSchemeResources(R.color.blue_primary);
+
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         btnBack.setOnClickListener(v -> {
             requireActivity().onBackPressed();
@@ -176,6 +182,7 @@ public class FeedbackFragment extends Fragment implements FeedbackAdapter.Feedba
     }
 
     private void getListParent(int classroomId) {
+        if (!srl.isRefreshing()) srl.setRefreshing(true);
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListParentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -193,12 +200,14 @@ public class FeedbackFragment extends Fragment implements FeedbackAdapter.Feedba
                 } else {
                     SnackbarUntil.showWarning(requireView(), "Danh sách trống");
                 }
+                if (srl.isRefreshing()) srl.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
                 SnackbarUntil.showError(requireView(), "Không thể kết nối tới máy chủ!");
+                if (srl.isRefreshing()) srl.setRefreshing(false);
             }
         });
     }
@@ -316,5 +325,10 @@ public class FeedbackFragment extends Fragment implements FeedbackAdapter.Feedba
                         }
                     }).show();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        getListParent(getArguments().getInt("classroom_id"));
     }
 }
