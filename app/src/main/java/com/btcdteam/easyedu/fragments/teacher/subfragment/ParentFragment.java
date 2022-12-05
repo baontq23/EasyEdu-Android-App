@@ -32,9 +32,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ParentFragment extends Fragment implements ParentAdapter.ParentItemListener {
-    RecyclerView rcv;
-    ParentAdapter adapter;
-    List<Parent> list;
+    private RecyclerView rcv;
+    private ParentAdapter adapter;
+    private List<Parent> list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,11 +85,6 @@ public class ParentFragment extends Fragment implements ParentAdapter.ParentItem
 
     @Override
     public void onItemClick(int position, Parent parent) {
-
-    }
-
-    @Override
-    public void onOptionClick(int position, Parent parent) {
 
     }
 }

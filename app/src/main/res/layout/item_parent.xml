@@ -25,14 +25,5 @@
         android:layout_weight="1"
         android:maxLines="1"
         android:ellipsize="end"/>
-
-    <ImageView
-        android:id="@+id/img_parent_option"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:padding="12dp"
-        android:src="@drawable/ic_action_setting"
-        android:layout_gravity="end"
-        android:background="?android:selectableItemBackgroundBorderless"/>
     
 </LinearLayout>
