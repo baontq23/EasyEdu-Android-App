@@ -13,6 +13,8 @@ import com.btcdteam.easyedu.R;
 import com.btcdteam.easyedu.models.Parent;
 import com.btcdteam.easyedu.models.Student;
 
+import org.apache.poi.java.awt.Color;
+
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +38,8 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.PreviewV
     public void onBindViewHolder(@NonNull PreviewVH holder, int position) {
         if (position % 2 == 0) {
             holder.item.setBackgroundResource(R.color.bg_primary);
+        }else{
+            holder.item.setBackgroundResource(R.color.white);
         }
         Student student = list.get(position);
         Parent parent = parentMap.get(student.getParentId());

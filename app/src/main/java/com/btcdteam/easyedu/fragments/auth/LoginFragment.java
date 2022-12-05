@@ -110,6 +110,7 @@ public class LoginFragment extends Fragment {
                 call.enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        Log.i(TAG, "onResponse: "+response.code());
                         progressBarDialog.dismiss();
                         if (response.code() == 200) {
                             Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
@@ -123,7 +124,7 @@ public class LoginFragment extends Fragment {
                         } else if (response.code() == 401) {
                             Toast.makeText(getContext(), "Sai mật khẩu", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getContext(), "Đăng nhập thấy bại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
 

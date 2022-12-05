@@ -22,8 +22,6 @@ public class ParentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public interface ParentItemListener {
         void onItemClick(int position, Parent parent);
-
-        void onOptionClick(int position, Parent parent);
     }
 
     public ParentAdapter(List<Parent> list, ParentItemListener listener) {
@@ -48,10 +46,6 @@ public class ParentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         parentVH.itemParent.setOnClickListener(v -> {
             listener.onItemClick(position, parent);
         });
-
-        parentVH.btnOption.setOnClickListener(v -> {
-            listener.onOptionClick(position, parent);
-        });
     }
 
     @Override
@@ -61,13 +55,11 @@ public class ParentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public class ParentVH extends RecyclerView.ViewHolder {
         TextView tvParentName;
-        ImageView btnOption;
         LinearLayout itemParent;
 
         public ParentVH(@NonNull View itemView) {
             super(itemView);
             tvParentName = itemView.findViewById(R.id.tv_parent_name);
-            btnOption = itemView.findViewById(R.id.img_parent_option);
             itemParent = itemView.findViewById(R.id.item_parent);
         }
     }

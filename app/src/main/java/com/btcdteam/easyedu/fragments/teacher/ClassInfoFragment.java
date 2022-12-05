@@ -427,6 +427,7 @@ public class ClassInfoFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void getListStudentSemester02() {
+        if(!swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(true);
         int classroomId = getArguments() != null ? getArguments().getInt("classroom_id") : 0;
         Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).getListStudentByIdClassRoom(classroomId);
         call.enqueue(new Callback<JsonObject>() {
@@ -444,11 +445,13 @@ public class ClassInfoFragment extends Fragment implements SwipeRefreshLayout.On
                     }
                     broadCast(studentDetailLis02);
                 }
+                if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(requireContext(), "Lỗi kết nối tới máy chủ", Toast.LENGTH_SHORT).show();
+                if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -512,6 +515,10 @@ public class ClassInfoFragment extends Fragment implements SwipeRefreshLayout.On
 
     @Override
     public void onRefresh() {
-        getListStudentSemester01();
+        if (check == 0){
+            getListStudentSemester01();
+        }else{
+            getListStudentSemester02();
+        }
     }
 }

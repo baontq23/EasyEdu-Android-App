@@ -102,7 +102,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:padding="8dp"
-        android:elevation="20dp">
+        android:elevation="10dp">
 
         <FrameLayout
             android:id="@+id/student_layout"
