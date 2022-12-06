@@ -1,7 +1,10 @@
 package com.btcdteam.easyedu.fragments.teacher.subfragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,10 @@ import com.btcdteam.easyedu.network.APIService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.kongzue.dialogx.dialogs.BottomMenu;
+import com.kongzue.dialogx.interfaces.BaseDialog;
+import com.kongzue.dialogx.interfaces.OnIconChangeCallBack;
+import com.kongzue.dialogx.interfaces.OnMenuItemClickListener;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -85,6 +92,49 @@ public class ParentFragment extends Fragment implements ParentAdapter.ParentItem
 
     @Override
     public void onItemClick(int position, Parent parent) {
+        BottomMenu.show(new String[]{"Gọi", "Gửi tin nhắn SMS"})
+                .setTitle(parent.getName())
+                .setMessage("Số điện thoại: " + parent.getPhone())
+                .setOnIconChangeCallBack(new OnIconChangeCallBack(true) {
+                    @Override
+                    public int getIcon(BaseDialog bottomMenu, int index, String menuText) {
+                        switch (index) {
+                            case 0:
+                                return R.drawable.ic_outline_call_24;
+                            case 1:
+                                return R.drawable.ic_outline_sms_24;
+                        }
+                        return 0;
+                    }
+                })
+                .setOnMenuItemClickListener(new OnMenuItemClickListener<BottomMenu>() {
+                    @Override
+                    public boolean onClick(BottomMenu dialog, CharSequence text, int index) {
+                        if (index == 0) {
+                            call(parent.getPhone());
+                        } else if (index == 1) {
+                            sendSMS(parent.getPhone());
+                        } else {
+                            return false;
+                        }
+                        return false;
+                    }
+                });
+    }
 
+    private void call(String phone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phone));
+        startActivity(intent);
+    }
+
+    private void sendSMS(String phone) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("smsto:" + phone));
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(requireContext(), "Không có ứng dụng mở tin nhắn!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
