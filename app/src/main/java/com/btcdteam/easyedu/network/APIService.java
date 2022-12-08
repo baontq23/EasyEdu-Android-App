@@ -65,6 +65,9 @@ public interface APIService {
     @GET("parent/phone/{phone}")
     Call<JsonObject> getParentByPhone(@Path("phone") String phone);
 
+    @PATCH("parent/resetpass/{id}")
+    Call<JsonObject> resetParentPassword(@Path("id") String id);
+
     @POST("student")
     Call<JsonObject> createStudentHandMade(@Body JsonObject body);
 
