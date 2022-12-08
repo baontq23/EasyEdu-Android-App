@@ -2,7 +2,6 @@ package com.btcdteam.easyedu.fragments.parent;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,7 @@ public class ParentChangePassword extends Fragment {
         JsonObject object = new JsonObject();
         object.addProperty("old_password", edOldPass.getText().toString());
         object.addProperty("new_password", edNewPass.getText().toString());
-        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).changePasswordParent("cbba1905-3957-4c7d-bd8b-23d3680424c1",object);
+        Call<JsonObject> call = ServerAPI.getInstance().create(APIService.class).changePasswordParent(id, object);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
