@@ -1,5 +1,7 @@
 package com.btcdteam.easyedu.fragments.parent;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,7 @@ public class StudentDetailFragment extends Fragment {
             tvTotalScore,
             tvAvg,
             tvClassName,
+            tvTeacherPhone,
             tvSubject,
             tvTeacherName;
     private Switch swTerm;
@@ -61,6 +64,7 @@ public class StudentDetailFragment extends Fragment {
         btnBack = view.findViewById(R.id.img_parent_student_detail_back);
         btnNoti = view.findViewById(R.id.img_parent_student_detail_noti);
         //student
+        tvTeacherPhone = view.findViewById(R.id.tv_student_detail_teacher_phone);
         tvStudentName = view.findViewById(R.id.tv_student_detail_name);
         tvStudentDateOfBirth = view.findViewById(R.id.tv_student_detail_dob);
         tvStudentGender = view.findViewById(R.id.tv_student_detail_gender);
@@ -85,6 +89,12 @@ public class StudentDetailFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("student_id", getArguments().getString("student_id"));
             Navigation.findNavController(requireActivity(), R.id.nav_host_parent).navigate(R.id.action_studentDetailFragment2_to_notificationFragment, bundle);
+        });
+
+        tvTeacherPhone.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + tvTeacherPhone.getText().toString()));
+            startActivity(intent);
         });
 
         swTerm.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -131,6 +141,7 @@ public class StudentDetailFragment extends Fragment {
             avg = calcAvg(score);
         }
         tvTeacherName.setText(score.teacher_name);
+        tvTeacherPhone.setText(score.teacher_phone);
         tvSubject.setText(score.classroom_subject);
         tvStudentName.setText(score.student_name);
         tvStudentDateOfBirth.setText(score.student_dob);
